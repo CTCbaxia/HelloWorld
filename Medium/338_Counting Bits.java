@@ -1,5 +1,4 @@
 /*
-
 338. Counting Bits
 https://leetcode.com/problems/counting-bits/description/
 
@@ -55,4 +54,24 @@ class Solution {
         }
         return tmp;
     }
+}
+
+
+/*
+Solution 2
+Reference: 按两倍找规律，加奇偶判断
+
+Result: 36%
+*/
+
+class Solution {
+    public int[] countBits(int num) {
+        int[] result = new int[num + 1];
+        result[0] = 0;
+        for(int i = 0; i < num + 1; i++){
+            result[i] = result[i/2] + i%2;
+        }
+        return result;
+    }
+    
 }
