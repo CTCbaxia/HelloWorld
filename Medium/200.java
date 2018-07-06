@@ -2,6 +2,7 @@
 200. Number of Islands
 https://leetcode.com/problems/number-of-islands/description/
 
+TIME: 0706
 RESULT: 100%
 NOTE: 思路很重要
 */

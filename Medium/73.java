@@ -3,6 +3,7 @@
 
 73. Set Matrix Zeroes
 
+TIME: 0705
 RESULT: 93%
 */
 

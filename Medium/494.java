@@ -1,11 +1,10 @@
 /*
-0704
-
 494. Target Sum
 https://leetcode.com/problems/target-sum/description/
 METHOD:
 穷举迭代法
 
+TIME: 0704
 RESULT: TIME LIMITED
 */
 class Solution {

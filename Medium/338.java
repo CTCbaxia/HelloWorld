@@ -1,10 +1,9 @@
 /*
-0703
-
 338. Counting Bits
 https://leetcode.com/problems/counting-bits/description/
 
-Result: 22%
+TIME: 0703
+RESULT: 22%
 */
 
 class Solution {
