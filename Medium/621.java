@@ -3,7 +3,7 @@
 https://leetcode.com/problems/task-scheduler/description/
 
 TIME: 0709
-RESULT: 40%
+RESULT: 40%, 57ms
 NOTE: 
 analyse the question before start coding 
 if you find the magic, it can be far more easy to write a routine code, but being able to quickly write a routine code is the basic skill
