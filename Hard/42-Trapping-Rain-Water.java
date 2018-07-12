@@ -3,8 +3,8 @@ HARD
 42. Trapping Rain Water
 https://leetcode.com/problems/trapping-rain-water/description/
 
-TIME: 0711
-RESULT: 0%, 212ms
+TIME: 0711 - 1h
+RESULT: 0% - 212ms
 TODO: TO BE IMPROVED
 
 思路：
