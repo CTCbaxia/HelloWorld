@@ -6,7 +6,8 @@ https://leetcode.com/problems/implement-queue-using-stacks/description/
 TIME: 0712 - 1h
 RESULT: 97% - 61ms
 NOTE: 
-
+1. 注意题设条件
+2. java.util.ConcurrentModificationException: 当一个线程在遍历一个 Collection 的时候，不能同时有另一个线程 modify 他
 
 思路：
 主要就是改变 push 之后的结果
