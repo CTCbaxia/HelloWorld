@@ -7,7 +7,7 @@ RESULT: 92%
 NOTES:
 1. 1 也是 3 的幂次 （1 是任何数的幂次）
 2. 其实 int 范围内，幂次对应的数 < 32 个
-METHOD:
+3. 一些相关的数学 trick：https://leetcode.com/problems/power-of-three/discuss/77876/**-A-summary-of-all-solutions-(new-method-included-at-15:30pm-Jan-8th)
 
 */
 
