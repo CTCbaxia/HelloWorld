@@ -3,13 +3,91 @@ MEDIUM
 92. Reverse Linked List II
 https://leetcode.com/problems/reverse-linked-list-ii/description/
 
-TIME: 0715 - 3h
-RESULT: 14%
-NOTES:
-METHOD:
+TIME: 0715 - 5h
+RESULT: 96% - 2ms
 
 */
 
+/*
+SOLUTION 1
+思路：
+sublist：遍历到 m，并在 mn 翻转之后链接 n 端的 node
+reverse：反转存 node
+forrest：指向 m node（reverse 的第一个 node），等着翻转之后回收尾部 node
+tmp：遍历要反转的 list（m->n）并在 n node 处等待遍历结束
+
+TIME: 0715 - 2h
+RESULT: 96%
+NOTES:
+1. 对于链表，注意链表的指针，区分到底是想要转移到一个新链表，还是想更改该链表的后续 node（前者 sublist； 后者 sublist.next）
+2. 链表可以翻转的
+3. 链表的操作注意其不回溯性，要暂时存储之后还会用到的节点的位置
+*/
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        if(m == n) return head;
+        
+        ListNode sublist = new ListNode(0);
+        sublist.next = head;
+        head = sublist;
+        ListNode reverse = new ListNode(0);
+        ListNode forrest = reverse;
+        ListNode tmp = new ListNode(0);
+        for(int i = 1; i <= n; i++){
+            if(i <= m){
+                if(i == m){
+                    tmp = sublist.next;
+                    reverse.val = tmp.val;
+                }else{
+                    sublist = sublist.next;
+                }
+            }else{
+                tmp = tmp.next;
+                if(i > m && i <=n){
+                    reverse = reverseNode(tmp.val, reverse);
+                }
+                if(i == n){
+                    sublist.next = reverse;
+                    forrest.next = tmp.next;
+                    break;
+                } 
+            }
+        }
+        return head.next;
+    }
+    private ListNode reverseNode(int val, ListNode l){
+        ListNode res = new ListNode(0);
+        res.val = val;
+        res.next = l;
+        return res;
+    }
+}
+
+
+
+
+/*
+SOLUTION 2:
+思路：先遍历翻转部分的后一半，讲 node 存到 stack 里面。
+然后从 m 开始 stack.pop，并同时存储 m ~ index 部分的 node
+
+TIME: 0715 - 3h
+RESULT: 14%
+NOTES:
+1. 注意奇偶部分的区分，关键节点
+2. 注意 stack 里面存的数量
+
+
+*/
 /**
  * Definition for singly-linked list.
  * public class ListNode {
@@ -64,70 +142,14 @@ class Solution {
         return head;
     }
 }
-/*
-SOLUTION 2
-*/
-
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode(int x) { val = x; }
- * }
- */
-class Solution {
-    public ListNode reverseBetween(ListNode head, int m, int n) {
-        if(m == n) return head;
-        
-        ListNode sublist = head;
-        ListNode reverse = new ListNode(0);
-        ListNode forrest = reverse;
-        ListNode tmp = new ListNode(0);
-        for(int i = 1; i <= n; i++){
-            if(i < m){
-                if(i == m - 1){
-                    
-                    tmp = sublist.next;
-                    sublist.next = new ListNode(0);
-                }
-                sublist = sublist.next;
-                
-            }else{
-                if(i == m) reverse.val = tmp.val;
-                if(i > m && i <=n){
-                    reverse = reverseNode(tmp.val, reverse);
-                }
-                if(i == n){
-                    sublist = reverse;
-                    forrest.next = tmp.next;
-                    break;
-                } 
-                tmp = tmp.next;
-            }
-            
-        }
-        return head;
-    }
-    private ListNode reverseNode(int val, ListNode l){
-        ListNode res = new ListNode(0);
-        res.val = val;
-        res.next = l;
-        return res;
-    }
-}
-
-
-
-
 
 
 
 /*
-REFERENCE
+REFERENCE 1：
+NOTE: 
+链表的 next 不停地转换 pointer 以达到按自己需求链接 next node 的目的
 */
-
-
 
 
 public ListNode reverseBetween(ListNode head, int m, int n) {
