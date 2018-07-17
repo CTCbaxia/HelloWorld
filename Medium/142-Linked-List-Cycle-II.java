@@ -2,8 +2,8 @@
 MEDIUM
 142. Linked List Cycle II
 https://leetcode.com/problems/linked-list-cycle-ii/description/
-TIME: 0717 - 10min
-RESULT: 13% - 7ms
+TIME: 0717 - 60min
+RESULT: 92.13% - 1ms
 METHOD:
 1. HashSet
 2. Two Pointers(faster & slower)
