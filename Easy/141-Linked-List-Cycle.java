@@ -6,7 +6,8 @@ https://leetcode.com/problems/linked-list-cycle/description/
 TIME: 0717 - 1h
 RESULT: 90.98% - 1ms
 NOTES:
-快慢指针法要好好体会
+1. 快慢指针法要好好体会
+2. HashSet<Element> 里面可以是 ListNode
 
 思路:
 怎么确定 last.next == somenode.next??
