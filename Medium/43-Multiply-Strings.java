@@ -14,6 +14,7 @@ NOTE:
     - char to int: char - '0'
     - int to char: (char)(res.pop() + '0')
 5. StringBuilder 比 s = s + 'char' 要快很多
+6. 注意数字计算的技巧和规律 
 */
 
 /*
