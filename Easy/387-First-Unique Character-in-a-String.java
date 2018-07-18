@@ -5,7 +5,7 @@ https://leetcode.com/problems/first-unique-character-in-a-string/description/
 TIME: 0718 - 30min
 RESULT: 38.61% - 58ms
 NOTES: 
-对于单词每个 char 的频率，用 char[] 存储比用 hashmap 存储更快。
+对于单词每个 char 的频率，用 char[c - 'a'] 存储比用 hashmap 存储更快。
 
 METHOD:
 1. HashMap
