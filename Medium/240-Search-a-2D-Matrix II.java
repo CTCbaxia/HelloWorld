@@ -3,11 +3,29 @@ MEDIUM
 240. Search a 2D Matrix II
 https://leetcode.com/problems/search-a-2d-matrix-ii/description/
 
-TIME: 0720 - 1h+
-RESULT: 
+TIME: 0720 - 2h
+RESULT: 100% - 7ms
 NOTES:
+1. 当你意识到算法太过复杂的时候，要换个思路
+2. 横竖有序，一定要利用有序的规则，但是不要跳跃一个层次把问题弄复杂了
 
-
+*/
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        if(matrix == null || matrix.length == 0) return false;
+        int row = 0;
+        int col = matrix[0].length - 1;
+        while(row < matrix.length && col >= 0){
+            if(matrix[row][col] == target) return true;
+            else if(matrix[row][col] < target) row ++;
+            else if(matrix[row][col] > target) col --;
+        }
+        return false;
+    }
+}
+/*
+Wrong Code
+陷入到对角线关系中不能自拔。其实当对角线得划分那么多区域的时候，就该意识到肯定不是最优解。（尤其是复杂度不是 O(m + n) 的时候）
 */
 class Solution {
     public boolean searchMatrix(int[][] matrix, int target) {
