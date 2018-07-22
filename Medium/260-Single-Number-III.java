@@ -8,12 +8,15 @@ RESULT: 100% - 1ms
 METHOD:
 1. HashSet
 2. XOR, &&
-REFERENCE: https://leetcode.com/problems/single-number-iii/discuss/68900/Accepted-C++Java-O(n)-time-O(1)-space-Easy-Solution-with-Detail-Explanations
+
+
 
 
 NOTES:
 1. 比较符的优先级大于按位与（== has higher priority than &. You might want to wrap your operations in () to specify your own priority.）
-
+2. REFERENCE: 
+    - https://leetcode.com/problems/single-number-iii/discuss/68900/Accepted-C++Java-O(n)-time-O(1)-space-Easy-Solution-with-Detail-Explanations
+    - https://segmentfault.com/a/1190000004886431
 */
 
 /*
