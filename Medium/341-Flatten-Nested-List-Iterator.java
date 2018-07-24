@@ -1,7 +1,7 @@
 /*
 MEDIUM
-284. Peeking Iterator
-https://leetcode.com/problems/peeking-iterator/description/
+341. Flatten Nested List Iterator
+https://leetcode.com/problems/flatten-nested-list-iterator/description/
 
 TIME: 0724 - 3h
 RESULT: 59% - 5ms
