@@ -11,6 +11,7 @@ NOTES:
 1. 这种改写题的解法：
     - 先看原有的结构有哪些 method
     - 再看 Method 输入端有哪些内容（那个 method 包含 input，一般都是对于 input 做一些改变）
+2. 原本iterator中没有peek()方法，即无法取顶元素，现在你给加一个peek方法，next，hasNext功能不变
 
 */
 
