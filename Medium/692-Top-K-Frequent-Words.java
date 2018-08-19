@@ -21,7 +21,7 @@ THOUGHTS:
 class Solution {
     public List<String> topKFrequent(String[] words, int k) {
         Map<String, Integer> map = new HashMap<String, Integer>();
-        List<List> freqList = new ArrayList<List>();
+        List<List<String>> freqList = new ArrayList<List<String>>();
         List<String> result = new ArrayList<String>();
         freqList.add(new ArrayList<String>());
         
@@ -45,7 +45,7 @@ class Solution {
             int wordNum = freqList.get(mostFreq).size();
             int count = 0;
             while(count < wordNum && count < k){
-                result.add((String) freqList.get(mostFreq).get(count++));
+                result.add(freqList.get(mostFreq).get(count++));
             }
             mostFreq--;
             k = k - count;
