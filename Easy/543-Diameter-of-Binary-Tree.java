@@ -4,14 +4,21 @@ EASY
 https://leetcode.com/problems/diameter-of-binary-tree/description/
 
 TIME: 0819 - 30min
-RESULT:
-Notes: 
+RESULT: 25% - 7ms
+NOTES:
+1.不一定经过 root
 
+THOUGHTS:
+把每一个点都当做转折点, 在遍历每个点的时候都计算以他为 root 的最大枝节长度，并求以他为转折点的最长路径
+
+Time Complexity: O(n)
+Space Complexity: O(h) - 树的遍历要压栈，h 是树的最大高度
 
 */
 /*
-左边的最远叶子和右边的最远叶子
+
 */
+
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
@@ -22,26 +29,16 @@ Notes:
  * }
  */
 class Solution {
+    int result = 0;
     public int diameterOfBinaryTree(TreeNode root) {
-        int left = 0, right = 0;
-        left = diaHelper(root.left, 1);
-        right = diaHelper(root.right, 1);
-        System.out.println(left);
-        System.out.println(right);
-        return left + right;
-        
+        diaHelper(root);
+        return result;
     }
-    private int diaHelper(TreeNode root, int len){
-        if(root.left == null && root.right == null){
-            System.out.println(len);
-            return len;
-        } 
-        if(root.left != null){
-            diaHelper(root.left, len + 1);
-        }
-        if(root.right != null){
-            diaHelper(root.right, len + 1);
-        }
-        return len;
+    private int diaHelper(TreeNode root){
+        if(root == null) return -1;
+        int left = diaHelper(root.left);
+        int right = diaHelper(root.right);
+        result = Math.max(result, left + right + 2);
+        return Math.max(left + 1, right + 1);
     }
 }
