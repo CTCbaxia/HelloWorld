@@ -9,6 +9,10 @@ NOTES:
 1. 这题给了 numCourses，其实可以不用 map，直接用 list 来记录 graph，访问的时候直接寻找节点 (快很多)
 2. Topological sorting: https://en.wikipedia.org/wiki/Topological_sorting#Algorithms
 3. how graph is presented: https://www.khanacademy.org/computing/computer-science/algorithms/graph-representation/a/representing-graphs
+
+METHODS:
+1. BFS + Topological Sort
+2. DFS
 */
 /*
 SOLUTION 1: BFS + Topological sorting + ArrayList
