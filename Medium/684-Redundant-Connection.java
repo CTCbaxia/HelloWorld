@@ -35,7 +35,7 @@ class Solution {
     //DFS 找到 from 点的最终 parent
     public int find(int[] parent, int point){
         if(parent[point] == point) return point;
-        return find(parent, parent[point]);
+        return find(parent, parent[point]); //再简化一点可以每次都更新一下 set 内部其他元素的 parent[]，使图尽量扁平
     }
 }
 
