@@ -12,6 +12,8 @@ RESULT: 100% - 0ms
 
 /*
 SOLUTION 0: 简化版本
+最后留下的就是 num[lo], nums[hi] 其中左边为最大值，右边为最小值。
+（只有在 lo = hi + 1 的时候，才会有 mid = lo，后继赋值 hi = mid，最后 lo = hi 的情况，所有不会跳跃 hi = lo + 1 直接到 hi = lo）
 */
 class Solution {
     public int findMin(int[] nums) {
@@ -26,7 +28,7 @@ class Solution {
                 hi = mid;
             }
         }
-        return Math.min(nums[lo], nums[hi]);
+        return nums[hi];
     }
 }
 
