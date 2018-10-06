@@ -8,6 +8,78 @@ RESULT: 24% - 32ms
 NOTES:
 REFERENCE 思路不错
 */
+
+//--Round 2 for MS-----------------------------------------------
+/*
+1 注意其实是可以字符串比较的
+2 sb.append 进去后就都成为了 char，对应查询是 sb.charAt()，不管你的输入是什么
+
+*/
+class Solution {
+    public String removeKdigits(String num, int k) {
+        int remain = num.length() - k;
+        int index = 0;
+        StringBuilder sb = new StringBuilder();
+        while(remain > 0){
+            int min = num.charAt(index);
+            int tmp = index;
+            for(int i = index; i < num.length() - remain + 1; i++){
+                int number = num.charAt(i);
+                if(number < min){
+                    min = number;
+                    tmp = i;
+                }
+            }
+            index = tmp + 1;
+            remain--;
+            sb.append(num.charAt(tmp));
+        }
+        
+        while(sb.length() != 0 && sb.charAt(0) == '0'){
+            sb.deleteCharAt(0);
+        }
+        return (sb.length() == 0) ? "0":sb.toString();
+    }
+}
+/*
+思路：
+we use a stack to store all the integers, but if when we input an integer but found the current integer is smaller than the peek one in the stack, and 
+if we still can remove elements(k > 0), we remove the peek. we do iteratively until we cannot remove something or we found the thing smaller than the current insert elements
+
+
+remember to check if you have removed all k elements because you may found there is nothing to remove (you only remove elements when you meet slope.)
+*/
+
+class Solution {
+    public String removeKdigits(String num, int k) {
+        if(num.length() == 0) return num;
+        
+        Stack<Character> stack = new Stack<Character>();
+        for(int i = 0; i < num.length(); i++){
+            while(k > 0 && !stack.isEmpty() && num.charAt(i) < stack.peek()){
+                stack.pop();
+                k--;
+            }
+            stack.push(num.charAt(i));
+        }
+        while(k > 0){
+            stack.pop();
+            k--;
+        }
+        StringBuilder sb = new StringBuilder();
+        while(!stack.isEmpty()){
+            sb.append(stack.pop());
+        }
+        sb.reverse();
+        while(sb.length() != 0 && sb.charAt(0) == '0') sb.deleteCharAt(0);
+        return sb.length() == 0 ? "0" : sb.toString();
+    }
+}
+
+
+
+
+//--Round 1-----------------------------------------------
 /*
 SOLUTION REFERENCE:
 TIME: 0916 - 1h
