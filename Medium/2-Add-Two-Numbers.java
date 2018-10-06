@@ -1,4 +1,61 @@
 /*
+MEDIUM
+2. Add Two Numbers
+https://leetcode.com/problems/add-two-numbers/description/
+
+TIME: 1006 - 15min
+RESULT: 86% - 28ms
+思路：
+要注意 ListNode这样的题目一定要留位置 + next下一位
+除：use 10 to divide the sum
+余：use sum mod 10 to get the carry
+*/
+
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode head = new ListNode(0);
+        ListNode node = head;
+        int carry = 0;
+        while(l1 != null || l2 != null){
+            int sum = carry;
+            if(l1 != null && l2 != null){
+                sum += l1.val + l2.val;
+                l1 = l1.next;
+                l2 = l2.next;
+            }else if(l1 != null){
+                sum += l1.val;
+                l1 = l1.next;
+            }else if(l2 != null){
+                sum += l2.val;
+                l2 = l2.next;
+            }
+            carry = sum / 10;
+            sum = sum % 10;
+            node.next = new ListNode(sum);
+            node = node.next;
+        }
+        if(carry != 0) node.next = new ListNode(carry);
+        return head.next;
+        
+    }
+}
+
+
+
+
+
+
+
+/*
 Solution 1: 7%
 方法真的不够好，属于能够解决问题的笨办法
 但是主动考虑到了有数到末尾之后的进位问题，不错。
