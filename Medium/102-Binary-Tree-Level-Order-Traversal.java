@@ -13,6 +13,45 @@ NOTE:
 1. 对于 tree 来说，不要把它看成一个数组类的东西，要看成一个 ListNode 类的东西
 
 */
+//-----2 ROUND FOR MS-----------------------------------------------------------------
+//BFS
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        if(root == null) return result;
+        Queue<TreeNode> q = new LinkedList<TreeNode>();
+        q.add(root);
+        
+        while(!q.isEmpty()){
+            List<Integer> level = new ArrayList<Integer>();
+            Queue<TreeNode> nextQ = new LinkedList<TreeNode>();
+            while(!q.isEmpty()){
+                TreeNode node = q.poll();
+                level.add(node.val);
+                if(node.left != null) nextQ.add(node.left);
+                if(node.right != null) nextQ.add(node.right);
+            }
+            q = nextQ;
+            result.add(level);
+        }
+        return result;
+    }
+}
+//DFS
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        dfs(root, result, 0);
+        return result;
+    }
+    private void dfs(TreeNode node, List<List<Integer>> result, int level){
+        if(node == null) return;
+        if(result.size() <= level) result.add(new ArrayList<Integer>());
+        result.get(level).add(node.val);
+        dfs(node.left, result, level + 1);
+        dfs(node.right, result, level + 1);
+    }
+}
 /*
 SOLUTION 0: wow!!
 TIME: 0719 - 30min
