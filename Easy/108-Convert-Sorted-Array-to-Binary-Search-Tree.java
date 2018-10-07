@@ -9,6 +9,7 @@ NOTES:
 
 */
 //------2 ROUND FOR MS-----------------------------
+//TIME: 1007 - 5min
 class Solution {
     public TreeNode sortedArrayToBST(int[] nums) {
         return sortHelper(nums, 0, nums.length - 1);
