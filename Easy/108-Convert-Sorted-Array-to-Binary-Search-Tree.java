@@ -8,6 +8,23 @@ RESULT: 100% - 0ms
 NOTES: 
 
 */
+//------2 ROUND FOR MS-----------------------------
+class Solution {
+    public TreeNode sortedArrayToBST(int[] nums) {
+        return sortHelper(nums, 0, nums.length - 1);
+    }
+    private TreeNode sortHelper(int[] nums, int left, int right){
+        if(left > right) return null;
+        int middle = (left + right)/2;
+        TreeNode root = new TreeNode(nums[middle]);
+        root.left = sortHelper(nums, left, middle - 1);
+        root.right = sortHelper(nums, middle + 1, right);
+        return root;
+    }
+}
+
+
+//------1 ROUND-----------------------------
 //find the middle part of the array
 //then find the middle part of the subarray
 class Solution {
