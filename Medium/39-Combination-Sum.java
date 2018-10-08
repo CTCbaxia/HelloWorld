@@ -11,6 +11,61 @@ NOTES: 46% - 13ms
 2. backtracking 记得要变回原样：list.remove(list.size() - 1); 并且是最后一位，而不是某个 object
 
 */
+//-----------2 ROUND FOR MS------------------------------------------------------------------
+//backtracking
+class Solution {
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        countHelper(candidates, target, result, new ArrayList<Integer>(), 0);
+        return result;
+    }
+    private void countHelper(int[] candidates, int target, List<List<Integer>> result, List<Integer> list, int start){
+        if(target == 0){
+            result.add(new ArrayList<Integer>(list));
+        }else if(target < 0){
+            return;
+        }
+        
+        for(int i = start; i < candidates.length; i++){
+            int n = candidates[i];
+            list.add(n);
+            countHelper(candidates, target - n, result, list, i);//可以通过这里加一个 index start 来控制没有重复
+            list.remove(list.size() - 1);
+        }
+        return;
+    }
+
+}
+
+class Solution {
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        countHelper(candidates, target, result, new ArrayList<Integer>());
+        return result;
+    }
+    private void countHelper(int[] candidates, int target, List<List<Integer>> result, List<Integer> list){
+        for(int i = 0; i < candidates.length; i++){
+            int n = candidates[i];
+            if(target - n == 0){
+                list.add(n);
+                List<Integer> res = new ArrayList<Integer>(list);
+                Collections.sort(res);
+                if(!result.contains(res)) result.add(res);
+                list.remove(list.size() - 1);
+            }else if(target - n > 0){
+                list.add(n);
+                countHelper(candidates, target - n, result, list);
+                list.remove(list.size() - 1);
+            }
+        }
+        return;
+    }
+
+}
+
+
+
+//-----------1 ROUND------------------------------------------------------------------
 /*
 SOLUTION REFERENCE:
 RESULT: 0825 - 20min
