@@ -3,11 +3,56 @@ MEDIUM
 22. Generate Parentheses
 https://leetcode.com/problems/generate-parentheses/description/
 
-TIME: 0823 - 1h
-RESULT: 83% - 2ms
+TIME: 1008 - 10min
+RESULT: 100% - 1ms
 NOTES:
 1. 记得要把 stack 的内容补回来，保持其他情况的路径不会受影响
 */
+//--------2 ROUND FOR MS------------------------------------
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> result = new ArrayList<String>();
+        dfs(n, 0, result, new StringBuilder());
+        return result;
+    }
+    private void dfs(int remain, int left, List<String> result, StringBuilder sb){
+        if(left < 0 || remain < 0) return;//omit
+        if(left == 0 && remain == 0){
+            result.add(sb.toString());
+            return;
+        }
+        if(left > 0){
+            sb.append(')');
+            dfs(remain, left - 1, result, sb);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+        if(remain > 0){
+            sb.append('(');
+            dfs(remain - 1, left + 1, result, sb);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+        return;
+    }
+}
+
+
+
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> result = new ArrayList<String>();
+        dfs(n, 0, result, "");
+        return result;
+    }
+    private void dfs(int remain, int left, List<String> result, String s){
+        if(left < 0 || remain < 0) return;
+        if(left == 0 && remain == 0) result.add(s);
+        if(left > 0) dfs(remain, left - 1, result, s + ")");
+        if(remain > 0) dfs(remain - 1, left + 1, result, s + "(");
+        return;
+    }
+}
+
+//--------1 ROUND------------------------------------
 /*
 SOLUTION REFERENCE:
 TIME: 0823 - 2Omin
