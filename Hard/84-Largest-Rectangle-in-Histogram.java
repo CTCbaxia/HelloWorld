@@ -6,6 +6,31 @@ HARD
 TIME: 1010 - 30min
 RESULT: 81% - 15ms
 NOTES:
+只用一次 每次 push index，如果后续的 height[index] < 之前的，就把之前的 pop 出来然后算面积，注意每次就 pop一个，然后循环算面积
+*/
+
+public class Solution {
+    public int largestRectangleArea(int[] height) {
+        int len = height.length;
+        Stack<Integer> stack = new Stack<Integer>();
+        int max = 0;
+        for(int i = 0; i <= len; i++){
+            int h = (i == len) ? 0 : height[i];
+            if(stack.isEmpty() || h > height[stack.peek()]){
+                stack.push(i);
+            }else{
+                int index = stack.pop();
+                max = Math.max(max, height[index] * ((stack.isEmpty() ? i : i - 1 - stack.peek())));
+                i--;
+            }
+        
+        }
+        return max;
+    }
+}
+
+
+/*
 思路就是loop once
 如果一个比一个大，就将[height, index]放入stack
 如果遍历到的小于 stack 的值，就 pop 并计算 pop 出来的 size，知道遇到等于或大于 stack 的值
