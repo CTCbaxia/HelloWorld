@@ -9,6 +9,32 @@ RESULT: 79% - 5ms
 */
 class Solution {
     public boolean isPalindrome(String s) {
+        int lo = 0;
+        int hi = s.length() -1;
+        char[] c = s.toCharArray();
+        while(lo < hi){
+            while(lo < hi && !Character.isLetterOrDigit(c[lo])){
+                lo++;
+            }
+            while(hi > lo && !Character.isLetterOrDigit(c[hi])){
+                hi--;
+            }
+            char loc = Character.isLetter(c[lo]) ? Character.toLowerCase(c[lo]) : c[lo];
+            char hic = Character.isLetter(c[hi]) ? Character.toLowerCase(c[hi]) : c[hi];
+            if( loc != hic) return false;
+            lo++;
+            hi--;
+        }
+        return true;
+    }
+}
+
+
+
+
+
+class Solution {
+    public boolean isPalindrome(String s) {
         int left = 0, right = s.length() - 1;
         while(left < right){//when left == right, the value doesn't matter
             char l = Character.toLowerCase(s.charAt(left));
