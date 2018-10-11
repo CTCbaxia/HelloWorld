@@ -9,6 +9,48 @@ NOTES:
 1. matrix : 矩阵  |   spiral order ： 旋风螺旋顺序
 2. 注意尽量找规律，也要考虑到只有一行的避免重复
 */
+
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> result = new ArrayList<Integer>();
+        if(matrix.length == 0 || matrix[0].length == 0) return result;
+        
+        int rowStart = 0, rowEnd = matrix.length - 1, colStart = 0, colEnd = matrix[0].length - 1;
+        while(rowStart <= rowEnd && colStart <= colEnd){
+            int i = rowStart;
+            int j = colStart;
+            //left to right
+            while(j <= colEnd){
+                result.add(matrix[i][j]);
+                j++;
+            }
+            j--;i++;
+            rowStart++;
+            System.out.println(result);
+            while(i <= rowEnd){
+                result.add(matrix[i][j]);
+                i++;
+            }
+            i--;j--;
+            colEnd--;
+            while(rowStart <= rowEnd && j >= colStart){
+                result.add(matrix[i][j]);
+                j--;
+            }
+            j++;i--;
+            rowEnd--;
+            while(colStart <= colEnd && i >= rowStart){
+                result.add(matrix[i][j]);
+                i--;
+            }
+            i++;j++;
+            colStart++;
+            
+            
+        }
+        return result;
+    }
+}
 /*
 SOLUTION REFERENCE: 
 TIME: 0720 - 30min
@@ -17,6 +59,7 @@ RESULT: 100% - 1ms
 思路：对于每个方向设置一个 begin 和 end 来控制其垂直列的起止位置
 当 begin 和 end 均相遇，完成。
 */
+
 class Solution {
     public List<Integer> spiralOrder(int[][] matrix) {
         List<Integer> result = new ArrayList<Integer>();
