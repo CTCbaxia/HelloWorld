@@ -8,6 +8,48 @@ RESULT: 48% - 3ms
 NOTES:
 1. 没看懂：https://leetcode.com/problems/find-the-duplicate-number/discuss/72846/My-easy-understood-solution-with-O(n)-time-and-O(1)-space-without-modifying-the-array.-With-clear-explanation.
 */
+//sort : no you cannot modify the array
+class Solution {
+    public int findDuplicate(int[] nums) {
+        Arrays.sort(nums);
+        for(int i = 1; i < nums.length; i++){
+            if(nums[i] == nums[i - 1]) return nums[i];
+        }
+        return -1;
+    }
+}
+
+//XOR 这不是蠢么。直接判断相等不就够了
+class Solution {
+    public int findDuplicate(int[] nums) {
+        for(int i = 0; i < nums.length; i++){
+            for(int j = i + 1; j < nums.length; j++){
+                if((nums[i] ^ nums[j]) == 0) return nums[i];
+            }
+        }
+        return -1;
+    }
+}
+
+//two pointers
+//lo hi 指的是真实的值，而不是 index
+
+class Solution {
+    public int findDuplicate(int[] nums) {
+        int lo = 1;
+        int hi = nums.length - 1;
+        while(lo < hi){
+            int mid = lo + (hi - lo)/2;
+            int lower = 0;
+            for(int n : nums){
+                if(n <= mid) lower++;
+            }
+            if(lower > mid) hi = mid;
+            else lo = mid + 1;
+        }
+        return lo;
+    }
+}
 /*
 SOLUTION 0: 区域判断
 TIME: 0904 - 30min
