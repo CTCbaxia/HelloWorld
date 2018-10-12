@@ -9,7 +9,20 @@ RESULT: 100% - 0ms
 //最小值肯定在断层处
 //注意题目并没有说一定有 rotate（所有的某一个位置处，可能就是没有该颠倒位）
 */
-
+class Solution {
+    public int findMin(int[] nums) {
+        int lo = 0; 
+        int hi = nums.length - 1;
+        while(lo < hi && lo + 1 != hi){
+            int mid = lo + (hi - lo) / 2;
+            if(nums[lo] > nums[mid]) hi = mid;
+            else if(nums[hi] < nums[mid]) lo = mid;
+            else break;
+            
+        }
+        return Math.min(nums[lo],nums[hi]);
+    }
+}
 /*
 SOLUTION 0: 简化版本
 最后留下的就是 num[lo], nums[hi] 其中左边为最大值，右边为最小值。
