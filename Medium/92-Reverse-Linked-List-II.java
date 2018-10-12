@@ -7,7 +7,63 @@ TIME: 0715 - 5h
 RESULT: 96% - 2ms
 
 */
+//reference : 就是要在 x.next 赋值之前把他给托付出去
+class Solution {
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        int count = n - m;
+        ListNode result = new ListNode(0);
+        result.next = head;
+        ListNode pre = result;
+        for(int i = 0; i < m - 1; i++){
+            pre = pre.next;
+        }
+        ListNode start = pre.next;
+        ListNode then = start.next;
+        for(int i = 0; i < n - m; i++){
+            start.next = then.next;
+            then.next = pre.next;
+            pre.next = then;
+            then = start.next;
+        }
+        
+        return result.next;
+    }
 
+}
+
+class Solution {
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        int count = n - m;
+        ListNode result = new ListNode(0);
+        result.next = head;
+        ListNode res = result;
+        while(n >= 0){
+            res = res.next;
+            n--;
+        }
+        ListNode start = result;
+        while(m > 1){
+            start = start.next;
+            m--;
+        }
+        
+        ListNode node = start.next;
+        System.out.println(node.val);
+        
+        while(count >= 0){
+            ListNode nextHead = node.next;
+            node.next = res;
+            System.out.println(node.val);
+            res = node;
+            node = nextHead;
+            
+            count--;
+        }
+        start.next = res;
+        return result.next;
+    }
+
+}
 /*
 SOLUTION 1
 思路：
