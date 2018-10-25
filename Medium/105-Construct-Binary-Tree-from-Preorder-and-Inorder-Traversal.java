@@ -20,6 +20,30 @@ inorder 每次找到 sub 里面的 root，root 左边为 left 的分支，右边
 
 依次迭代。
 */
+
+class Solution {
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        int len = preorder.length; 
+        return build(preorder, 0, len - 1, inorder, 0, len - 1);
+    }
+    private TreeNode build(int[] preorder, int preL, int preR, int[] inorder, int inL, int inR){
+        if(preR - preL < 0) return null;
+        TreeNode root = new TreeNode(preorder[preL]);
+        int index = inL;
+        while(index <= inR && inorder[index] != preorder[preL]) index++;
+        
+        int len = index - inL;
+        root.left = build(preorder, preL + 1, preL + len, inorder, inL, index - 1);
+        root.right = build(preorder, preL + len + 1, preR, inorder, index + 1, inR);
+        return root;
+    }
+}
+
+
+
+
+
+//201808
 class Solution {
     public TreeNode buildTree(int[] preorder, int[] inorder) {
         int len = preorder.length;
