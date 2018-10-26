@@ -7,7 +7,8 @@ NOTES:
 
 */
 /*
-
+Time: O(n)
+Space: O(1)
 */
 class Solution {
     public boolean isStrobogrammatic(String num) {
