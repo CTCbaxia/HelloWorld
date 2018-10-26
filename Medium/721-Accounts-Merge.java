@@ -3,13 +3,69 @@ MEDIUM
 721. Accounts Merge
 https://leetcode.com/problems/accounts-merge/description/
 
-TIME: 0819 - 3h
+TIME: 1025 - 2h
 RESULT: 23% - 94ms
 NOTES: 
 1. sort sublist: Collections.sort(list.subList(0,3)); sublist 的排序会影响原 list 的结果
-2. 这种题肯定不能来一个 merge 一个，要建立总联系 / 找到顺序，再来 merge
-3. UNION FIND NEED TO BE LEARNED
+2. 这种题肯定不能来一个 merge 一个，如果两个list一开始看着没联系，但是后来有一个list能够把他们两连起来，这情况就会漏
+3. 所以要建立总联系 / 找到顺序，再来 merge
 */
+
+/*
+Union Find
+we need to merge something using some link -> union find
+
+n is the total input string
+Time: O(n^2) we may need to track the parent using n time for every input for worst case
+Space: O(n)
+RESULT: 42% - 83ms
+
+*/
+class Solution {
+    public List<List<String>> accountsMerge(List<List<String>> accounts) {
+        Map<String, String> parent = new HashMap<String, String>();//parent to help we find parent
+        Map<String, String> owner = new HashMap<String, String>();//for account to find owner
+        Map<String, Set<String>> union = new HashMap<String, Set<String>>();//<parent, all children>
+        
+        for(List<String> a : accounts){
+            owner.put(a.get(1), a.get(0));//remember the owner of each first email (potential parent)
+            for(int i = 1; i < a.size(); i++){
+                parent.put(a.get(i), a.get(i)); //这样如果之后有重复 key(email)，对应的parent就会是后一个 email 的 string(地址)
+                //所以key只和值内容有关？
+            }
+        }
+        //这是一个不断向下收纳合并的过程，如果有后面的list里面的email的parent指向了前面，那么前面的parent会在最后合并到后面list的parent里
+        for(List<String> a: accounts){
+            String p = find(parent, a.get(1));
+            for(int i = 2; i < a.size(); i++){
+                parent.put(find(parent, a.get(i)), p);
+            }
+        }
+        //union all with same parent
+        for(List<String> a : accounts){
+            String p = find(parent, a.get(1));
+            if(!union.containsKey(p)) union.put(p, new HashSet<String>());
+            for(int i = 1; i < a.size(); i++){
+                union.get(p).add(a.get(i));
+            }
+        }
+        //output the result with link to the name
+        List<List<String>> result = new ArrayList<List<String>>();
+        for(String e : union.keySet()){
+            List<String> emails = new ArrayList<String>(union.get(e));
+            Collections.sort(emails);
+            emails.add(0, owner.get(e));
+            result.add(emails);
+        }
+        return result;
+        
+    }
+    private String find(Map<String, String> p, String s){
+        //if the parent is itself, return itself, otherwise, find its final parent
+        return p.get(s) == s ? s : find(p, p.get(s));
+    }
+
+}
 
 /*
 SOLUTION: REFERENCE
@@ -24,8 +80,8 @@ THOUGHTS:
 */
 class Solution {
     public List<List<String>> accountsMerge(List<List<String>> accounts) {
-        Map<String, List<String>> emaillink = new HashMap<String, List<String>>();
-        Map<String, String> name = new HashMap<String, String>();
+        Map<String, List<String>> emaillink = new HashMap<String, List<String>>();//<email, neighbor email>
+        Map<String, String> name = new HashMap<String, String>();//<email, name>
         for(List<String> account: accounts){
             for(int i = 1; i < account.size(); i++){
                 String email = account.get(i);
