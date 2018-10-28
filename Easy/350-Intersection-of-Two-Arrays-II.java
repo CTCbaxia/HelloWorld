@@ -10,7 +10,10 @@ FOLLOW UP:
 1. What if the given array is already sorted? How would you optimize your algorithm?
 - two pointers
 2. What if nums1's size is small compared to nums2's size? Which algorithm is better?
-- sorted and two pointers
+- map the nums1 (less space)
+- Time: O(m + n)
+- Space: O(m)
+
 3. What if elements of nums2 are stored on disk, and the memory is limited such that you cannot load all elements into the memory at once?
 ???
 I think the goal of this question is to test whether the interview understands some of the data engineering techniques. From a data engineer's perspective, basically there are three ideas to solve the question:
@@ -24,12 +27,41 @@ I think the goal of this question is to test whether the interview understands s
 
 */
 /*
+two for loop
+1 loop to build the map for nums1
+2 loop to find the element in nums2 in the map and decrease the value of that key
+
 1.build map - counting keys
 2.find
 
-Time: O(n)
-Space: O(n)
+Time: O(m + n)
+Space: O(m | n)
 */
+class Solution {
+    public int[] intersect(int[] nums1, int[] nums2) {
+        if(nums1.length == 0 || nums2.length == 0) return new int[0];
+        
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();//key, count
+        List<Integer> list = new ArrayList<Integer>();
+        for(int i : nums1){
+            map.put(i, map.getOrDefault(i, 0) + 1);
+        }
+        for(int j : nums2){
+            if(map.containsKey(j) && map.get(j) > 0){
+                list.add(j);
+                map.put(j, map.get(j) - 1);
+            }
+        }
+        int[] result = new int[list.size()];
+        for(int i = 0; i < result.length; i++){
+            result[i] = list.get(i);
+        }
+        return result;
+    }
+}
+
+
+//more complicated one
 class Solution {
     public int[] intersect(int[] nums1, int[] nums2) {
         if(nums1.length == 0 || nums2.length == 0) return new int[0];
