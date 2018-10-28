@@ -17,14 +17,9 @@ FOLLOW UP:
 3. What if elements of nums2 are stored on disk, and the memory is limited such that you cannot load all elements into the memory at once?
 ???
 I think the goal of this question is to test whether the interview understands some of the data engineering techniques. From a data engineer's perspective, basically there are three ideas to solve the question:
-
 1. Store the two strings in distributed system(whether self designed or not), then using MapReduce technique to solve the problem;
-
 2. Processing the Strings by chunk, which fits the memory, then deal with each chunk of data at a time;
-
 3. Processing the Strings by streaming, then check.
-
-
 */
 /*
 two for loop
