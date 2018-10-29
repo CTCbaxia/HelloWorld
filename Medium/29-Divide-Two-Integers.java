@@ -13,6 +13,58 @@ NOTES:
 4. 这题需要注意 dividend 和 divisor 分别为 Integer.MIN_VALUE 的时候
 
 */
+class Solution {
+    public int divide(int dividend, int divisor) {
+        int n1 = 0;//divisor result
+        int n2 = 0;//remainder
+        int sign = 1;
+        
+        if(dividend > 0 && divisor < 0 || dividend < 0 && divisor > 0) sign = -1;
+        
+        dividend = Math.abs(dividend);
+        divisor = Math.abs(divisor);
+        
+        //corner case:
+        if(divisor == Integer.MIN_VALUE){//Math.abs(Integer.MIN_VALUE) = -2147483648
+            if(dividend == Integer.MIN_VALUE){
+                return 1;//remainder = 0
+            }else{
+                return 0;//remainder = divident
+            }
+        }
+        //another corner case:
+        if(dividend == Integer.MIN_VALUE){//Math.abs(Integer.MIN_VALUE) = -2147483648
+            if(divisor == 1) return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;//remainder = 0
+            else{
+                dividend -= divisor; //Integer.MIN_VALUE - 正整数 = 2147483648 - 正整数 
+                n1++;
+            }
+        }
+
+        //main solution
+        while(divisor <= dividend){
+            int tmp = divisor;
+            int count = 1;
+            while(tmp <= Integer.MAX_VALUE >> 1 && (tmp << 1) <= dividend){//make sure tmp will not overflow
+                tmp = tmp << 1;
+                count = count << 1;
+             }
+            dividend -= tmp;
+            n1 += count;
+        }
+        n2 = dividend;
+        
+        // System.out.println(n1); 
+        // System.out.println(n2); //remainder
+        return sign == 1 ? n1 : -n1;
+    }
+
+}
+
+
+
+
+
 /*
 SOLUTION REFERENCE: 位运算
 TIME: 0902 - 1h
