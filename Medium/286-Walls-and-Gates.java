@@ -5,6 +5,8 @@ MEDIUM
 TIME: 
 RESULT: 
 NOTES:
+1. BFS
+2. DFS
 https://leetcode.com/problems/walls-and-gates/discuss/72748/Benchmarks-of-DFS-and-BFS
 分析时间复杂度很好
 */
