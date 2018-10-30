@@ -9,6 +9,29 @@ THOUGHTS:
 1. 二分法 + climbing rising slope 适用于 找一个区段里面的更高值，而不是整个区段里面的最高值
 2. 这题的简单设置决定了 Sequential Search 也很适用
 */
+/*
+climbing rising slope
+
+Time: O(logn)
+Space: O(1)
+*/
+class Solution {
+    public int findPeakElement(int[] nums) {
+        int lo = 0;
+        int hi = nums.length - 1;
+        while(lo < hi){
+            int mid = lo + (hi - lo)/2;
+            int mid2 = mid + 1;
+            if(nums[mid] < nums[mid2]) lo = mid2;//mid + 1 hold the possible peak
+            else hi = mid;//hold the possible peak
+        }
+        return lo;
+    }
+}
+
+
+
+
 
 /*
 SOLUTION REFERENCE: 二分法 + climbing rising slope
