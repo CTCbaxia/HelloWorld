@@ -8,6 +8,8 @@ NOTES:
 */
 
 /* 
+这个题是要找第一个出现的 target，所以要用 high hold住 target，不断往前逼近找到的 target
+
 Time: O(logn)
 Space: O(1)
 */

@@ -8,6 +8,13 @@ RESULT: 95% - 8ms
 NOTES:
 1. discuss 里面有找偏移量的方法也不错
 */
+/*
+see which side, left or right, is in increasing order
+and see if the target falls into that side
+
+Time: O(logn)
+Space: O(1)
+*/
 class Solution {
     public int search(int[] nums, int target) {
         int lo = 0; 
@@ -16,7 +23,7 @@ class Solution {
             int mid = lo + (hi - lo)/2;
             if(nums[mid] == target) return mid;
             
-            if(nums[hi] > nums[mid]){//right good, increasing
+            if(nums[hi] > nums[mid]){//right good, increasing(先用右边，因为 lo 可能等于 mid)
                 if(target > nums[mid] && target <= nums[hi]) lo = mid + 1; //如果 target 落在 right 的范围（因为右边的大小有序）
                 else hi = mid - 1;
             }else{//left good, increasing
