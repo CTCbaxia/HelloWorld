@@ -11,6 +11,41 @@ NOTES:
 */
 
 /*
+Binary Search:
+in total in order, just need to find the corresponding position: matrix[mid / n][mid % n];
+
+Time: O(logmn)
+Space: O(1)
+*/
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        if(matrix.length == 0 || matrix[0].length == 0) return false;
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int lo = 0;
+        int hi = m * n - 1;
+        
+        while(lo <= hi){
+            int mid = lo + (hi - lo)/2;
+            int num = matrix[mid / n][mid % n];
+            if(num < target) lo = mid + 1;
+            else if(num > target) hi = mid - 1;
+            else return true;
+        }
+        return false;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+/*
 SOLUTION 0: 双向二分法
 TIME: 0902 - 30min
 RESULT: 100% - 5ms
