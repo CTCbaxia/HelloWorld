@@ -16,6 +16,14 @@ in total in order, just need to find the corresponding position: matrix[mid / n]
 
 Time: O(logmn)
 Space: O(1)
+
+Notes:
+while(lo <= hi)
+    lo = mid + 1
+    hi = mid - 1
+适合找到某个 target
+这个模式比较了所有可能的元素，如果有对应值就弹出
+没有就直到最后
 */
 class Solution {
     public boolean searchMatrix(int[][] matrix, int target) {
@@ -25,14 +33,14 @@ class Solution {
         int lo = 0;
         int hi = m * n - 1;
         
-        while(lo <= hi){
+        while(lo <= hi){//if while(lo < hi)
             int mid = lo + (hi - lo)/2;
             int num = matrix[mid / n][mid % n];
             if(num < target) lo = mid + 1;
             else if(num > target) hi = mid - 1;
             else return true;
         }
-        return false;
+        return false;//then here need to be return matrix[lo / n][lo % n] == target
     }
 }
 
