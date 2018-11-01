@@ -4,7 +4,6 @@ EASY
 
 RESULT: 98% - 3ms
 NOTES: 
-这种题肯定要遍历完才会知道最大的
 */
 /*
 Time: O(n)
