@@ -5,9 +5,40 @@ MEDIUM
 TIME: 1031
 RESULT: 
 NOTES:
-
+1. bound evaluation
+2. two stacks with leftID and starID
+3. DFS
 */
 /*
+Two Stacks for left ID and star ID
+数量可以简单的抵消，但是相对位置也重要，所以这里存位置，如果最后有剩余的（ 右边没有 * 就 false
+
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public boolean checkValidString(String s) {
+        Stack<Integer> leftID = new Stack<>();
+        Stack<Integer> starID = new Stack<>();
+        for(int i = 0; i < s.length(); i++){
+            char c = s.charAt(i);
+            if(c == '(') leftID.push(i);
+            else if(c == '*') starID.push(i);
+            else{
+                if(!leftID.isEmpty()) leftID.pop();
+                else if(!starID.isEmpty()) starID.pop();
+                else return false;
+            }
+        }
+        //important: deal with left and start 
+        while(!leftID.isEmpty() && !starID.isEmpty()){
+            if(leftID.pop() > starID.pop()) return false;
+        }
+        return leftID.isEmpty();
+    }
+}
+
+/*有点 tricky
 bound evaluation: how many possibility we got for every * 
 
 lo, hi are possible bounds for the number of (
