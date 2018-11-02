@@ -1,6 +1,7 @@
 /*
 MEDIUM
 658. Find K Closest Elements
+https://leetcode.com/problems/find-k-closest-elements/description/
 
 TIME: 1101
 RESULT: 
@@ -15,6 +16,9 @@ lo: arr[lo] <= x
 hi: arr[hi] >= x (by hi++)
 
 find the suitable value using two pointers and insert or add to the result list
+
+Time: O(logn + k)
+Space: O(1)
 */
 class Solution {
     public List<Integer> findClosestElements(int[] arr, int k, int x) {
