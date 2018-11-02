@@ -7,16 +7,6 @@ TIME: 10.06 - 3h
 RESULT: 100% - 2ms
 
 */
-/*
-SOLUTION REFERENCE:
-直接看所有的start time and end time。
-every time we want to start a meeting, we need to check if there is enough rooms
-How do we check that?
-we check if there is any meeting finished before we start a new meeting.
-If no, we need more room
-If so, we just use that room
-
-*/
 /**
  * Definition for an interval.
  * public class Interval {
@@ -26,6 +16,62 @@ If so, we just use that room
  *     Interval(int s, int e) { start = s; end = e; }
  * }
  */
+/*
+Array sort + PriorityQueue
+
+sort the array by starting time
+use pq to save all active meeting, sorted using the finishing time(pq.poll() get the smallest end time out)
+    1. if end before start, no need for more room and we update the finishing time for that room
+    2. else, add more room (put this meeting into pq)
+return pq.size()
+*/
+class Solution {
+    public int minMeetingRooms(Interval[] intervals) {
+        if(intervals.length == 0) return 0;
+        //sort the arrays using the start time
+        Arrays.sort(intervals, new Comparator<Interval>(){
+            public int compare(Interval i1, Interval i2){
+                return i1.start - i2.start;
+            }
+        });
+
+        //use a min heap to store all rooms needed and the end time of each meetings
+        PriorityQueue<Interval> pq = new PriorityQueue<Interval>(intervals.length, new Comparator<Interval>(){
+            public int compare(Interval i1, Interval i2){
+                return i1.end - i2.end;
+            }
+        });
+        pq.offer(intervals[0]);
+        for(int i = 1; i < intervals.length; i++){
+            Interval tmp = pq.poll();//get the one finishing earlist
+            
+            if(intervals[i].start >= tmp.end){//no need more room, update finishing time
+                tmp.end = intervals[i].end;
+            }else{//need more room
+                pq.offer(intervals[i]);
+            }
+            pq.offer(tmp);//continuingly using that room (either old meeting or new meeting)
+        }
+        
+        return pq.size();
+    }
+}
+/*
+Sort + Two Pointers:
+
+直接看所有的start time and end time。
+有 meeting end，那在之前肯定有meeting start。
+
+every time we want to start a meeting, we need to check if there is enough rooms
+How do we check that?
+we check if there is any meeting finished before we start a new meeting.
+If no, we need more room
+If so, we just use that room
+
+Time: O(nlogn)
+Space: O(n)
+*/
+
 class Solution {
     public int minMeetingRooms(Interval[] intervals) {
         if(intervals.length == 0) return 0;
@@ -50,6 +96,12 @@ class Solution {
     }
     
 }
+
+
+
+
+
+
 /*TLE
 思路：
 It is like we need to see how many overlap meetings at a time
