@@ -12,7 +12,8 @@ Happy Birthday!!! 20181104
 Trie:
 在外面搭构造函数
 
-
+Time: O(len)
+Space: O(26^len)
 */
 public class TrieNode{
     public TrieNode[] children;
