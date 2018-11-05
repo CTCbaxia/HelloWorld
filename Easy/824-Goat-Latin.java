@@ -9,7 +9,7 @@ NOTES:
 Split word and check:
 
 Time: O(n) len of S
-Space: O(N^2)
+Space: O(1)
 */
 class Solution {
     public String toGoatLatin(String S) {
