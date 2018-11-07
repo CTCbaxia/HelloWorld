@@ -5,7 +5,6 @@ MEDIUM
 TIME: 
 RESULT: 
 NOTES:
-
 */
 /*
 Build Graph + DFS + Color Paint

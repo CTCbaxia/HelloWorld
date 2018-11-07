@@ -15,37 +15,34 @@ RESULT: 100% - 2ms
  */
 class Solution {
     public void reorderList(ListNode head) {
-        if(head == null) return;
+        if(head == null || head.next == null) return;
         //find the middle point
         ListNode slow = head;
         ListNode fast = head;
-        while(fast.next != null && fast.next.next != null){
+        while(fast != null && fast.next != null){
             fast = fast.next.next;
             slow = slow.next;//odd:正中点; even:前半结尾
         }
         
-        //reverse the second half of the listnode
-        ListNode second = slow;
-        slow = slow.next;
+        //reverse the second half
         ListNode res = null;//the head of the reversed second half
-        ListNode newHead = slow;
-        while(slow != null){
-            newHead = slow.next;
-            slow.next = res;
-            res = slow;
-            slow = newHead;
+        ListNode node = slow.next;
+        slow.next = null;//separate first and second half
+        while(node != null){
+            ListNode newHead = node.next;
+            node.next = res;
+            res = node;
+            node = newHead;
         }
-        second.next = null;
-        second = res;
         
-        //make the final list
-        ListNode first = head;
-        while(second != null){
-            ListNode newFirst = first.next;
-            first.next = second;
-            second = second.next;
-            first.next.next = newFirst;  
-            first = newFirst;
+        //merge two list: head and res
+        node = head;
+        while(node != null && res != null){
+            ListNode then = node.next;
+            node.next = res;
+            res = res.next;
+            node.next.next = then;
+            node = then;
         }
         return;
     }
