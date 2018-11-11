@@ -8,8 +8,8 @@ NOTES:
 /*
 PriorityQueue: 
 
-Time: O(nlogn)
-Space: O(1)
+Time: O(logk)
+Space: O(k)
 */
 class KthLargest {
     public int k;
