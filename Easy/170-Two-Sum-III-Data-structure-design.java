@@ -6,11 +6,11 @@ RESULT:
 NOTES: 
 */
 /*
-Map
+Map : Quick Add
 
 if less find, more add --- care more about add complexity
 
-Time: O(n)
+Time: Add: O(1) | Find O(n)
 Space: O(n)
 */
 class TwoSum {
@@ -40,10 +40,41 @@ class TwoSum {
     }
 }
 /*
-HashSet
+HashSet: Quick Find
 
-if less find, more add --- care more about add complexity
+if less add, more find --- care more about find complexity
 
-Time: O(n)
+Time: add : O(n)  | find O(1)
 Space: O(n)
 */
+class TwoSum {
+    public Set<Integer> num;
+    public Set<Integer> sum;
+    /** Initialize your data structure here. */
+    public TwoSum() {
+        num = new HashSet<Integer>();
+        sum = new HashSet<Integer>();
+    }
+    
+    /** Add the number to an internal data structure.. */
+    public void add(int number) {
+        Iterator<Integer> it = num.iterator();
+        while(it.hasNext()){
+            int tmp = it.next();
+            sum.add(tmp + number);
+        }
+        num.add(number);
+    }
+    
+    /** Find if there exists any pair of numbers which sum is equal to the value. */
+    public boolean find(int value) {
+        return sum.contains(value);
+    }
+}
+
+/**
+ * Your TwoSum object will be instantiated and called as such:
+ * TwoSum obj = new TwoSum();
+ * obj.add(number);
+ * boolean param_2 = obj.find(value);
+ */
