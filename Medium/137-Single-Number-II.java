@@ -5,7 +5,8 @@ MEDIUM
 TIME: 
 RESULT: 
 NOTES:
-
+http://liadbiz.github.io/leetcode-single-number-problems-summary/
+https://leetcode.com/problems/single-number-ii/discuss/43295/Detailed-explanation-and-generalization-of-the-bitwise-operation-method-for-single-numbers
 */
 /*
 Bit Calculation
