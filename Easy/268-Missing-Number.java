@@ -41,9 +41,7 @@ Then see the missing number
 Time: O(n)
 Space: O(1)
 */
-/*
 
-*/
 class Solution {
     public int missingNumber(int[] nums) {
         int xor = nums.length;
