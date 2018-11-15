@@ -9,25 +9,44 @@ NOTES:
 这种题明显是找规律。应该是会利用规律迭代求解，所以不要想着一个一个算最后一层的。要想想怎么把所有 complete tree 确认出来，然后用（1<<n）一步步累计
 */
 /**
-SOLUTION REFERENCE: https://leetcode.com/problems/count-complete-tree-nodes/discuss/61958/Concise-Java-solutions-O(log(n)2)
+Find the full subtree and compute using 公式
+recursively count the not full subtree
 
-往左下数层数。
-如果一个 root 的 height(right subtree) 的值等于 height(root) - 1，说明 left subtree 是 complete tree，左边的值可以算出来，然后继续求右边的 subtree 的值
- */
+
+往左下数层数: 最需要往最左边走就知道这个 node 的height
+如果左右两边相等，就知道左边一定是full，算出左边 + root，继续算右边
+如果左右不相等，那么右边一定是full（按照他的高度），算出右边 + root，继续算左边
+
+算出左子树（root.left）的高度
+算出右子树（root.right）的高度
+如果相等，说明左边一定是full
+可以先算左子树
+左子树的count: (1 << left) - 1
+但是还要加上 root : (1 << left) - 1 + 1
+
+然后继续算右子树
+
+
+**位运算比加减运算第一个优先级，所以即使没有括号，也会先算加减
+
+Time: O((logn)^2)
+Space: O(1)
+*/
 //recursive
 class Solution {
     public int countNodes(TreeNode root) {
-        if(root == null) return 0;
-        int hleft = height(root.left);
-        int hright = height(root.right);
-        if( hleft == hright){//left subtree is complete tree
-            return (1 << hleft + 1) + countNodes(root.right);
-        }else{//right subtree(h-1) is complete tree
-            return (1 << hright + 1) + countNodes(root.left);
-        }
+          if(root == null) return 0;
+          int left = height(root.left);
+          int right = height(root.right);
+          if(left == right){
+              return (1 << left) + countNodes(root.right);
+          }else{
+              return (1 << right) + countNodes(root.left); 
+          }
     }
-    private int height(TreeNode root){
-        return root == null ? -1 : 1 + height(root.left);
+    private int height(TreeNode node){
+          if(node == null) return 0;
+          return height(node.left) + 1;
     }
 }
 
@@ -51,6 +70,58 @@ class Solution {
         return root == null ? -1 : 1 + height(root.left);
     }
 }
+
+
+
+/*
+沿着左边path 和 沿着右边path走，如果height相等，说明整个tree都是完整的
+否则，只算root一个，然后继续看root的左右字数个数
+
+Time: O((logn)^2)
+Space: O(1)
+
+ */
+class Solution {
+    public int countNodes(TreeNode root) {
+        if(root == null) return 0;
+        
+        int left = leftPath(root);
+        int right = rightPath(root);
+        if(left == right){
+            return (1 << left) - 1;
+        }else{
+            return 1 + countNodes(root.left) + countNodes(root.right);
+        }
+    }
+    private int leftPath(TreeNode node){
+        int height = 0;
+        while(node != null){
+            height++;
+            node = node.left;
+        }
+        return height;
+    }
+    private int rightPath(TreeNode node){
+        int height = 0;
+        while(node != null){
+            height++;
+            node = node.right;
+        }
+        return height;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /**
