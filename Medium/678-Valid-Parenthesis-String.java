@@ -5,38 +5,46 @@ MEDIUM
 TIME: 1031
 RESULT: 
 NOTES:
-1. bound evaluation
-2. two stacks with leftID and starID
+1. two stacks with leftID and starID
+2. bound evaluation (tricky)
 3. DFS
 */
+
 /*
 Two Stacks for left ID and star ID
-数量可以简单的抵消，但是相对位置也重要，所以这里存位置，如果最后有剩余的（ 右边没有 * 就 false
+数量可以简单的抵消，但是这里相对位置也重要
+所以要用 stack 存位置
+遇到 ) 就优先用 ( 抵消，没有 ( 就用 *
+如果最后有剩余的 ( 右边没有 * 就 false
 
 Time: O(n)
 Space: O(n)
 */
 class Solution {
     public boolean checkValidString(String s) {
-        Stack<Integer> leftID = new Stack<>();
-        Stack<Integer> starID = new Stack<>();
+        Stack<Integer> left = new Stack<>();
+        Stack<Integer> star = new Stack<>();
         for(int i = 0; i < s.length(); i++){
             char c = s.charAt(i);
-            if(c == '(') leftID.push(i);
-            else if(c == '*') starID.push(i);
+            if(c == '(') left.push(i);
+            else if(c == '*') star.push(i);
             else{
-                if(!leftID.isEmpty()) leftID.pop();
-                else if(!starID.isEmpty()) starID.pop();
+                if(!left.isEmpty()) left.pop();
+                else if(!star.isEmpty()) star.pop();
                 else return false;
             }
         }
-        //important: deal with left and start 
-        while(!leftID.isEmpty() && !starID.isEmpty()){
-            if(leftID.pop() > starID.pop()) return false;
+        while(!left.isEmpty()){
+            if(star.isEmpty()) return false;
+            if(star.pop() < left.pop()) return false;
         }
-        return leftID.isEmpty();
+        return true;
     }
 }
+
+
+
+
 
 /*有点 tricky
 bound evaluation: how many possibility we got for every * 
