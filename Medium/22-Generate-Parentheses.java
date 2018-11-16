@@ -6,8 +6,40 @@ https://leetcode.com/problems/generate-parentheses/description/
 TIME: 1008 - 10min
 RESULT: 100% - 1ms
 NOTES:
-1. 记得要把 stack 的内容补回来，保持其他情况的路径不会受影响
+1. StringBuilder 记得要把 stack 的内容补回来(backtracking)，保持其他情况的路径不会受影响
 */
+
+/*
+DFS
+left: num ( need to be used
+right: num ) need to be used
+count: how many ( still not matched (can use right)
+
+Time: O(2n * #output) it takes 2n to build every result
+Space: O(1)
+*/
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> result = new ArrayList<>();
+        int left = n, right = n, count = 0;
+        dfs(left, right, 0, "", result);
+        return result;
+    }
+    private void dfs(int left, int right, int count, String s, List<String> result){
+        if(left == 0 && right == 0) result.add(s);
+        
+        if(left > 0) dfs(left - 1, right, count + 1, s + "(", result);
+        if(count > 0 && right > 0) dfs(left, right - 1, count - 1, s + ")", result);
+        return;
+    }
+        
+}
+
+
+
+
+
+
 //--------2 ROUND FOR MS------------------------------------
 class Solution {
     public List<String> generateParenthesis(int n) {
