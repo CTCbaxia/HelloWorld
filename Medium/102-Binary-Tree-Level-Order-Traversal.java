@@ -13,6 +13,44 @@ NOTE:
 1. 对于 tree 来说，不要把它看成一个数组类的东西，要看成一个 ListNode 类的东西
 
 */
+//-----3 ROUND FOR FB---------------------------------------------------------------------------------
+/*
+Queue + BFS
+
+Time: O(n)
+Space: O(n)
+ */
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        Queue<TreeNode> q = new LinkedList<TreeNode>();
+        List<List<Integer>> result = new ArrayList<>();
+        
+        if(root != null) q.offer(root);
+        
+        while(!q.isEmpty()){
+            Queue<TreeNode> newQ = new LinkedList<TreeNode>();
+            List<Integer> res = new ArrayList<>();
+            while(!q.isEmpty()){
+                TreeNode node = q.poll();
+                res.add(node.val);
+                if(node.left != null) newQ.offer(node.left);
+                if(node.right != null) newQ.offer(node.right);
+            }
+            result.add(res);
+            q = newQ;
+        }
+        return result;
+    }
+}
+
+
+
+
+
+
+
+
+
 //-----2 ROUND FOR MS-----------------------------------------------------------------
 //BFS
 class Solution {
