@@ -14,11 +14,10 @@ Recursive:
 
 Time: O(n)
 Space: O(1)
-RESULT: 65% - 8ms
 */
 class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if(root == null || root == p || root == q) return root;
+        if(root == null || root == p || root == q) return root;//return once we find a target
         TreeNode left = lowestCommonAncestor(root.left, p, q);
         TreeNode right = lowestCommonAncestor(root.right, p, q);
         if(left != null && right != null) return root; //if left and right both have one, then root
@@ -28,6 +27,67 @@ class Solution {
     }
 
 }
+//test case
+
+        _______3______
+       /              \
+    ___5__          ___1__
+   /      \        /      \
+   6      _2       0       8
+         /  \
+         7   4
+
+6 8
+root: 5
+left: 6
+right: null
+return: 6
+
+root: 1
+left: null
+right: 8
+return: 8
+
+root: 3
+left: 6
+right: 8
+return: 3
+
+
+/*
+Recursive + Find
+1. 看是不是有一个等于root，等于的话直接返回root
+2. 看是不是都在同一个 subtree 中，
+    在的话 recursively check subtree； 
+    不在的话返回 root
+3. find(node, p, q)找这个node是否存在 p 或 q
+ */
+
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root == null) return root;
+        //check for the root
+        if(root.val == p.val) return p;
+        if(root.val == q.val) return q;
+
+        //check for left and right
+        boolean left = find(root.left, p, q);
+        boolean right = find(root.right, p, q);
+        
+        if(left && right) return root;
+        else if(left) return lowestCommonAncestor(root.left, p, q);
+        else if(right) return lowestCommonAncestor(root.right, p, q);
+        else return root;
+    }
+    private boolean find(TreeNode node, TreeNode p, TreeNode q){
+        if(node == null) return false;
+        if(node.val == p.val || node.val == q.val) return true;
+        return find(node.left, p, q) || find(node.right, p, q);
+    }
+}
+
+
+
 
 /*
 DFS:
@@ -73,3 +133,5 @@ class Solution {
         return flag;
     }
 }
+
+
