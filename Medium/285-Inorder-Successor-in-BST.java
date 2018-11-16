@@ -9,7 +9,7 @@ NOTES:
 /*
 Two conditions:
 1. target has no right child --- should be its larger parent
-2. target has right child --- should be its right smallest children (leftmost)
+2. target has right child --- should be its right child's leftmost child
 
 Keep the result updated while traverse the tree
 
@@ -21,27 +21,20 @@ Space: O(1)
  */
 class Solution {
     public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
-        if(root == null) return null;
-        
         TreeNode res = null;
-        TreeNode node = root;
-        //find the target and keep track of pending result
-        while(node != null && node.val != p.val){
-            if(p.val < node.val){
-                res = node;//update the parent that is larger than p (make closer)
-                node = node.left;
-            }else if(p.val > node.val){
-                node = node.right;
-            } 
-        }
         
-        //if node (target) has right child
-        if(node.right != null){
-            node = node.right;
-            while(node != null){
-                res = node;
-                node = node.left;
+        //find the target
+        while(root != null && root.val !=  p.val){
+            if(root.val < p.val) root = root.right;
+            else if(root.val > p.val){
+                res = root;//keep track of parent of the pending target
+                root = root.left;
             }
+        }
+        root = root.right;
+        while(root != null){
+            res = root;
+            root = root.left;
         }
         return res;
     }
