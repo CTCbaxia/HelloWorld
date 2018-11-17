@@ -8,6 +8,7 @@ NOTES:
 
 */
 /*
+BST 的 preorder traversal 可以直接帮助区分左右子树({less}, root, {more})
 encode: 
 	preorder traversal the tree
 
@@ -38,7 +39,7 @@ public class Codec {
     }
     // Decodes your encoded data to tree.
     public TreeNode deserialize(String data) {
-        if(data == "") return null;
+        if(data == "") return null;//if data = "", str 会有一个空element，到nums会出错
         
         String[] str = data.split(" ");
         int[] nums = new int[str.length];
@@ -61,6 +62,26 @@ public class Codec {
         return node;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 encode the tree using () for every subtree
