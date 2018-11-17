@@ -10,10 +10,89 @@ NOTES:
 2. 花花酱视频： https://www.youtube.com/watch?v=Jq0Wk9xeQ0U
 
 METHODS:
-1. Recursive + LIMIT
+1. Range Check + Recursive
 2. Inorder Traversal
 
 */
+/*
+Range check:
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        return helper(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+    private boolean helper(TreeNode node, long min, long max){
+        if(node == null) return true;
+        if(node.val > min && node.val < max){
+            return helper(node.left, min, node.val) && helper(node.right, node.val, max);
+        }else{
+            return false;
+        }
+    }
+}
+
+/*
+Inorder Traverse: DFS
+pre < cur
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    TreeNode pre = null;//save pre node
+    public boolean isValidBST(TreeNode root) {
+        return isValid(root);
+    }
+    private boolean isValid(TreeNode node){
+        if(node == null) return true;
+        //left
+        if(!isValid(node.left)) return false;
+        
+        //node
+        
+        if(pre != null && pre.val >= node.val) return false;
+        pre = node;
+        
+        //right
+        if(!isValid(node.right)) return false;
+        return true;
+    }
+
+}
+
+
+/*
+Inorder Traverse:
+pre < cur
+
+Time: O(n)
+Space: O(logn)
+*/
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        if(root == null) return true;
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode pre = null;
+        
+        while(root != null || !stack.isEmpty()){
+            while(root != null){
+                stack.push(root);
+                root = root.left;
+            }
+            TreeNode node = stack.pop();
+            if(pre != null && pre.val >= node.val) return false;
+            pre = node;
+            root = node.right;
+        }
+        return true;
+    }
+
+}
+
+
 
 
 
@@ -82,7 +161,7 @@ SOLUTION REFERENCE 0: Recursive
 TIME: 0826 - 3h
 RESULT: 43% - 1ms
 TC: O(n)
-SC: O(h)
+SC: O(1)
 
 THOUGHTS:
 直接找到每个 root 的取值范围，DFS 层层传递。
