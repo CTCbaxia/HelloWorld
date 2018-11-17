@@ -11,6 +11,59 @@ NOTES:
 	- Stack inorder traversal: 一直左走走到头
 */
 /*
+DFS
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList<Integer>();
+        dfs(root, result);
+        return result;
+    }
+    private void dfs(TreeNode node, List<Integer> result){
+        if(node == null) return;
+        
+        dfs(node.left, result);
+        result.add(node.val);
+        dfs(node.right, result);
+        return;
+    }
+}
+/*
+Stack
+
+Time: O(n)
+Space: O(logn)
+*/
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        List<Integer> result = new ArrayList<Integer>();
+        while(!stack.isEmpty() || root != null){//root for initialization
+            while(root != null){
+                stack.push(root);
+                root = root.left;
+            }
+            TreeNode node = stack.pop();
+            result.add(node.val);
+            root = node.right;
+        }
+        return result;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+/*
 SOLUTION REFERENCE 0: 辅助函数遍历
 TIME: 0826 - 10min
 RESULT: 100% - 0ms
