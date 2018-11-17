@@ -59,7 +59,7 @@ public class Codec {
         q.offer(root);
         int i = 1;
         while(i < nodes.length){
-            TreeNode parent = q.poll();
+            TreeNode parent = q.poll();//poll out a parent from queue to accept children(help i move)
             if(!nodes[i].equals("#")){
                 TreeNode left = new TreeNode(Integer.parseInt(nodes[i]));
                 q.offer(left);
