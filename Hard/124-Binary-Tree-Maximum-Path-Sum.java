@@ -7,8 +7,9 @@ RESULT: 41% - 2ms
 NOTES: tree 的题一定要简洁
 */
 /*
-single path: path only from root to one of the leaf(if > 0)
-result: node.val + left + right (if > 0)
+用 SinglePath 来计算从 node 到某个 child 的最大值
+SinglePath return: node.val + 单独一条大于 0 的最大 path 值(node.val + path(if > 0))
+maxPathSum return: node.val + 大于 0 的 path 值 (node.val + left + right (if > 0))
 
 Time: O(n)
 Space: O(1)
@@ -16,17 +17,18 @@ Space: O(1)
 class Solution {
     int result = Integer.MIN_VALUE;
     public int maxPathSum(TreeNode root) {
+        if(root == null) return 0;
         singlePath(root);
         return result;
     }
-    private int singlePath(TreeNode node, int){
-        //get the map of <node, largest single path sum with node itself>
+    private int singlePath(TreeNode node){
+        //get the largest single path sum with node itself
+        //update result using values computed here
         if(node == null) return 0;
         int left = singlePath(node.left);
         int right = singlePath(node.right);
-        int res = node.val + Math.max(0, Math.max(left, right));
         result = Math.max(result, node.val + Math.max(0, left) + Math.max(0, right));
-        return res;
+        return node.val + Math.max(0, Math.max(left, right));
     }
 }
 
