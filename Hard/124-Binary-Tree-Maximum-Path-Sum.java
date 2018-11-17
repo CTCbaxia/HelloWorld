@@ -78,3 +78,37 @@ class Solution {
         return res;
     }
 }
+
+
+
+
+//注意这里不能直接 return Math.max(res, Math.max(maxPathSum(root.left),maxPathSum(root.left)))
+//因为即使 node.left 不存在，也会返回0，这样可能甚至比存在的node.val更大
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int maxPathSum(TreeNode root) {
+        if(root == null) return 0;
+        int res = root.val;
+        int left = findPath(root.left);
+        int right = findPath(root.right);
+        if(left > 0) res+= left;
+        if(right > 0) res+= right;
+        if(root.left != null) res = Math.max(res,maxPathSum(root.left));
+        if(root.right != null) res = Math.max(res,maxPathSum(root.right));
+        return res;
+    }
+    public int findPath(TreeNode node){//find max sum from the node to any child node
+        if(node == null) return 0;
+        int left = findPath(node.left);
+        int right = findPath(node.right);
+        return node.val + Math.max(0, Math.max(left, right));
+    }
+}
