@@ -8,8 +8,13 @@ NOTES:
 
 */
 /*
-Prefix Sum
+DFS go through every path + Prefix Sum
 一样是思路：subarray sum = nums[j] - nums[i]
+Map: <presum, number of way to get that presum>
+only keep cumulative sum in one path
+so need to remove once finish traverse that path (backtracking)
+
+
 
 Time: O(n)
 Space: O(logn)
@@ -17,7 +22,7 @@ Space: O(logn)
 class Solution {
     public int pathSum(TreeNode root, int sum) {
         Map<Integer, Integer> preSum = new HashMap<Integer, Integer>();
-        preSum.put(0, 1);// sum 为0有默认的一种解法，什么都不选
+        preSum.put(0, 1);///fake sum, 如果选择 path 目前为止所有的值，有一种选法
         return pathHelper(root, 0, preSum, sum);
     }
     private int pathHelper(TreeNode node, int curSum, Map<Integer, Integer> preSum, int target){
@@ -26,12 +31,12 @@ class Solution {
         curSum += node.val;//current sum for this sigle path
         int res = preSum.getOrDefault(curSum - target, 0);//curSum - preSum = target (中间部分就是答案)
         preSum.put(curSum, preSum.getOrDefault(curSum, 0) + 1);//这条 path 里多少能达到 curSum 的值
-        res += pathHelper(node.left, curSum, preSum, target) + pathHelper(node.right, curSum, preSum, target);
+        res += pathHelper(node.left, curSum, preSum, target);
+        res += pathHelper(node.right, curSum, preSum, target);
         
-        preSum.put(curSum, preSum.getOrDefault(curSum, 0) - 1);//backtrack 的时候移走这条track的sum，以免影响后面的另一条track
+        preSum.put(curSum, preSum.get(curSum) - 1);//backtrack 的时候移走这条track的sum，以免影响后面的另一条track
         return res;
     }
-
 }
 
 
