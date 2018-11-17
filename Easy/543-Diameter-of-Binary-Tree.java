@@ -7,38 +7,28 @@ TIME: 0819 - 30min
 RESULT: 25% - 7ms
 NOTES:
 1.不一定经过 root
-
-THOUGHTS:
-把每一个点都当做转折点, 在遍历每个点的时候都计算以他为 root 的最大枝节长度，并求以他为转折点的最长路径
-
-Time Complexity: O(n)
-Space Complexity: O(h) - 树的遍历要压栈，h 是树的最大高度
-
 */
+
 /*
+SinglePath Helper
+计算 SinglePath 返回值的同时，update result
+SinglePath: 只选其中一个最大值
+result: 选left + right 最大值
 
+Time: O(n)
+Space: O(1)
 */
-
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
- * }
- */
 class Solution {
-    int result = 0;
+    int res = 0;
     public int diameterOfBinaryTree(TreeNode root) {
-        diaHelper(root);
-        return result;
+        singlePath(root);
+        return res;
     }
-    private int diaHelper(TreeNode root){
-        if(root == null) return -1;
-        int left = diaHelper(root.left);
-        int right = diaHelper(root.right);
-        result = Math.max(result, left + right + 2);
-        return Math.max(left + 1, right + 1);
+    private int singlePath(TreeNode node){
+        if(node == null) return 0;
+        int left = (node.left != null) ? 1 + singlePath(node.left) : 0;
+        int right = (node.right != null) ? 1 + singlePath(node.right) : 0;
+        res = Math.max(res, left + right);
+        return Math.max(left, right);
     }
 }
