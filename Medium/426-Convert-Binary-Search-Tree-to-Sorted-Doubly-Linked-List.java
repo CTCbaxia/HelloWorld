@@ -6,10 +6,11 @@ MEDIUM
 TIME: 
 RESULT: 
 NOTES:
-Inorder Traversal
+
 */
+
 /*
-Helper Function DFS
+Helper Function DFS + Inorder Traversal
 3ms - 92%
 Time: O(n)
 Space: O(1)
@@ -36,6 +37,7 @@ class Solution {
         node.left = pre;
         pre = node;
         inorder(node.right);
+        return;
     }
 }
 /*
@@ -52,32 +54,41 @@ class Node {
     }
 };
 */
+
+
+
+
 /*
-Helper Function DFS
-3ms - 92%
+Inorder traversal + Stack
+
 Time: O(n)
-Space: O(1)
+Space: O(n)
 */
 class Solution {
     public Node treeToDoublyList(Node root) {
         if(root == null) return root;
-        Stack<Node> stack = new Stack<Node>();
-        Node head = new Node(0);
+        Stack<Node> stack = new Stack<>();
+        Node head = new Node(0, null, null);
         Node pre = head;
-        while(root != null || !stack.isEmpty()){
+        
+        while(!stack.isEmpty() || root != null){
             while(root != null){
                 stack.push(root);
                 root = root.left;
             }
+            Node node = stack.pop();
+            //link with pre
+            pre.right = node;
+            node.left = pre;
+            pre = node;
             
-            Node cur = stack.pop();
-            pre.right = cur;
-            cur.left = pre;
-            pre = cur;
-            root = cur.right;
+            root = node.right;
         }
+        //pre is the last node
         pre.right = head.right;
         head.right.left = pre;
+        
         return head.right;
     }
 }
+
