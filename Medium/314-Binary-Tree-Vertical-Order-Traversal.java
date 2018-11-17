@@ -6,6 +6,69 @@ NOTES:
 1. 第一反应是参考值。你需要记录每个节点的位置。而每个节点的位置，可以由 parent position 计算出来 (l+1 or l-1)
 2. BFS 如果只是想按层遍历一边 tree，是没必要两层 while 的。找一个 queue 从头存到尾就好了，也是按层存，只是你不知道那个哪里分层而已
 */
+/*
+Map
+Map<level, List of node values>
+traverse the tree by BFS
+keep updating min and max level
+
+for(min to max) add list to result
+
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public class NodeLevel{
+        int level;
+        TreeNode node;
+        public NodeLevel(TreeNode _node, int _level){
+            node = _node;
+            level = _level;
+        }
+    }
+    public List<List<Integer>> verticalOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        Queue<NodeLevel> q = new LinkedList<>();
+        
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+        if(root != null) q.offer(new NodeLevel(root, 0));
+        
+        while(!q.isEmpty()){
+            NodeLevel nl = q.poll();
+            //add node to the map
+            TreeNode node = nl.node;
+            int l = nl.level;
+            
+            //update map
+            if(!map.containsKey(l)) map.put(l, new ArrayList<Integer>());
+            map.get(l).add(node.val);
+            
+            //update min max
+            min = Math.min(min, l);
+            max = Math.max(max, l);
+            
+            if(node.left != null) q.offer(new NodeLevel(node.left, l - 1));
+            if(node.right != null) q.offer(new NodeLevel(node.right, l + 1));
+        }
+        for(int i = min; i <= max; i++){
+            result.add(map.get(i));
+        }
+        return result;
+    }
+    
+}
+
+
+
+
+
+
+
+
+
+
 
 /*
 BFS 遍历 tree
