@@ -21,6 +21,44 @@ inorder 每次找到 sub 里面的 root，root 左边为 left 的分支，右边
 依次迭代。
 */
 
+/*
+4 Pointers: find the left and right bound
+
+Time: O(n) 
+Space: O(1)
+*/
+class Solution {
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        int len = preorder.length;
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();//map for better search root
+        for(int i = 0; i < len; i++){
+            map.put(inorder[i], i);
+        }
+        
+        return helper(preorder, inorder, 0, len - 1, 0, len - 1, map);
+    }
+    private TreeNode helper(int[] preorder, int[] inorder, int pl, int pr, int il, int ir, Map<Integer, Integer> map){
+        
+        if(pr - pl < 0) return null;
+        int rootval = preorder[pl];
+        TreeNode root = new TreeNode(rootval);
+        if(pr - pl == 0) return root;
+        
+        int i = map.get(rootval);//find the root in inorder map
+        int leftlen = i - il;//left subtree lenghth
+        root.left = helper(preorder, inorder, pl + 1, pl + leftlen, il, i - 1, map);
+        root.right = helper(preorder, inorder, pl + leftlen + 1, pr, i + 1, ir, map);
+        return root;
+    }
+}
+
+
+
+
+
+
+
+
 class Solution {
     public TreeNode buildTree(int[] preorder, int[] inorder) {
         int len = preorder.length; 
