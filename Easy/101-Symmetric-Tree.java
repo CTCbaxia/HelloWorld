@@ -9,6 +9,29 @@ NOTES:
 
 */
 /*
+Recursive
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        if(root == null) return true;
+        return compare(root.left, root.right);
+    }
+    private boolean compare(TreeNode n1, TreeNode n2){
+        if(n1 == null) return n2 == null;
+        if(n2 == null) return n1 == null;
+        if(n1.val != n2.val) return false;
+        return compare(n1.left, n2.right) && compare(n1.right, n2.left);
+    }
+}
+
+
+
+
+
+
+/*
 SOLUTION 0: Recursive( recursive 一般需要一个辅助函数？)
 TIME: 0828 - 1h
 RESULT: 20% - 11ms
