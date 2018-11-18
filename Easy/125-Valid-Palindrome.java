@@ -7,6 +7,33 @@ TIME: 0903 - 30min
 RESULT: 79% - 5ms
 
 */
+/*
+Two pointers
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public boolean isPalindrome(String s) {
+        int lo = 0, hi = s.length() - 1;
+        while(lo < hi){
+            while(lo < hi && !Character.isLetterOrDigit(s.charAt(lo))){
+                lo++;
+            }
+            while(hi > lo && !Character.isLetterOrDigit(s.charAt(hi))){
+                hi--;
+            }      
+            if(Character.toLowerCase(s.charAt(lo++)) != Character.toLowerCase(s.charAt(hi--))){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+
+
+
 class Solution {
     public boolean isPalindrome(String s) {
         int lo = 0;
