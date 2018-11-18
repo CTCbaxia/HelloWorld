@@ -18,7 +18,7 @@ METHODS:
 Range check:
 
 Time: O(n)
-Space: O(1)
+Space: O(d)
 */
 class Solution {
     public boolean isValidBST(TreeNode root) {
@@ -39,7 +39,7 @@ Inorder Traverse: DFS
 pre < cur
 
 Time: O(n)
-Space: O(1)
+Space: O(d)
 */
 class Solution {
     TreeNode pre = null;//save pre node
