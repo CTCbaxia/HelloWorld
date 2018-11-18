@@ -10,6 +10,49 @@ NOTES:
 2. 注意 DFS + recursive 的特质，他会一直走到头。比如向左，会一直走到左边的头部，这样就很难从左边开始顺序 flatten 链接上去
 3. 这种题要学会利用题目的这个函数，用 recursive 来带。
 */
+/*
+Preorder
+Flatten left
+Flatten right
+link left and right
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public void flatten(TreeNode root) {
+        if(root == null) return;
+        flatten(root.left);
+        flatten(root.right);
+        TreeNode left = root.left;
+        TreeNode right = root.right;
+        root.left = null;
+        
+        if(left != null){
+            root.right = left;
+            while(left.right != null){
+                left = left.right;
+            }
+            left.right = right;
+        }else{
+            root.right = right;
+        }
+        return;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 SOLUTION REFERENCE: post order 的倒着遍历法，很巧妙，但是对于我不 intuitive
