@@ -7,6 +7,7 @@ RESULT:
 NOTES:
 
 */
+
 /*
 One Traverse: (返回的 depth 里面多存一个值，减少一遍 traverse)
 Get the right and left depth, at the same time, return whether it is balanced
@@ -14,6 +15,27 @@ Get the right and left depth, at the same time, return whether it is balanced
 Time: O(n)
 Space: O(d)
 */
+//depth(node)
+class Solution {
+    public boolean isBalanced(TreeNode root) {
+        return depth(root) == -1 ?  false : true;
+    }
+    private int depth(TreeNode node){//返回的是每个node作为root，他的subtree有多深
+        if(node == null) return 0;
+        
+        int left = depth(node.left);
+        if(left == -1) return -1;
+        
+        int right = depth(node.right);
+        if(right == -1) return -1;
+        
+        if(Math.abs(left - right) > 1) return -1;
+        else return 1 + Math.max(left, right);
+    }
+}
+
+
+//depth(node, len)
 class Solution {
     public boolean isBalanced(TreeNode root) {
         return depth(root, 0) == -1 ? false : true;
@@ -55,11 +77,12 @@ class Solution {
         int right = depth(root.right, 0);
         return isBalanced(root.left) && isBalanced(root.right) && Math.abs(left - right) <= 1;
     }
-    private int depth(TreeNode node, int len){
+    private int depth(TreeNode node, int len){//返回的是每个node相对于递归调用的起始点，有多深
         if(node == null) return len;//
         else return Math.max(depth(node.left, len + 1), depth(node.right, len + 1));
     }
 }
+
 /*
 求深度-2：每个 node 不知道自己的深度（但是外面有人计算）
 返回深度int， 
@@ -72,7 +95,7 @@ class Solution {
         if(Math.abs(depth(root.left) - depth(root.right)) > 1) return false;
         return isBalanced(root.left) && isBalanced(root.right);
     }
-    private int depth(TreeNode node){
+    private int depth(TreeNode node){//返回的是每个node作为root，他的subtree有多深
         if(node == null) return 0;
         int left = depth(node.left) + 1;
         int right = depth(node.right) + 1;

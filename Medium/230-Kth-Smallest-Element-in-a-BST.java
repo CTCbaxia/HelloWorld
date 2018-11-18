@@ -13,12 +13,12 @@ NOTES:
 */
 
 
-    
+
 /*
 Binary Search
 
 Time: O(n)
-Space: O(1)
+Space: O(logn)
 */
 class Solution {
     public int kthSmallest(TreeNode root, int k) {
