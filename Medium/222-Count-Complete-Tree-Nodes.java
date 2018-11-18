@@ -8,6 +8,58 @@ RESULT: 65% - 72ms
 NOTES: 
 这种题明显是找规律。应该是会利用规律迭代求解，所以不要想着一个一个算最后一层的。要想想怎么把所有 complete tree 确认出来，然后用（1<<n）一步步累计
 */
+
+/*
+算 Depth + Find the full subtree and compute using 公式
+recursively count the not full subtree
+
+Time: O(logn^2) 
+Since I halve the tree in every recursive step, I have O(log(n)) steps. Finding a height costs O(log(n)). So overall O(log(n)^2).
+T(n) = T(n/2) + O(logn)? --> O(logn)
+
+Space: O(1)
+*/
+class Solution {
+    public int countNodes(TreeNode root){
+        if(root == null) return 0;
+        int left = depth(root.left);
+        int right = depth(root.right);
+        if(Math.abs(left - right) == 0){
+            //left is full
+            return (1 << left) + countNodes(root.right);
+        }else{
+            //right is full
+            return (1 << right) + countNodes(root.left);
+        }
+    }
+    private int depth(TreeNode node){//null
+        if(node == null) return 0;
+        return 1 + depth(node.left);
+    }        
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
 Find the full subtree and compute using 公式
 recursively count the not full subtree
@@ -49,6 +101,9 @@ class Solution {
           return height(node.left) + 1;
     }
 }
+
+
+
 
 //iterative
 class Solution {
