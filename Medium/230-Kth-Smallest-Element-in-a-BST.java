@@ -9,7 +9,57 @@ NOTES:
 1. Inorder Traversal 的两种典型方法
 	- List | Recursive 辅助函数 ：因为 list 的传递性，每次递归都能知道遍历到哪个节点了
 	- Stack：一个主函数直接顺序得到遍历结果
+
 */
+
+
+    
+/*
+Binary Search
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public int kthSmallest(TreeNode root, int k) {
+        //if(root == null) return 0;
+        int leftnum = countNodes(root.left);
+        if(k <= leftnum) return kthSmallest(root.left, k);
+        else if(k == leftnum + 1) return root.val;
+        else return kthSmallest(root.right, k - leftnum - 1);// leftnum > k - 1
+    }
+    private int countNodes(TreeNode node){
+        if(node == null) return 0;
+        return 1 + countNodes(node.left) + countNodes(node.right);
+    }
+}
+
+
+/*
+Inorder traverse
+Stack
+
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public int kthSmallest(TreeNode root, int k) {
+        if(root == null) return 0;
+        Stack<TreeNode> stack = new Stack<>();
+        while(!stack.isEmpty() || root != null){
+            while(root != null){
+                stack.push(root);
+                root = root.left;
+            }
+            TreeNode node = stack.pop();
+            k--;
+            if(k == 0) return node.val;
+            root = node.right;
+        }
+        return 0;
+    }
+}
+
 
 
 /*
