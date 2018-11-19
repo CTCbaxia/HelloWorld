@@ -38,7 +38,7 @@ Frequency + PriorityQueue
 2. 放进 pq
 3. 从 pq 弹出还剩执行次数最多的 task，放入 q 中（不超过 n+1) 
 
-Time: O(n)
+Time: O(num) + O(klogk) k = kinds of task
 Space: O(26)
 */
 class Solution {
