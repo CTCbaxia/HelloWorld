@@ -16,6 +16,48 @@ Sliding Window
 Time: O(n)
 Space: O(128)
 */
+//map
+class Solution {
+    public String minWindow(String s, String t) {
+        Map<Character, Integer> map = new HashMap<>();
+        for(char c : t.toCharArray()){
+            map.put(c, map.getOrDefault(c, 0) + 1);
+        }
+        int start = 0, end = 0, len = Integer.MAX_VALUE;
+        int count = map.size();
+        String res = "";
+        while(end < s.length()){
+            char c = s.charAt(end);
+            if(map.containsKey(c)){
+                map.put(c, map.get(c) - 1);
+                if(map.get(c) == 0) count--;
+            }
+            end++;
+            while(count == 0){
+                char c2 = s.charAt(start);
+                if(map.containsKey(c2)){
+                    map.put(c2, map.get(c2) + 1);
+                    if(map.get(c2) > 0) count++;
+                }
+                if(end - start < len){
+                    len = end - start;
+                    res = s.substring(start, end);
+                }
+                start++;
+            }
+        }
+        return res;
+    }
+}
+
+
+
+
+
+
+
+
+//array
 class Solution {
     public String minWindow(String s, String t) {
         int[] words = new int[128];

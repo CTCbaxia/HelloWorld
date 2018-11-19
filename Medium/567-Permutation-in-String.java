@@ -8,12 +8,45 @@ NOTES:
 
 */
 /*
-Sliding Window (two pointers)
+Sliding Window (two pointers) + map
 window 里面只装没有问题的 substring（如果有匹配多了的，也把多的那部分去掉
 
 Time: O(n)
 Space: O(26)
 */
+class Solution {
+    public boolean checkInclusion(String s1, String s2) {
+        Map<Character, Integer> map = new HashMap<>();
+        for(char c : s1.toCharArray()){
+            map.put(c, map.getOrDefault(c, 0) + 1);
+        }
+        
+        int count = map.size(), start = 0, end = 0;
+        char[] ch2 = s2.toCharArray();
+        while(end < ch2.length){
+            char c = ch2[end];
+            if(map.containsKey(c)){
+                map.put(c, map.get(c) - 1);
+                if(map.get(c) == 0) count--;
+            }
+            end++;
+            while(count == 0){
+                char c2 = ch2[start];
+                if(map.containsKey(c2)){
+                    map.put(c2, map.get(c2) + 1);
+                    if(map.get(c2) > 0) count++;
+                }
+                if(end - start == s1.length()) return true;
+                start++;
+            }
+        }
+        return false;
+    }
+}
+
+
+
+//array
 class Solution {
     public boolean checkInclusion(String s1, String s2) {
         int[] words = new int[26];

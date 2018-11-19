@@ -2,6 +2,44 @@
 8. String to Integer (atoi)
 https://leetcode.com/problems/string-to-integer-atoi/description/
 */
+/*
+细心就好，只需要看第一个部分的内容
+注意首先的符号, num的边界，其他出现的符号
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public int myAtoi(String str) {
+        String[] s = str.trim().split(" ");
+        String target = s[0];
+        int sign = 1;
+        int num = 0;
+        for(int i = 0; i < target.length(); i++){
+            char c = target.charAt(i);
+            if(i == 0 && (c == '-' || c == '+')){//sign
+                sign = c == '-' ? -1 : 1;
+                continue;
+            } 
+            
+            if(c < '0' || c > '9') break;//break when meet 符号
+            
+            if(num > Integer.MAX_VALUE / 10 || (num == Integer.MAX_VALUE / 10 && ((sign == 1) ? c - '0' > 7 : c - '0' > 8 ))){
+                return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+            }
+            
+            num = num * 10 + (c - '0');
+        }
+        return sign * num;
+    }
+}
+
+
+
+
+
+
+
 class Solution {
     public int myAtoi(String str) {
         str = str.trim();
