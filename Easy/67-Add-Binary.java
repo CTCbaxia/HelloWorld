@@ -7,22 +7,43 @@ RESULT: 98% - 2ms
 NOTES:
 0. Computation from string usually can be simplified by using a [carry] as such.
 
-1. StringBuilder Method
-    - sb.append(something)
-    - sb.toString();
-    - sb.reverse().toString();  可以省去用 stack 的方式
-
-2. 按位加和的规律
-    - sum = na + nb + carry
-    - this digit = sum % 2  算奇偶
-    - carry = sum / 2       算大小（compared with 1）
-
-3. 将 stack 全部导出，更简洁的方法：
-    while(!stack.isEmpty()) sb.append(stack.pop());
-
-METHOD:
-对位，按位加和
 */
+/*
+按位相加from right to left：carry
+
+二进制就是 
+carry = sum / 2;
+add: sum % 2
+注意最后处理 carry(if carry > 0)
+注意最后 reverse
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public String addBinary(String a, String b) {
+        int i = a.length() - 1, j = b.length() - 1;
+        int carry = 0;
+        StringBuilder sb = new StringBuilder();
+        
+        while(i >= 0 || j >= 0){
+            int sum = carry;
+            if(i >= 0) sum += a.charAt(i--) - '0';
+            if(j >= 0) sum += b.charAt(j--) - '0';
+            carry = sum / 2;
+            sb.append(sum % 2);
+        }
+        if(carry > 0) sb.append(carry % 2);
+        return sb.reverse().toString();
+        
+    }
+}
+
+
+
+
+
+//same
 class Solution {
     public String addBinary(String a, String b) {
         StringBuilder sb = new StringBuilder();
@@ -44,6 +65,22 @@ class Solution {
 
 
 /*
+
+1. StringBuilder Method
+    - sb.append(something)
+    - sb.toString();
+    - sb.reverse().toString();  可以省去用 stack 的方式
+
+2. 按位加和的规律
+    - sum = na + nb + carry
+    - this digit = sum % 2  算奇偶
+    - carry = sum / 2       算大小（compared with 1）
+
+3. 将 stack 全部导出，更简洁的方法：
+    while(!stack.isEmpty()) sb.append(stack.pop());
+
+
+
 TIME: 0719 - 30min
 RESULT: 47% - 5ms
 */
