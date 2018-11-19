@@ -8,6 +8,40 @@ NOTES:
 
 */
 /*
+Sort by end
+put arrow at end, compare start with current end
+
+Time: O(nlogn)
+Space: O(1)
+*/
+class Solution {
+    public int findMinArrowShots(int[][] points) {
+        if(points.length == 0) return 0;
+        //sort by end
+        Arrays.sort(points, new Comparator<int[]>(){
+            public int compare(int[] i1, int[] i2){
+                return i1[1] - i2[1];
+            }
+        });
+        int count = 1;
+        int[] cur = points[0];//initial the first
+        for(int i = 1; i < points.length; i++){
+            if(points[i][0] <= cur[1]) continue;
+            else{
+                count++;
+                cur = points[i];
+            }
+        }
+        return count;
+    }
+}
+
+
+
+
+
+
+/*same as above
 Sort by finishing first
 see before the first finishin time, how many ballon we can pass
 if start > finish, result++
