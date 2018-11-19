@@ -1,5 +1,3 @@
-动态规划:
-好像不能倒着来，就是应该一个一个基于之前的结果，而非倒着算。（不能基于还没有算出来的结果）
 /*
 122. Best Time to Buy and Sell Stock II
 https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/description/
@@ -8,6 +6,36 @@ TIME: 1011
 RESULT: 99%, 1ms
 NOTE: 
 */
+/*
+keep updating the min, buy when get larger number and update min as current number
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public int maxProfit(int[] prices) {
+        int min = Integer.MAX_VALUE;
+        int res = 0;
+        for(int i = 0; i < prices.length; i++){
+            if(prices[i] > min){
+                res += prices[i] - min;
+                min = prices[i];
+            }else{
+                min = Math.min(min, prices[i]);
+            }
+        }
+        return res;
+    }
+}
+
+
+
+
+
+
+
+
+
 class Solution {
     public int maxProfit(int[] prices) {
         if(prices.length == 0) return 0;
