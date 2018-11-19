@@ -11,6 +11,57 @@ RESULT: 86% - 28ms
 余：use sum mod 10 to get the carry
 */
 
+/*
+Add with carry
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode res = new ListNode(0);//head
+        ListNode node = res;//head
+        int carry = 0;
+        while(l1 != null || l2 != null){
+            int sum = carry;
+            if(l1 != null){
+                sum += l1.val;
+                l1 = l1.next;
+            } 
+            if(l2 != null){
+                sum += l2.val;
+                l2 = l2.next;
+            } 
+            node.next = new ListNode(sum % 10);
+            node = node.next;
+            
+            carry = sum / 10;
+        }
+        if(carry > 0) node.next = new ListNode(carry);
+        return res.next;
+        
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * Definition for singly-linked list.
