@@ -8,8 +8,120 @@ NOTES:
 1. Stack - easier
 2. Reverse Result - Space better but extremly complicated
 */
+/*
+Stack: more intuitive!!
+
+we first put everything into the stack
+and we build up the listnode from end to the first
+
+Time: O(n)
+Space: O(n) as we use stacks
+ */
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        Stack<Integer> s1 = new Stack<>();
+        Stack<Integer> s2 = new Stack<>();
+        
+        while(l1 != null){
+            s1.push(l1.val);
+            l1 = l1.next;
+        }
+        while(l2 != null){
+            s2.push(l2.val);
+            l2 = l2.next;
+        }
+        ListNode res = null;
+        int carry = 0;
+        while(!s1.isEmpty() || !s2.isEmpty()){
+            int num = carry;
+            if(!s1.isEmpty()) num += s1.pop();
+            if(!s2.isEmpty()) num += s2.pop();
+            
+            ListNode node = new ListNode(num % 10);
+            carry = num / 10;
+            
+            node.next = res;
+            res = node;
+        }
+        if(carry > 0){
+            ListNode node = new ListNode(carry);
+            node.next = res;
+            res = node;
+        }
+        return res;
+    }
+}
 
 
+
+/*same as above
+Stack to put 每一位 result 
+pop from stack and add carry and build result
+*/
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode tmp1 = l1;
+        ListNode tmp2 = l2;
+        int n1 = 0, n2 = 0;
+        while(tmp1 != null || tmp2 != null){
+            if(tmp1 != null){
+                tmp1 = tmp1.next;
+                n1++;
+            }
+            if(tmp2 != null){
+                tmp2 = tmp2.next;
+                n2++;
+            }
+        }
+        Stack<Integer> stack = new Stack<Integer>();
+        //find the same start point
+        if(n1 > n2){
+            while(n1 > n2){
+                stack.push(l1.val);
+                l1 = l1.next;
+                n1--;
+            }
+        }else if(n2 > n1){
+            while(n2 > n1){
+                stack.push(l2.val);
+                l2 = l2.next;
+                n2--;
+            }
+        }
+        while(l1 != null && l2 != null){
+            stack.push(l1.val + l2.val);
+            l1 = l1.next;
+            l2 = l2.next;
+        }
+        
+        //pop from stack and build list from tail to head
+        ListNode res = null;//fake tail
+        int carry = 0;
+        while(!stack.isEmpty()){
+            int sum = carry;
+            sum += stack.pop();
+            ListNode node = new ListNode(sum % 10);
+            carry = sum / 10;
+            
+            node.next = res;
+            res = node;
+        }
+        if(carry > 0){
+            ListNode node = new ListNode(carry);
+            node.next = res;
+            res = node;
+        } 
+        return res;
+    }
+}
+
+
+
+
+
+
+
+//follow up: reverse result - space: O(1)
 /*
 Reverse Result: too complex
 
@@ -97,47 +209,78 @@ class Solution {
     }
 }
 
-
-/*
-Stack: more intuitive!!
-
-we first put everything into the stack
-and we build up the listnode from end to the first
-
-Time: O(n)
-Space: O(n) as we use stacks
- */
+/*same as above
+build reverse result and compute carry
+reverse result
+*/
 class Solution {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        Stack<Integer> s1 = new Stack<>();
-        Stack<Integer> s2 = new Stack<>();
-        
-        while(l1 != null){
-            s1.push(l1.val);
-            l1 = l1.next;
+        ListNode tmp1 = l1;
+        ListNode tmp2 = l2;
+        int n1 = 0, n2 = 0;
+        while(tmp1 != null || tmp2 != null){
+            if(tmp1 != null){
+                tmp1 = tmp1.next;
+                n1++;
+            }
+            if(tmp2 != null){
+                tmp2 = tmp2.next;
+                n2++;
+            }
         }
-        while(l2 != null){
-            s2.push(l2.val);
+        ListNode tail = null;//fake tail
+        //build reverse result
+        //find the same start point
+        if(n1 > n2){
+            while(n1 > n2){
+                ListNode node = new ListNode(l1.val);
+                node.next = tail;
+                tail = node;
+                l1 = l1.next;
+                n1--;
+            }
+        }else if(n2 > n1){
+            while(n2 > n1){
+                ListNode node = new ListNode(l2.val);
+                node.next = tail;
+                tail = node;
+                l2 = l2.next;
+                n2--;
+            }
+        }
+        while(l1 != null && l2 != null){
+            ListNode node = new ListNode(l1.val + l2.val);
+            node.next = tail;
+            tail = node;
+            l1 = l1.next;
             l2 = l2.next;
         }
-        ListNode res = null;
+        //compute with carry list from tail to head
+        ListNode tmpTail = tail;
         int carry = 0;
-        while(!s1.isEmpty() || !s2.isEmpty()){
-            int num = carry;
-            if(!s1.isEmpty()) num += s1.pop();
-            if(!s2.isEmpty()) num += s2.pop();
-            
-            ListNode node = new ListNode(num % 10);
-            carry = num / 10;
-            
-            node.next = res;
-            res = node;
+        while(tail != null){
+            int sum = carry;
+            sum += tail.val;
+            carry = sum / 10;
+            tail.val = sum % 10;
+            tail = tail.next;
         }
+        
+        //reverse res
+        ListNode res = null;//fake tail
+        tail = tmpTail;
+        while(tail != null){
+            tmpTail = tail.next;
+            tail.next = res;
+            res = tail;
+            tail = tmpTail;
+        }
+        //add final carry
         if(carry > 0){
             ListNode node = new ListNode(carry);
             node.next = res;
             res = node;
-        }
+        } 
         return res;
     }
 }
