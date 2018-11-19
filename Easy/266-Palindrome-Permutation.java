@@ -6,6 +6,24 @@ RESULT: 98% - 3ms
 NOTES: 
 */
 /*
+Set for odd element
+
+Time: O(n)
+Space: O(key: number of character)
+*/
+class Solution {
+    public boolean canPermutePalindrome(String s) {
+        Set<Character> set = new HashSet<>();
+        for(char c : s.toCharArray()){
+            if(set.contains(c)) set.remove(c);
+            else set.add(c);
+        }
+        return set.size() <= 1;
+    }
+}
+
+
+/*
 count for odd elements using int[256]
 
 Time: O(n)
@@ -23,22 +41,7 @@ class Solution {
         return odd <= 1;
     }
 }
-/*
-Set for odd element
 
-Time: O(n)
-Space: O(n)
-*/
-class Solution {
-    public boolean canPermutePalindrome(String s) {
-        Set<Character> set = new HashSet<Character>();
-        for(char c : s.toCharArray()){
-            if(set.contains(c)) set.remove(c);
-            else set.add(c);
-        }
-        return set.size() <= 1;
-    }
-}
 
 /*
 '0' - ’9 : 48 - 57
