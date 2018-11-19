@@ -18,6 +18,48 @@ RESULT: 100% - 2ms
  */
 /*
 Array sort + PriorityQueue
+我们只会在有新 meeting 的时候 poll form pq，并且一定会放入至少一个meeting进去
+所以 pq 的 size 只会越来越多
+
+sort the array by starting time
+use pq to save all active meeting, sorted using the finishing time(pq.poll() get the smallest end time out)
+    1. if end before start, no need for more room and we update the finishing time for that room
+    2. else, add more room (put this meeting into pq)
+return pq.size()
+*/
+class Solution {
+    public int minMeetingRooms(Interval[] intervals) {
+        if(intervals.length == 0) return 0;
+        Arrays.sort(intervals, new Comparator<Interval>(){
+            public int compare(Interval i1, Interval i2){
+                return i1.start - i2.start;
+            }
+        });
+        PriorityQueue<Interval> pq = new PriorityQueue<>(new Comparator<Interval>(){
+            public int compare(Interval i1, Interval i2){
+                return i1.end - i2.end;
+            }
+        });
+        int res = 1;
+        pq.offer(intervals[0]);
+        for(int i = 1; i < intervals.length; i++){
+            Interval meeting = intervals[i];
+            Interval finish = pq.poll();
+            if(finish.end <= meeting.start){
+                pq.offer(meeting);
+            }else{
+                pq.offer(finish);
+                pq.offer(meeting);
+            }
+            res = Math.max(res, pq.size());
+        }
+        return res;
+    }
+}
+/*
+Array sort + PriorityQueue
+我们只会在有新 meeting 的时候 poll form pq，并且一定会放入至少一个meeting进去
+所以 pq 的 size 只会越来越多
 
 sort the array by starting time
 use pq to save all active meeting, sorted using the finishing time(pq.poll() get the smallest end time out)
