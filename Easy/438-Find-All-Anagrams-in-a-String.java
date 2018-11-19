@@ -5,11 +5,62 @@ https://leetcode.com/problems/find-all-anagrams-in-a-string/description/
 TIME: 0716 - 2h
 RESULT: 44% - 34ms
 NOTES: 
-注意 sliding window 的思路
 
 METHOD:
 Sliding Window
 */
+/*
+Sliding Window:
+count = map.size()
+只看 key 的匹配，当 count = 0 的时候，检查 end - start 是不是等于 p.length()
+
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        List<Integer> result = new ArrayList<>();
+        Map<Character, Integer> map = new HashMap<>();
+
+        //build map
+        for(char c : p.toCharArray()){
+            map.put(c, map.getOrDefault(c, 0) + 1);
+        }
+        //sliding window
+        int count = map.size();
+        int start = 0, end = 0, len = Integer.MAX_VALUE;
+        while(end < s.length()){
+            char c = s.charAt(end);
+            if(map.containsKey(c)){
+                map.put(c, map.get(c) - 1);
+                if(map.get(c) == 0) count--;
+            }
+            end++;
+            while(count == 0){//当所有key都匹配完毕
+                char c2 = s.charAt(start);
+                if(map.containsKey(c2)){
+                    map.put(c2, map.get(c2) + 1);
+                    if(map.get(c2) > 0) count++;//只会加一次，start 就停止移动了
+                }
+                if(end - start == p.length()){//检查匹配区间有没有多余字母
+                    result.add(start);
+                }
+                start++;
+            }
+        }
+        return result;
+    }
+}
+
+
+
+
+
+
+
+
+
+
 /*
 SOLUTION 0:
 每次都向右移一格，直到所需 p_map 全部被满足（count == 0），
