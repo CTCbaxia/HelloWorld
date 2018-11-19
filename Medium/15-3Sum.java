@@ -10,6 +10,44 @@ Notes:
 5.Arrays.asList()
 
 */
+/*
+Array 组合去重 --- 排序，略过相同的元素
+
+Time: O(nlogn) + O(n^2)
+Space: O(1)
+*/
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(nums);
+        for(int i = 0; i < nums.length; i++){
+            if(i == 0 || i > 0 && nums[i] != nums[i - 1]){//略过相同
+                int target = 0 - nums[i];//揪出一个，比较剩下两个
+                int lo = i + 1, hi = nums.length - 1;
+                while(lo < hi){
+                    if(nums[lo] + nums[hi] == target){
+                        result.add(Arrays.asList(nums[i], nums[lo], nums[hi]));
+                        lo++;
+                        hi--;
+                        while(lo < hi && nums[lo] == nums[lo - 1]) lo++;//略过相同
+                        while(hi > lo && nums[hi] == nums[hi + 1]) hi--;//略过相同
+                    }else{
+                        if(nums[lo] + nums[hi] > target) hi--;
+                        else lo++;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+}
+
+
+
+
+
+
+
 
 //---------2 ROUND FOR MS-----------------------
 class Solution {
