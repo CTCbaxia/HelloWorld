@@ -13,6 +13,18 @@ NOTES:
 4. 这题需要注意 dividend 和 divisor 分别为 Integer.MIN_VALUE 的时候
 
 */
+/*
+Bit Manipulation:
+每次乘 2 看是否超过 dividend
+如果超过就用 dividend - 现有 tmp，继续计算剩余的
+
+注意 corner case 都是 Integer.MIN_VALUE
+Math.abs(Integer.MIN_VALUE) = -2147483648
+Integer.MIN_VALUE - 正整数 = 2147483648 - 正整数 
+
+Time: O(n)
+Space: O(1)
+*/
 class Solution {
     public int divide(int dividend, int divisor) {
         int n1 = 0;//divisor result
@@ -24,7 +36,7 @@ class Solution {
         dividend = Math.abs(dividend);
         divisor = Math.abs(divisor);
         
-        //corner case:
+        //corner case for Integer.MIN_VALUE:
         if(divisor == Integer.MIN_VALUE){//Math.abs(Integer.MIN_VALUE) = -2147483648
             if(dividend == Integer.MIN_VALUE){
                 return 1;//remainder = 0
@@ -32,12 +44,12 @@ class Solution {
                 return 0;//remainder = divident
             }
         }
-        //another corner case:
+        //another corner case for Integer.MIN_VALUE:
         if(dividend == Integer.MIN_VALUE){//Math.abs(Integer.MIN_VALUE) = -2147483648
             if(divisor == 1) return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;//remainder = 0
             else{
                 dividend -= divisor; //Integer.MIN_VALUE - 正整数 = 2147483648 - 正整数 
-                n1++;
+                n1++;//先处理一个
             }
         }
 
@@ -45,14 +57,14 @@ class Solution {
         while(divisor <= dividend){
             int tmp = divisor;
             int count = 1;
-            while(tmp <= Integer.MAX_VALUE >> 1 && (tmp << 1) <= dividend){//make sure tmp will not overflow
+            while(tmp <= Integer.MAX_VALUE >> 1 && (tmp << 1) <= dividend){//if 不越界 且能进一格
                 tmp = tmp << 1;
                 count = count << 1;
              }
-            dividend -= tmp;
+            dividend -= tmp;//现有的就是满足条件的
             n1 += count;
         }
-        n2 = dividend;
+        //n2 = dividend;//remainder
         
         // System.out.println(n1); 
         // System.out.println(n2); //remainder
