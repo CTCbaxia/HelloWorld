@@ -9,6 +9,43 @@ NOTES:
 */
 /*
 Sliding Window (two pointers)
+window 里面只装没有问题的 substring（如果有匹配多了的，也把多的那部分去掉
+
+Time: O(n)
+Space: O(26)
+*/
+class Solution {
+    public boolean checkInclusion(String s1, String s2) {
+        int[] words = new int[26];
+        for(char c : s1.toCharArray()){
+            words[c - 'a']++;//count each letter
+        }
+        int count = s1.length();//num need to be matched
+        int lo = 0, hi = 0;
+        char[] ch2 = s2.toCharArray();
+        while(hi < ch2.length){//sliding window
+            if(words[ch2[hi] - 'a']-- > 0){
+                count--;
+                if(count == 0) return true;
+            }else{
+                while(words[ch2[hi] - 'a'] < 0){//once we meet a wrong letter, lo++ till no wrong letter
+                    words[ch2[lo] - 'a']++;
+                    if(words[ch2[lo] - 'a'] > 0) count++;
+                    lo++;
+                }
+            }
+            hi++;
+        }
+        return false;
+    }
+}
+
+
+
+
+
+/*
+Sliding Window (two pointers)
 
 Time: O(n)
 Space: O(26)
