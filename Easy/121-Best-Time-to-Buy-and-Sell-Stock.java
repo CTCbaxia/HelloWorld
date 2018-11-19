@@ -4,6 +4,28 @@ https://leetcode.com/problems/best-time-to-buy-and-sell-stock/description/
 
 RESULT: 100%
 */
+/*
+Keep min value, Keep max profit
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public int maxProfit(int[] prices) {
+        int min = Integer.MAX_VALUE;
+        int res = 0;
+        for(int i = 0; i < prices.length; i++){
+            res = Math.max(res, prices[i] - min);//the first day we cannot sale
+            min = Math.min(prices[i], min);
+        }
+        return res;
+    }
+}
+
+
+
+
+
 class Solution {
     public int maxProfit(int[] prices) {
         if(prices.length == 0) return 0;
