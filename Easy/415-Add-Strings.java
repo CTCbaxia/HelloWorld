@@ -5,12 +5,39 @@ https://leetcode.com/problems/add-strings/description/
 
 TIME: 0823 - 30min
 RESULT: 28% - 21ms
-NOTES: 
 
-RELATED:
-1. 43. Multiply Strings
 */
+/*
+Add Carry
+"123"
+"59"
 
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public String addStrings(String num1, String num2) {
+        StringBuilder sb = new StringBuilder();
+        int i = num1.length() - 1, j = num2.length() - 1;
+        int carry = 0;
+        while(i >= 0 || j >= 0){
+            int sum = carry;
+            if(i >= 0) sum += num1.charAt(i--) - '0';
+            if(j >= 0) sum += num2.charAt(j--) - '0';
+            sb.append(sum % 10);
+            carry = sum / 10;
+        }
+        if(carry > 0) sb.append(carry);
+        return sb.reverse().toString();
+    }
+}
+
+
+
+
+
+
+//same
 class Solution {
     public String addStrings(String num1, String num2) {
         char[] n1 = num1.toCharArray();
