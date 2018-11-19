@@ -10,24 +10,23 @@ THOUGHTS:
 2. 这题的简单设置决定了 Sequential Search 也很适用
 */
 /*
-climbing rising slope
+Climbing rising slope
 
 Time: O(logn)
 Space: O(1)
 */
 class Solution {
     public int findPeakElement(int[] nums) {
-        int lo = 0;
-        int hi = nums.length - 1;
-        while(lo < hi){
-            int mid = lo + (hi - lo)/2;
-            int mid2 = mid + 1;
-            if(nums[mid] < nums[mid2]) lo = mid2;//mid + 1 hold the possible peak
-            else hi = mid;//hold the possible peak
+        int lo = 0, hi = nums.length - 1;
+        while(lo < hi){//mid = lo
+            int mid = lo + (hi - lo) / 2;
+            if(nums[mid] < nums[mid + 1]) lo = mid + 1;//mid + 1 hold the possible peak
+            else if(nums[mid] > nums[mid + 1]) hi = mid;//hold the possible peak
         }
         return lo;
     }
 }
+
 
 
 
