@@ -16,6 +16,53 @@ NOTE:
 5. StringBuilder 比 s = s + 'char' 要快很多
 6. 注意数字计算的技巧和规律 
 */
+/*
+找到乘积和因子的对应位置
+product len = len 1 + len 2
+i * j -> i + j + 1
+先算raw product
+再来处理 carry 
+
+Time: O(mn)
+Space: O(m + n)
+*/
+class Solution {
+    public String multiply(String num1, String num2) {
+        int len1 = num1.length();
+        int len2 = num2.length();
+        int[] res = new int[len1 + len2];
+        for(int i = len1 - 1; i >= 0; i--){
+            for(int j = len2 - 1; j >= 0; j--){
+                int digit1 = num1.charAt(i) - '0';
+                int digit2 = num2.charAt(j) - '0';
+                res[i + j + 1] += digit1 * digit2;
+            }
+        }
+        
+        //for carry
+        int carry = 0;
+        for(int i = res.length - 1; i >= 0; i--){
+            int sum = carry;
+            sum += res[i];
+            res[i] = sum % 10;
+            carry = sum / 10;
+        }
+        //build string
+        StringBuilder sb = new StringBuilder();
+        for(int n : res){
+            if(sb.length() == 0 && n == 0) continue;
+            sb.append(n);
+        }
+        return sb.length() == 0 ? "0" : sb.toString();
+
+    }
+}
+
+
+
+
+
+
 
 /*
 TIME: 0718 - 5h
