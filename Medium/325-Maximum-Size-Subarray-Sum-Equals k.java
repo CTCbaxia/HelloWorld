@@ -5,15 +5,50 @@ MEDIUM
 TIME: 
 RESULT: 
 NOTES:
-subarray 的和这种题，做 sum 来做。
+subarray 的和这种题，做 presum 来做。
 
 */
+/*
+Presum + HashMap
+
+map.put(0, -1)
+keep smallest index for a sum(don't update value for existing key)
+update the max res when find match
+
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public int maxSubArrayLen(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();//presum, index
+        int sum = 0;
+        int res = 0;//the size has to be >= 0
+        
+        map.put(0, -1);
+        
+        for(int i = 0; i < nums.length; i++){
+            sum += nums[i];
+            if(map.containsKey(sum - k)){
+                res = Math.max(res, i - map.get(sum - k));
+            }
+            if(!map.containsKey(sum)) map.put(sum, i);
+        }
+        return res;
+    }
+}
+
+
+
+
+
+
+
 /*
 算一遍累计和，然后就跟 two sum 的做法一样了
 记得不要更新key，因为肯定是保留最前面的 index，这样才会有最大 subarray
 
 Time: O(n)
-Space: O(1)
+Space: O(n)
 */
 class Solution {
     public int maxSubArrayLen(int[] nums, int k) {
