@@ -9,6 +9,38 @@ NOTES:
 1. % 除数不能为 0 
 2. % 相加减的关系：模相等，则他们的差一定可以整除 k
 */
+/*
+PreSum % k + Map <presum, index>
+
+(sum - presum) % k = 0 ---> sum % k = presum % k
+记住检查 len 大于 2
+
+Time: O(n)
+Space: O(k) sum % k 不会超过 k
+*/
+class Solution {
+    public boolean checkSubarraySum(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();//presum, index
+        map.put(0, -1);//index, so -1
+        int sum = 0;
+        for(int i = 0; i < nums.length; i++){
+            sum += nums[i];
+            if(k != 0) sum = sum % k;//k == 0 不能 mod，但是是有可能找到 multiple of 0 的
+            if(map.containsKey(sum)){
+                if(i - map.get(sum) > 1) return true;
+            }else{
+                map.put(sum, i);
+            }
+        }
+        return false;
+    }
+}
+
+
+
+
+
+
 
 class Solution {
     public boolean checkSubarraySum(int[] nums, int k) {
