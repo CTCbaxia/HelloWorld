@@ -5,8 +5,6 @@ MEDIUM
 TIME: 
 RESULT: 
 NOTES:
-subarray 的和这种题，做 presum 来做。
-
 */
 /*
 Presum + HashMap
@@ -43,6 +41,13 @@ class Solution {
 
 
 
+
+
+
+
+
+
+
 /*
 算一遍累计和，然后就跟 two sum 的做法一样了
 记得不要更新key，因为肯定是保留最前面的 index，这样才会有最大 subarray
@@ -68,6 +73,13 @@ class Solution {
         return result;
     }
 }
+
+
+
+
+
+
+
 
 
 
