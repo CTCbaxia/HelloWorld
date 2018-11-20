@@ -10,6 +10,38 @@ NOTES:
 2. 双重循环 SUM[i, j] = SUM[0, j] - SUM[0, i - 1] 的思想很重要
 3. HashMap 该学了
 */
+/*
+PreSum + Map
+连续的 subarry sum -- presum
+加速寻找 -- hashmap(remember map.put(0, 1))
+
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();//sum, num of that sum
+        map.put(0, 1);//if all elments, there are one solution
+        int sum = 0;
+        int res = 0;
+        for(int i = 0; i < nums.length; i++){
+            sum += nums[i];
+            if(map.containsKey(sum - k)){
+                res += map.get(sum - k);
+            }
+            map.put(sum, map.getOrDefault(sum, 0) + 1);
+        }
+        return res;
+        
+    }
+}
+
+
+
+
+
+
+
 
 
 /*
@@ -52,9 +84,10 @@ public int subarraySum(int[] nums, int k) {
 
 /*
 METHOD 1: 
-基础解题思路：固定左边的值，向后遍历
+基础解题思路：固定左边的值，向后累加，如果 match 就结果 + 1
 
 RESULT: 24% - 211ms
+Time: O(n^2)
 */
 class Solution {
 public int subarraySum(int[] nums, int k) {
@@ -71,6 +104,29 @@ public int subarraySum(int[] nums, int k) {
     return count;
     }
 }
+//同上 presum思想
+
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        if(nums.length == 0) return 0;
+        int result = 0;
+        int[] sum = new int[nums.length];
+        for(int i = 0; i < nums.length; i++){
+            if(i == 0) sum[i] = nums[i];
+            else{
+                sum[i] += sum[i - 1] + nums[i];
+            }
+        }      
+        for(int i = 0; i < nums.length; i++){
+            for(int j = i; j < nums.length; j++){
+                if(sum[j] - sum[i] + nums[i] ==k) result++;
+            }
+        }
+        return result;
+        
+    }
+}
+
 /*
 METHOD: 同上
 利用 dp 的思路，但是因为不知道要多大的一个二维数组，所以不知道怎么用数组表示出预设结果...
