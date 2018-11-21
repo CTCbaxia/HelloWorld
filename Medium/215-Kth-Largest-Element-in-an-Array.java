@@ -8,6 +8,45 @@ RESULT: 57% - 9ms
 NOTES: 
 
 */
+/*
+PriorityQueue: min heap
+
+Time: O(nlogk)
+Space: O(k)
+*/
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        for(int i = 0; i < nums.length; i++){
+            pq.offer(nums[i]);
+            if(pq.size() > k) pq.poll();
+        }
+      return pq.isEmpty() ? 0 : pq.poll();//if nums is empty, pq is empty
+    }
+}
+
+/*
+Sort: 
+
+第k大：nums.length - k
+
+Time: O(nlogn)
+Space: O(1)
+*/
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        Arrays.sort(nums);
+        return nums[nums.length - k];
+    }
+}
+
+
+
+
+
+
+
+
 
 //quick select（课上讲的）
 class Solution {
@@ -44,21 +83,7 @@ class Solution {
         return;
     }
 }
-//O(N lg K) running time + O(K) memory
-class Solution {
-    public int findKthLargest(int[] nums, int k) {
-        PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
-        for(int n : nums){
-            if(pq.size() < k){
-                pq.add(n);
-            }else{
-                pq.add(n);
-                pq.poll();
-            }
-        }
-        return pq.poll();
-    }
-}
+
 
 //如果要的是第N大的
 //PriorityQueue(int initialCapacity, Comparator<? super E> comparator)
