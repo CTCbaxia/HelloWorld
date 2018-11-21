@@ -8,6 +8,57 @@ NOTES:
 1. 要注意不要成环，成环你永远不会走到 null。应该画出示意图
 */
 /*
+separate + reverse + merge
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public void reorderList(ListNode head){
+        if(head == null || head.next == null) return;
+        
+        //separate to first and second
+        ListNode fast = head;
+        ListNode slow = head;
+        while(fast.next != null && fast.next.next != null){
+          fast = fast.next.next;
+          slow = slow.next;
+        }
+        ListNode second = slow.next;
+        slow.next = null;
+
+        //reverse the second
+        ListNode res = null;
+        while(second != null){
+            ListNode newHead = second.next;
+            second.next = res;
+            res = second;
+            second = newHead;
+        }
+        second = res;
+        
+        //merge
+        ListNode first = head;
+        while(first != null && second != null){
+            ListNode tmpS = second.next;
+            second.next = first.next;
+            first.next = second;
+            second = tmpS;
+            first = first.next.next;
+        }    
+        return;
+    }
+  
+}
+
+
+
+
+
+
+
+
+
+/*
 Time: O(n)
 Space: O(1)
 
@@ -48,6 +99,12 @@ class Solution {
     }
 
 }
+
+
+
+
+
+
 
 
 /*
