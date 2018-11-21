@@ -21,9 +21,9 @@ class Solution {
         backtracking(nums, 0, result, new ArrayList<Integer>());
         return result;
     }
-    private void backtracking(int[] nums, int index, List<List<Integer>> result, List<Integer> res){
+    private void backtracking(int[] nums, int start, List<List<Integer>> result, List<Integer> res){
         result.add(new ArrayList<Integer>(res));//要考虑把每个结果拷贝到result里的时间, 一共2^n个结果, 每个结果平均大小是n, 所以拷贝时间就要n*2^n
-        for(int i = index; i < nums.length; i++){
+        for(int i = start; i < nums.length; i++){
             res.add(nums[i]);
             backtracking(nums, i + 1, result, res);
             res.remove(res.size() - 1);
@@ -31,6 +31,14 @@ class Solution {
         return;
     }
 }
+
+
+
+
+
+
+
+
 
 
 /*
