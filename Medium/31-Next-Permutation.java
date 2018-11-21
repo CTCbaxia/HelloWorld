@@ -20,6 +20,112 @@ NOTES:
                 if(最高位) return asc
 
 */
+/*
+Find drop and swap, and reverse the remain
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public void nextPermutation(int[] nums) {
+        for(int i = nums.length - 2; i >= 0; i--){
+            if(nums[i] >= nums[i + 1]) continue;
+            
+            //eles: i is the drop
+            int j = nums.length - 1;
+            while(j > i && nums[j] <= nums[i]) j--;//从后往前，找到第一个大于 nums[i] 的index
+            
+            swap(nums, i , j);//把大值挪到前面，剩下的reverse
+            reverse(nums, i + 1, nums.length - 1);
+            return;
+        }
+        reverse(nums, 0, nums.length - 1);
+        return;
+    }
+    private void swap(int[] nums, int m, int n){
+        int tmp = nums[m];
+        nums[m] = nums[n];
+        nums[n] = tmp;
+        return;
+    }
+    private void reverse(int[] nums, int lo, int hi){
+        while(lo < hi){
+            swap(nums, lo++, hi--);
+        }    
+        return;
+    }
+    
+}
+
+
+
+/*
+Find drop and swap, and sort
+
+find swap 对象是用 binary search，但是没太大必要
+
+
+Time: O(n)
+Space: O(1)
+*/        
+class Solution {
+    public void nextPermutation(int[] nums) {
+        for(int i = nums.length - 2; i >= 0; i--){
+            if(nums[i] >= nums[i + 1]) continue;
+            
+            //else: i is the drop
+            int lo = i + 1, hi = nums.length - 1;//find the largest index that nums[index] > nums[i]
+            while(lo < hi){
+                int mid = lo + (hi - lo) / 2 + 1;
+                if(nums[mid] <= nums[i]) hi = mid - 1;
+                else lo = mid;
+            }
+            swap(nums, i , lo);//把大值挪到前面，剩下的reverse
+            reverse(nums, i + 1, nums.length - 1);
+            return;
+        }
+        reverse(nums, 0, nums.length - 1);
+        return;
+    }
+    private void swap(int[] nums, int m, int n){
+        int tmp = nums[m];
+        nums[m] = nums[n];
+        nums[n] = tmp;
+        return;
+    }
+    private void reverse(int[] nums, int lo, int hi){
+        while(lo < hi){
+            swap(nums, lo++, hi--);
+        }    
+        return;
+    }
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class Solution {
     public void nextPermutation(int[] nums) {
         if(nums.length <= 1) return;
