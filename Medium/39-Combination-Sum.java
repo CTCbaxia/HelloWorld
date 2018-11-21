@@ -11,6 +11,37 @@ NOTES: 46% - 13ms
 2. backtracking 记得要变回原样：list.remove(list.size() - 1); 并且是最后一位，而不是某个 object
 
 */
+/*
+DFS
+
+Time: O(n!)
+Space: O(target)
+*/
+class Solution {
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> result = new ArrayList<>();
+        dfs(candidates, target, 0, result, new ArrayList<Integer>());
+        return result;
+    }
+    private void dfs(int[] candidates, int target, int start, List<List<Integer>> result, List<Integer> res){
+        if(target == 0){
+            result.add(new ArrayList<Integer>(res));
+            return;
+        }else if(target < 0) return;
+        
+        //target > 0
+        for(int i = start; i < candidates.length; i++){
+            res.add(candidates[i]);
+            dfs(candidates, target - candidates[i], i, result, res);
+            res.remove(res.size() - 1);
+        }
+        return;
+    }
+}
+
+
+
+
 //-----------2 ROUND FOR MS------------------------------------------------------------------
 //backtracking
 class Solution {
