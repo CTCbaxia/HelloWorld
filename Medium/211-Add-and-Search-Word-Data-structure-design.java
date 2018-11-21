@@ -24,14 +24,13 @@ Time: O(len of the word) - O(26^n)
 Space: O(1)
 
 
-RESULT: 76% - 113ms
 Note:
 Java 构造函数 和 类的定义，变量的声明
 */
 class WordDictionary {
     public class TrieNode{
-        public TrieNode[] children;
-        public String word;
+        TrieNode[] children;
+        String word;
         public TrieNode(){
             children = new TrieNode[26];
             word = "";
@@ -54,6 +53,7 @@ class WordDictionary {
             node = node.children[c - 'a'];
         }
         node.word = word;
+        return;
     }
     
     /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
@@ -61,16 +61,16 @@ class WordDictionary {
         return searchTrie(word.toCharArray(), 0, root);
     }
     private boolean searchTrie(char[] ch, int index, TrieNode node){
-        if(index == ch.length) return !node.word.equals("");
+        if(index == ch.length) return !node.word.equals("");//at the end of the word, is there a word?
         if(ch[index] != '.'){
-            if(node.children[ch[index] - 'a'] != null){
+            if(node.children[ch[index] - 'a'] != null){//continuous to check next letter
                 return searchTrie(ch, index + 1, node.children[ch[index] - 'a']);
             }else{
                 return false;
             }
         }else{
-            for(int i = 0; i < node.children.length; i++){
-                if(node.children[i] != null){
+            for(int i = 0; i < node.children.length; i++){//loop for every possibility
+                if(node.children[i] != null){//only continuous to search when there is a node
                     if(searchTrie(ch, index + 1, node.children[i]))
                        return true;
                 }
@@ -86,6 +86,19 @@ class WordDictionary {
  * obj.addWord(word);
  * boolean param_2 = obj.search(word);
  */
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
