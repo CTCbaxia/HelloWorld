@@ -11,6 +11,54 @@ https://leetcode.com/problems/walls-and-gates/discuss/72748/Benchmarks-of-DFS-an
 分析时间复杂度很好
 */
 /*
+BFS: 层次更新
+
+Time: O(mn)
+Space: O(mn)
+*/
+class Solution {
+    public void wallsAndGates(int[][] rooms) {
+        if(rooms.length == 0 || rooms[0].length == 0) return;
+        int m = rooms.length;
+        int n = rooms[0].length;
+        
+        Queue<Integer> q = new LinkedList<>();
+        int[][] directions = {{1, 0}, {-1, 0},{0, 1},{0, -1}};
+        for(int i = 0; i < rooms.length; i++){
+            for(int j = 0; j < rooms[0].length; j++){
+                if(rooms[i][j] == 0) q.offer(i * n + j);//offset
+            }
+        }
+        int level = 1;
+        while(!q.isEmpty()){
+            Queue<Integer> newQ = new LinkedList<>();
+            while(!q.isEmpty()){
+                int p = q.poll();
+                int i = p / n;
+                int j = p % n;
+                for(int[] dir : directions){
+                    int i2 = i + dir[0];
+                    int j2 = j + dir[1];
+                    if(i2 < m && i2 >= 0 && j2 < n && j2 >= 0 && rooms[i2][j2] == Integer.MAX_VALUE){
+                        rooms[i2][j2] = level;//update infinite value
+                        newQ.offer(i2 * n + j2);
+                    }
+                }
+            }
+            q = newQ;
+            level++;
+        }
+        return;
+    }
+}
+  
+
+
+
+
+
+
+/*
 DFS
 
 Time: O(mn*mn)
