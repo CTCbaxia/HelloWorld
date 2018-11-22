@@ -8,12 +8,13 @@ NOTES:
 关于几何计算（长方形，直线）要想到累积关系。尤其是长方形，面积就那一个套路
 */
 /*
-Caching Recs
+Caching Recs:
+直接求每个方块的sum，几何求解
+sum[i + 1][j + 1] = sum from [0][0] - [i][j] 方块和
 
-Time: O(1) per query, O(mn) per construction
-Space: O(m*n), matrix[m + 1][n + 1]
+Time: O(row2 - row1 + 1)
+Space: O(m*n), matrix[m][n]
 */
-//用大 1 个维度的 sum 省去 0 的比较
 class NumMatrix {
     int[][] sum;
     
@@ -31,6 +32,12 @@ class NumMatrix {
         return sum[row2 + 1][col2 + 1] - sum[row2 + 1][col1] - sum[row1][col2 + 1] + sum[row1][col1];
     }
 }
+
+/**
+ * Your NumMatrix object will be instantiated and called as such:
+ * NumMatrix obj = new NumMatrix(matrix);
+ * int param_1 = obj.sumRegion(row1,col1,row2,col2);
+ */
 
 
 class NumMatrix {

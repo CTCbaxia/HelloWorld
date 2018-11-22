@@ -7,6 +7,24 @@ TIME: 0907 - 30min
 RESULT: 90% - 3ms
 
 */
+class Solution {
+    public int[] intersection(int[] nums1, int[] nums2) {
+        Set<Integer> interset = new HashSet<>();
+        Set<Integer> set = new HashSet<>();
+        for(int n : nums1){
+            set.add(n);
+        }
+        for(int n : nums2){
+            if(set.contains(n)) interset.add(n);
+        }
+        int[] result = new int[interset.size()];
+        int i = 0;
+        for(int n : interset){
+            result[i++] = n;
+        }
+        return result;
+    }
+}
 /*
 sort + two pointers
 
