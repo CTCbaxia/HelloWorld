@@ -10,6 +10,84 @@ NOTES:
 2. 这种题肯定不能来一个 merge 一个，如果两个list一开始看着没联系，但是后来有一个list能够把他们两连起来，这情况就会漏
 3. 所以要建立总联系 / 找到顺序，再来 merge
 */
+/*
+Union Find:
+Map parent: <all emails, its parent> 只有每个记录里面第一个email才可能是最终 potential parent
+Map owner: <all parent emails, its owner name>
+Union: <all parents, its children email>
+
+n is the total input string
+Time: O(n^2) we may need to track the parent using n time for every input for worst case
+Space: O(n)
+*/
+class Solution {
+    public List<List<String>> accountsMerge(List<List<String>> accounts) {
+        Map<String, String> parent = new HashMap<String, String>();//help we find parent email
+        Map<String, String> owner = new HashMap<String, String>();//for email account to find owner
+        Map<String, Set<String>> union = new HashMap<String, Set<String>>();//<parent, all children>
+        //初始化 owner and parent
+        for(List<String> a : accounts){
+            owner.put(a.get(1), a.get(0));//put the first email with its owner name
+            for(int i = 1; i < a.size(); i++){
+                /*
+                初始化parent：first make every email as their own parent
+                这里很重要
+                如果之后有重复 key(email)，对应的 parent 就会是后一个 email 的 string(地址)，parent 也就不是自己
+                */
+                parent.put(a.get(i), a.get(i));
+            }
+        }
+        System.out.println(owner);
+        
+        /*
+        find: 更新 parent link
+        这是一个不断向下收纳合并的过程，
+        如果前面 children 的 parent 指向了后面，
+        会在这个时候把后面 parent 的 parent（那条记录第一个email）的 parent 也指向前面，实现两条记录的合并
+        */
+        for(List<String> a: accounts){
+            String p = find(parent, a.get(1));// find first email's parent
+            for(int i = 2; i < a.size(); i++){
+                /*
+                不断更新 parent：把这条记录下所有后续 email 的 parent 都归纳到第一个 email 的parnt p
+                */
+                parent.put(find(parent, a.get(i)), p);
+            }
+        }
+        //更新完所有 parent 之后，union all with same parent
+        for(List<String> a : accounts){
+            String p = find(parent, a.get(1));// find first email's parent
+            if(!union.containsKey(p)) union.put(p, new HashSet<String>());
+            for(int i = 1; i < a.size(); i++){//把这条记录剩余的 email 都归纳到这个 parent 名下
+                union.get(p).add(a.get(i));
+            }
+        }
+        //output the result with link to the name
+        List<List<String>> result = new ArrayList<List<String>>();
+        for(String e : union.keySet()){
+            List<String> emails = new ArrayList<String>(union.get(e));
+            Collections.sort(emails);
+            emails.add(0, owner.get(e));
+            result.add(emails);
+        }
+        return result;
+        
+    }
+    private String find(Map<String, String> p, String s){
+        //if the parent is itself, return itself, otherwise, find its final parent
+        return p.get(s) == s ? s : find(p, p.get(s));
+    }
+
+}
+
+
+
+
+
+
+
+
+
 
 /*
 Union Find
