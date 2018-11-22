@@ -9,6 +9,78 @@ NOTES:
 1. 题目没有说图是连通图，所以在主 numFriendRequests 里面要遍历所有的 node，而不是直接 return 以 0 为起点的递归
 */
 /*
+DFS + color 分类问题
+assign color and check the link(path in dfs)
+- 如果上过色：看颜色是否正确
+- 如果没上色：上对应的颜色，然后接着遍历它的相邻节点
+
+Time: O(n^2) all edges
+Space: O(n) for color
+*/
+class Solution {
+    public boolean isBipartite(int[][] graph) {
+        int[] color = new int[graph.length];
+        for(int i = 0; i < graph.length; i++){//might be not connected graph
+            if(color[i] == 0){
+                color[i] = 1;
+                if(!part(graph, i, color, -1)) return false;
+            }
+        }
+        return true;
+    }
+    private boolean part(int[][] graph, int node, int[] color, int c){
+        //all node's friend should be put into set
+        for(int i = 0; i < graph[node].length; i++){
+            int n = graph[node][i];//n is node's friend(edge)
+            if(color[n] == c) continue;
+            if(color[n] == -c) return false;
+            color[n] = c;
+            if(!part(graph, n, color, -c)) return false;//once we find a wrong node, we return false
+        }
+        return true;
+    }
+}
+
+
+/*
+DFS
+put the right node to SetA or SetB
+
+Time: O(n^2) all edges
+Space: O(n) for set AB
+*/
+class Solution {
+    public boolean isBipartite(int[][] graph) {
+        Set<Integer> setA = new HashSet<>();
+        Set<Integer> setB = new HashSet<>();
+        for(int i = 0; i < graph.length; i++){
+            if(!setA.contains(i) && !setB.contains(i)){
+                setA.add(i);
+                if(!part(graph, i, setB, setA)) return false;
+            }
+        }
+        return true;
+    }
+    private boolean part(int[][] graph, int node, Set<Integer> set, Set<Integer> antiSet){
+        //all node's friend should be put into set
+        for(int i = 0; i < graph[node].length; i++){
+            int n = graph[node][i];//n is node's friend(edge)
+            if(antiSet.contains(n)) return false;
+            if(set.contains(n)) continue;
+            set.add(n);
+            if(!part(graph, n, antiSet, set)) return false;
+        }
+        return true;
+    }
+}
+
+
+
+
+
+
+
+/*
 SOLUTION REFERENCE:
 TIME: 0821 - 2.5h
 RESULT: 7.5% - 16ms
