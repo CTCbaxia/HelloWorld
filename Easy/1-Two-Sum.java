@@ -9,6 +9,21 @@ NOTES:
 用 HashMap 来存储数据。
 Hashmap 根据键的 hashCode 值存储数据，大多数情况下可以直接定位到它的值，因而具有很快的访问速度，为了将时间复杂度降到 O(n)，可以用 Hashmap
 */
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int i = 0; i < nums.length; i++){
+            if(map.containsKey(target - nums[i])){
+                return new int[]{map.get(target - nums[i]), i};
+            }else{
+                map.put(nums[i], i);
+            }
+        }
+        return new int[2];
+    }
+}
+
+
 
 //-------2 ROUND FOR MS-----------------------------------------
 //one pass
