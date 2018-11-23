@@ -7,6 +7,27 @@ NOTES:
 这种题肯定要遍历完才会知道最大的
 */
 /*
+每次更新最长距离，如果遇到 drop 就把 len 清零
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public int findLengthOfLCIS(int[] nums) {
+        if(nums.length == 0) return 0;
+        int res = 1;
+        int len = 1;//if we have at a num, len should be 1
+        for(int i = 0; i < nums.length - 1; i++){//mind the boundary
+            if(nums[i] < nums[i + 1]){
+                len++;
+                res = Math.max(res, len);
+            }else len = 1;
+        }
+        return res;
+    }
+}
+
+
+/*
 Time: O(n)
 Space: O(1)
 */
