@@ -8,6 +8,47 @@ NOTES:
 计算式子要用 stack
 保留 + - 之间的内容，及时合并 "括号内" 或 " * / " 这类优先级较高的部分 (利用 push，pop)
 */
+/*
+Stack: 因为上一个结果有用
+sign ： 保存上一个符号
+num ： 收集整个数字
+
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public int calculate(String s) {
+        char sign = '+';//记录上一个符号
+        int num = 0;
+        Stack<Integer> stack = new Stack<>();//里面只存最后需要相加的数
+        for(int i = 0; i < s.length(); i++){
+            char c = s.charAt(i);
+            if(Character.isDigit(c)){//先看是不是 num，要累计 num
+                num = num * 10 + (c - '0');
+            }
+            /*
+            当得到符号，说明数字收集完毕
+            只能写 if，因为如果 i 即是数字，又是最后一个char，就需要再次计算
+            */
+            if(c == '+' || c == '-' || c == '*' || c == '/' || i == s.length() - 1){
+                if(sign == '+') stack.push(num);
+                else if(sign == '-') stack.push(-num);
+                else if(sign == '*') stack.push(stack.pop() * num);
+                else if(sign == '/') stack.push(stack.pop() / num);
+                num = 0;
+                sign = c;
+            } 
+        }
+        int res = 0;
+        while(!stack.isEmpty()) res += stack.pop();
+        return res;
+    }
+}
+
+
+
+
+
 class Solution {
     public int calculate(String s) {
         if(s.length() == 0) return 0;
