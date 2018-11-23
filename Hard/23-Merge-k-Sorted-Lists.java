@@ -6,6 +6,47 @@ TIME: 0706
 RESULT: 10%
 NOTES:to be improved
 */
+/*
+PriorityQueue:
+put all first node into pq
+connect in-place
+
+Time: O(nlogk) - n is total number of nodes
+Space: O(k) - k is the number of listnode
+*/
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        PriorityQueue<ListNode> pq = new PriorityQueue<>(new Comparator<ListNode>(){
+            public int compare(ListNode l1, ListNode l2){
+                return l1.val - l2.val;
+            }
+        });
+        for(ListNode l : lists){
+            if(l != null) pq.offer(l);
+        }
+        ListNode result = new ListNode(0);
+        ListNode node = result;
+        while(!pq.isEmpty()){
+            node.next = pq.poll();
+            node = node.next;
+            if(node.next != null) pq.offer(node.next);
+        }
+        return result.next;
+
+    }
+}
+
+
+
+
 /**
  * Definition for singly-linked list.
  * public class ListNode {
