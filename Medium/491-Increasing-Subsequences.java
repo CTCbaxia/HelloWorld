@@ -7,6 +7,41 @@ RESULT:
 NOTES:
 permutation 的一种
 */
+/*
+Backtracking + Set
+to deal with duplicate: in every layer, only add 1st duplicate element, and skip for the rest
+
+We want to see if we start from a specific nums[i] till end, what path will yield a valid result
+For every layer we loop all elements that haven't been used (start from index)
+And for the same layer we don't want duplicate num, so we use set to help
+We output result along the way once the result is larger than size 2
+
+Time: O(2^n)  # result if input nums in ascending order, for every element, choose or not
+Space: O(1)
+*/
+class Solution {
+    public List<List<Integer>> findSubsequences(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        dfs(nums, 0, new ArrayList<Integer>(), result);
+        return result;
+    }
+    private void dfs(int[] nums, int start, List<Integer> res, List<List<Integer>> result){
+        if(res.size() >= 2) result.add(new ArrayList<Integer>(res));
+        Set<Integer> visited = new HashSet<>();
+        for(int i = start; i < nums.length; i++){
+            if(visited.contains(nums[i])) continue;
+            if(res.size() == 0 || res.get(res.size() - 1) <= nums[i]){
+                res.add(nums[i]);
+                visited.add(nums[i]);
+                dfs(nums, i + 1, res, result);
+                res.remove(res.size() - 1);                
+            }
+        }
+        return;
+    }
+}
+
+
 
 /*
 Backtracking:
@@ -17,7 +52,7 @@ And for the same layer we don't want duplicate num, so we use set to help
 We output result along the way once the result is larger than size 2
 
 
-Time: O(2^n)  # result if input nums in ascending order
+Time: O(2^n)  # result if input nums in ascending order, for every element, choose or not
 Space: O(1)
 */
 class Solution {
