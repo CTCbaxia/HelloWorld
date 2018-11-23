@@ -3,6 +3,55 @@
 https://leetcode.com/problems/word-break/description/
 
 */
+/*
+Dynamic Programming:
+dp[i] : If we choose first i letters(index i-1 ), is there a match(true)
+构造 dp size = s.length() + 1 是为了方便 substring，以及初始化。总得有一个初始化的值为 true
+
+Time: O(n^2)
+Space: O(n)
+*/
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        boolean[] dp = new boolean[s.length() + 1];//dp[i] if choose first i letter, is there a match
+        dp[0] = true;
+        for(int i = 1; i < dp.length; i++){
+            for(int j = 0; j < i; j++){//将string分成两段：0 - (j - 1), j - i
+                dp[i] = dp[i] || dp[j] && wordDict.contains(s.substring(j, i));//每条path内部&&，path之间||
+            }
+        }        
+        return dp[s.length()];
+    }
+
+}
+
+//dfs
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        if(s.length() == 0) return true;
+        for(String word : wordDict){
+            int i = 0;
+            while(i < s.length() && i < word.length() && s.charAt(i) == word.charAt(i)){
+                i++;
+            }
+            if(i == word.length()){
+                if(wordBreak(s.substring(i), wordDict)) return true;
+            }
+        }
+        return false;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
 //-------2 ROUND FOR MS ------------------------------------------
 class Solution {
     public boolean wordBreak(String s, List<String> wordDict) {
