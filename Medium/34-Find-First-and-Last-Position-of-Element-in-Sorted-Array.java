@@ -10,6 +10,49 @@ NOTES:
 2. 还有一种思路是先找到最左边的点，再找到最右边的点
 */
 /*
+Binary Search:
+smallOrEqual: largest index(right bound)
+largeOrEqual: smallest index(left bound)
+要保证 lo hi 都落在数组内，只需要比较最终他们是否等于target 就知道数组里面有没有了 
+
+Time: O(logn)
+Space: O(1)
+*/
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int[] result = new int[]{-1, -1};
+        if(nums.length == 0) return result;
+        
+        //find small or equal
+        int lo = 0, hi = nums.length - 1;
+        while(lo < hi){
+            int mid = lo + (hi - lo) / 2 + 1;//biased so we won't loop forever
+            if(nums[mid] > target) hi = mid - 1;
+            else lo = mid;
+        }//lo = hi and is the largest index that satisfy smallOrEqual
+        
+        if(nums[hi] != target) return result;//then target not in the array
+        else result[1] = hi;//find right bound
+        
+        lo = 0;//check left bound, hi is already right bound, so we don't need to change
+        while(lo < hi){
+            int mid = lo + (hi - lo) / 2;
+            if(nums[mid] < target) lo = mid + 1;
+            else hi = mid;
+        }
+        result[0] = hi;
+        return result;
+        
+    }
+}
+
+
+
+
+
+
+
+/*
 先找最左边的点，然后找最右边的点。
 如果最左边的点都没找到，就直接返回 [-1,-1]
 */
