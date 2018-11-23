@@ -8,7 +8,68 @@ NOTES:
 binary search 的总结
 */
 /*
-Binary Search
+Binary Search: LargerOrEqual
+for upper bound, update upper bound to give more flexibility for latter elements
+
+Time: O(nlogn)
+Space: O(n)
+*/
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        if(nums.length == 0) return 0;
+        int[] bound = new int[nums.length];//the upper bound[i] for LIS == i + 1
+        int len = 0;//初始化这里会直接把array第一个值更新到len里面
+        for(int i = 0; i < nums.length; i++){
+            int target = nums[i];//找到第一个大于等于 target 的index
+            int lo = 0, hi = len;
+            while(lo < hi){//find larger or equal
+                int mid = lo + (hi - lo)/2;//其实这里的 mid 是永远不可能等于 hi 的
+                if(bound[mid] < target) lo = mid + 1;
+                else hi = mid;
+            }
+            //这里找到的 hi 是顺序里第一个大于或等于 nums[i] 的数，或者就是现有数的 len
+            bound[hi] = nums[i];//将第一个大于等于 target 的值更新为nums[i],减小边界
+            if(hi == len) len++;
+        }
+        return len;
+    }
+}
+
+
+/*
+Dynamic Programming
+dp[i]: longest increasing subsequence till i-th index(inclusive)
+update result after every dp[i] calculated
+
+Time: O(n^2)
+Space: O(n)
+*/
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        if(nums.length == 0) return 0;
+        int result = 1;
+        int[] dp = new int[nums.length];
+        Arrays.fill(dp, 1);//important! base case应该都是 1， 不然后面迭代就不对        
+        for(int i = 1; i < nums.length; i++){
+            for(int j = 0; j < i; j++){
+                if(nums[i] > nums[j]){
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+            result = Math.max(result, dp[i]);
+        }
+        return result;
+    }
+}
+
+
+/*
+Binary Search: keep longest increasing subsequence's upper bound
+
+len[k] 就是这个长度为 k 的 subsequence 里面的最大的数（后面的数想要接这个path，得比这个上边界更大），
+len 一定是从小到大的
+对于每个 nums[i]，找到 len[k] 里面第一个大于等于 nums[i]的数，然后更新这个数，这样使得这条 path 后面的空间更大
+如果这个 nums[i] 比前面所有的 path 的最大值都大，就会更新 len[size] 的值，而扩大最长substring 的 size
 
 Time: O(nlogn)
 Space: O(n)
@@ -17,7 +78,7 @@ class Solution {
     public int lengthOfLIS(int[] nums) {
         if(nums.length == 0) return 0;
         int[] len = new int[nums.length];
-        int size = 0;
+        int size = 0;//初始化这里会直接把array第一个值更新到len里面
         for(int i = 0; i < nums.length; i++){
             int lo = 0;
             int hi = size;
@@ -28,7 +89,7 @@ class Solution {
                 else if(len[mid] >= nums[i]) hi = mid;
             }
             //这里找到的 hi 是顺序里第一个大于或等于 nums[i] 的数，或者就是现有数的 size
-            len[hi] = nums[i];
+            len[hi] = nums[i];//将第一个大于等于 target 的值更新为nums[i],减小边界
             if(hi == size) size++;
             
         }
@@ -97,46 +158,47 @@ class Solution {
 
 
 
-
-
-//Binary Search
-
 /*
-1. 一般需要找到某个特定的值才会两边都增减
-2. 如果有多个 target
-	lo = mid 帮助 hold 最后一个出现的值，hi = mid - 1
-	hi = mid 帮助 hold 第一个出现的值，lo = mid + 1
+For example,
+Given [10, 9, 2, 5, 3, 7, 101, 18],
+The longest increasing subsequence is [2, 3, 7, 101], therefore the length is 4. 
+Note that there may be more than one LIS combination, it is only necessary for you to return the length.
 */
-while(lo < hi){
-	int mid = lo + (hi - lo)/2;
-	if(nums[mid] < x) lo = mid + 1;
-	else if(nums[mid] > x) hi = mid - 1;
+
+class Solution {
+    public int maxProfit(int[] prices) {
+        if(prices.length == 0){
+            return 0;
+        }
+        
+        int[] dp = new int[prices.length];
+        
+        for(int i = prices.length - 1; i >= 0; i--){
+            if( i == prices.length - 1){
+                dp[i] = 0;
+            }else{
+                int choose_i = 0;
+                int max_choose_i = 0;
+                int not_choose_i = 0;
+                //choose i
+                for(int j = i + 1; j < prices.length; j++){
+                    if(prices[j] > prices[i] ){
+                        if(j + 1 < prices.length){
+                            choose_i = prices[j] - prices[i] + dp[j + 1];
+                            max_choose_i = Math.max(max_choose_i, choose_i);
+                        }else{
+                            choose_i = prices[j] - prices[i];
+                            max_choose_i = Math.max(max_choose_i, choose_i);
+                        }
+                    }
+                }
+                
+                //not choose i
+                not_choose_i = dp[i + 1];
+                dp[i] = Math.max(max_choose_i, not_choose_i);
+            }
+        }
+        return dp[0];
+    }
+    
 }
-//lo == hi
-nums[lo] 有可能 > x
-nums[hi] 有可能 < x
-
-
-/*
-找第一个大于 x 的值
-*/
-while(lo < hi){
-	int mid = lo + (hi - lo)/2;
-	if(nums[mid] < x) lo = mid + 1;
-	else if(nums[mid] > x) hi = mid;//永远会在大于 x 的地方等着，并一直逼近最接近 x 的大值
-}
-//lo == hi
-nums[lo] = nums[hi] > x
-
-
-
-while(lo < hi){
-	int mid = lo + (hi - lo)/2;
-	if(nums[mid] < x) lo = mid;
-	else if(nums[mid] > x) hi = mid - 1;
-}
-//有可能死循环？
-nums[lo] ? x
-
-
-
