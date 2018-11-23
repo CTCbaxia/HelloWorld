@@ -11,7 +11,14 @@ NOTES:
 /*
 see which side, left or right, is in increasing order
 and see if the target falls into that side
-
+先判断到底那边是线性完全 increasing 的(condition A or B)
+然后判断 target 在不在那一半里
+       /|
+     A/ | 
+     /  |   hi
+    lo  |  /
+        | /B
+        |/
 Time: O(logn)
 Space: O(1)
 */
@@ -23,11 +30,11 @@ class Solution {
             int mid = lo + (hi - lo)/2;
             if(nums[mid] == target) return mid;
             
-            if(nums[hi] > nums[mid]){//right good, increasing(先用右边，因为 lo 可能等于 mid)
-                if(target > nums[mid] && target <= nums[hi]) lo = mid + 1; //如果 target 落在 right 的范围（因为右边的大小有序）
+            if(nums[hi] > nums[mid]){//right is increasing(先用右边，因为 lo 可能等于 mid)
+                if(target > nums[mid] && target <= nums[hi]) lo = mid + 1; //如果 target 落在 right 的范围
                 else hi = mid - 1;
             }else{//left good, increasing
-                if(target >= nums[lo] && target < nums[mid]) hi = mid - 1;//如果 target 落在 left 的范围（因为左边的大小有序）
+                if(target >= nums[lo] && target < nums[mid]) hi = mid - 1;//如果 target 落在 left 的范围
                 else lo = mid + 1;
             }
         }
@@ -36,17 +43,34 @@ class Solution {
     }
 
 }
-/*
-先判断到底那边是线性完全 increasing 的(condition A or B)
-然后判断 target 在不在那一半里
-       /|
-     A/ | 
-     /  |   hi
-    lo  |  /
-        | /B
-        |/
 
-*/
+//或者先看target，再看drop point
+class Solution {
+    public int search(int[] nums, int target) {
+        int lo = 0, hi = nums.length - 1;
+        while(lo <= hi){
+            int mid = lo + (hi - lo) / 2;
+            if(nums[mid] > target){
+                //check drop point
+                if(nums[hi] > nums[mid]) hi = mid - 1;
+                else {
+                    if(nums[lo] > target) lo = mid + 1;
+                    else hi = mid - 1;
+                }
+            }else if(nums[mid] < target){
+                if(nums[hi] < nums[mid]) lo = mid + 1;
+                else{
+                    if(nums[hi] < target) hi = mid - 1;
+                    else lo = mid + 1;
+                }
+            }else return mid;
+        }
+        return -1;
+    }
+
+}
+
+
 
 
 
@@ -78,36 +102,6 @@ class Solution {
         }
         //lo == hi
         return (nums[hi] == target) ? hi : -1;
-    }
-
-}
-
-class Solution {
-    public int search(int[] nums, int target) {
-        if(nums.length == 0) return -1;
-        int left = 0;
-        int right = nums.length - 1;
-        while(left <= right){
-            int mid = (left + right) / 2;
-            if(nums[mid] == target) return mid; 
-            
-            if(nums[mid] <= nums[right]){//顺序区域
-                if(nums[mid] > target){
-                    right = mid - 1;
-                }else if(nums[mid] < target){//不一定往右
-                    if(nums[right] < target) right = mid - 1;
-                    else left = mid + 1;
-                }                
-            }else{//中间有断层
-                if(nums[mid] > target){//不一定往左
-                    if(nums[left] > target) left = mid + 1;
-                    else right = mid - 1;
-                }else if(nums[mid] < target){
-                    left = mid + 1;
-                }              
-            }
-        }
-        return -1;
     }
 
 }
