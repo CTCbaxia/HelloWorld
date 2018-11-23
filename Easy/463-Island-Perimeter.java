@@ -10,6 +10,37 @@ METHOD:
 
 */
 /*
+顺序规律：4 * island - 2 * neighbors edge
+from top to down, left to right, 
+we only need to check the right and down side
+left and above has been covered
+
+Find a island part, add 4 line
+Find a neighbor, remove 2 line
+
+Time: O(mn)
+Space: O(1)
+*/
+class Solution {
+    public int islandPerimeter(int[][] grid) {
+        if(grid.length == 0 || grid[0].length == 0) return 0;
+        int result = 0;
+        for(int i = 0; i < grid.length; i++){
+            for(int j = 0; j < grid[0].length; j++){
+                if(grid[i][j] == 1){
+                    result += 4;
+                    if(j + 1 < grid[0].length && grid[i][j + 1] == 1) result -= 2;
+                    if(i + 1 < grid.length && grid[i + 1][j] == 1) result -= 2;
+                }
+            }
+        }
+        return result;
+    }
+}
+
+
+
+/*
 SOLUTION 0:
 TIME: 0719 - 10min
 RESULT: 90% - 64ms
