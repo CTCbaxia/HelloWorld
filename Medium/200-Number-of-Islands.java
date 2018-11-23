@@ -6,6 +6,43 @@ TIME: 0706
 RESULT: 100%
 NOTE: 思路很重要
 */
+/*
+When we find one island, make the whole island 0
+
+Time: O(mn)
+Space: O(1)
+*/
+class Solution {
+    public int numIslands(char[][] grid) {
+        if(grid.length == 0 || grid[0].length == 0) return 0;
+        int res = 0;
+        for(int i = 0; i < grid.length; i++){
+            for(int j = 0; j < grid[0].length;j++){
+                if(grid[i][j] == '1'){
+                    res++;
+                    findIsland(grid, i, j);
+                }
+            }
+        }
+        return res;
+    }
+    private void findIsland(char[][] grid, int i, int j){
+        int[][] directions = {{1, 0},{-1, 0},{0, 1},{0, -1}};
+        if(i < 0 || j < 0 || i >= grid.length || j >= grid[0].length) return;
+        if(grid[i][j] == '1'){
+            grid[i][j] = '0';
+            for(int[] dir : directions){
+                findIsland(grid, i + dir[0], j + dir[1]);
+            }
+        }
+        return;
+    }
+}
+
+
+
+
+
 
 class Solution {
     public int numIslands(char[][] grid) {
