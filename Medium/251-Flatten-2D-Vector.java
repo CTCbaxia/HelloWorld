@@ -7,6 +7,42 @@ RESULT:
 NOTES:
 
 */
+/*
+Iterator
+注意要一直循环到 it 有 next，或者到结尾真的没有next
+
+Time: O(n)
+Space: O(1)
+*/
+public class Vector2D implements Iterator<Integer> {
+    Iterator<List<Integer>> list;
+    Iterator<Integer> it;
+    public Vector2D(List<List<Integer>> vec2d) {
+        list = vec2d.iterator();
+    }
+
+    @Override
+    public Integer next() {
+        return it.next();
+    }
+
+    @Override
+    public boolean hasNext() {
+        while((it == null || !it.hasNext()) && list.hasNext()){//while for this case [[],[3]]
+            it = list.next().iterator();
+        }
+        return it != null && it.hasNext();      
+    }
+}
+
+/**
+ * Your Vector2D object will be instantiated and called as such:
+ * Vector2D i = new Vector2D(vec2d);
+ * while (i.hasNext()) v[f()] = i.next();
+ */
+
+
+
 
 /*
 only use hasNext + next 
