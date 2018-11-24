@@ -8,6 +8,40 @@ NOTES:
 
 */
 /*
+DFS: left + right 分块构建
+对于不能写成 for loop 形式的遍历， 用string相加比较好，不需要繁琐的backtracking步骤
+
+Time: O(5^n)
+Space: O(n/2)
+*/
+class Solution {
+    public List<String> findStrobogrammatic(int n) {
+        List<String> result = new ArrayList<>();
+        build(n, "", "", result);
+        return result;
+    }
+    private void build(int n, String left, String right, List<String> result){
+        if(n == 0){
+            result.add(left + right);
+        }else if(n == 1){
+            result.add(left + "0" + right);
+            result.add(left + "8" + right);
+            result.add(left + "1" + right);
+        }else{
+            if(left != "") build(n - 2, left + "0", "0" + right, result);
+            build(n - 2, left + "1", "1" + right, result);
+            build(n - 2, left + "6", "9" + right, result);
+            build(n - 2, left + "8", "8" + right, result);
+            build(n - 2, left + "9", "6" + right, result);
+        }
+        return;
+        
+    }
+}
+
+
+
+/*
 Iterative + BFS
 
 Time: O(5^n)
