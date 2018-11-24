@@ -30,6 +30,30 @@ class Solution {
         return (lens != lent);//if no difference and same len, false; if no difference, diff len, true
     }
 }
+class Solution {
+    public boolean isOneEditDistance(String s, String t) {
+        int index = isSame(s, t);
+        if(index == -1) return false;//exactly the same
+        
+        int res = 0;
+        if(s.length() > t.length()) res = isSame(s.substring(index + 1), t.substring(index));
+        else if(s.length() < t.length()) res = isSame(s.substring(index), t.substring(index + 1));
+        else if(s.length() == t.length()) res = isSame(s.substring(index + 1), t.substring(index + 1));
+        return res == -1;
+    }
+    private int isSame(String s, String t){//if same, return -1, else return index of diff
+        int i = 0;
+        while(i < s.length() && i < t.length()){
+            if(s.charAt(i) != t.charAt(i)) return i;
+            i++;
+        }
+        return s.length() == t.length() ? -1 : i;
+    }
+}
+
+
+
+
 /*
 Time: O(s + t)
 Space: O(1)
