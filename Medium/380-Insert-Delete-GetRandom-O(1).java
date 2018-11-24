@@ -9,7 +9,7 @@ NOTES:
 */
 /*
 Map + List
-Map: <Integer, Position in List> remember to update
+Map: <Integer, Position in List> : get index in O(1) remember to update
 List: to get random index number O(1)
 
 Time:O(1)
@@ -29,10 +29,12 @@ class RandomizedSet {
     /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
     public boolean insert(int val) {
         if(map.containsKey(val)) return false;
+        else{
+            map.put(val, list.size());//update map
+            list.add(val);
+            return true;           
+        }
 
-        map.put(val, list.size());//update map
-        list.add(val);
-        return true;
     }
     
     /** Removes a value from the set. Returns true if the set contained the specified element. */
