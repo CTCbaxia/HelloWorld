@@ -7,6 +7,44 @@ RESULT:
 NOTES:
 
 */
+/*
+Reservoir Sampling solution:
+找到一个就在 random 里面范围 + 1
+当rand == 0 的时候才把他变成现在的数
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    Random rand;
+    int[] nums;
+    public Solution(int[] nums) {
+        rand = new Random();
+        this.nums = nums;
+    }
+    
+    public int pick(int target) {
+        int index = 0;
+        int count = 0;
+        for(int i = 0; i < nums.length; i++){
+            if(nums[i] == target){
+                count++;
+                if(rand.nextInt(count) == 0) index = i;
+            }
+        }
+        return index;
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(nums);
+ * int param_1 = obj.pick(target);
+ */
+
+
+
+ 
 class Solution {
     int[] num;
     Random r;
