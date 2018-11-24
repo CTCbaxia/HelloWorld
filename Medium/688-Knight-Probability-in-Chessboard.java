@@ -8,6 +8,55 @@ NOTES:
 
 */
 /*
+BFS + DP(用queue太慢了)
+用dp数组每次存储到达一点的所有路径
+
+Time: O(K*N^2)
+Space: O(N^2)
+*/
+class Solution {
+    public double knightProbability(int N, int K, int r, int c) {
+        int[][] directions = new int[][]{{2,1},{-2,1},{2,-1},{-2,-1},{1,2},{1,-2},{-1,2},{-1,-2}};
+        double total = Math.pow(8, K);
+        double[][] predp = new double[N][N];//要用double，否则会在数字很大的时候损失精度
+        predp[r][c] = 1;
+
+        while(K > 0){
+            double[][] curdp = new double[N][N];
+            for(int i = 0; i < N; i++){
+                for(int j = 0; j < N; j++){
+                    for(int[] dir : directions){
+                        int movei = i + dir[0];
+                        int movej = j + dir[1];
+                        if(movei >= 0 && movei < N && movej >= 0 && movej < N){
+                            curdp[movei][movej] += predp[i][j];
+                        }
+                    }
+                }
+            }
+            K--;
+            predp = curdp;
+        }
+        double num = 0;
+        for(int i = 0; i < N; i++){
+            for(int j = 0; j < N; j++){
+                num += predp[i][j];
+            }
+        }
+        System.out.println(num);
+        return num / total;
+    }
+}
+
+
+
+
+
+
+
+
+
+/*
 DP 每走一步，计算棋盘所有点的路径数
 没一步都迭代上一轮的结果
 也就是每个 point 都累加它四面八方来的和（截止到上一轮）

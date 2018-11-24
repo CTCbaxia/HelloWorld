@@ -25,7 +25,7 @@ class Solution {
         for(int i = 1; i <= 120; i++){//A is i, B is j
             if(numsInAge[i] == 0) continue;
             for(int j = 1; j <= i; j++){//condition age[B] > age[A] ->should age[A] <= age[A]
-                if(i <= 0.5*j + 7) continue;//if age[B] <= 0.5 * age[A] + 7, no request
+                if(j <= 0.5*i + 7) continue;//if age[B] <= 0.5 * age[A] + 7, no request
                 if(i == j) result += numsInAge[i] * (numsInAge[j] - 1);// one can not friend request himself
                 else result += numsInAge[i] * numsInAge[j];
             }
@@ -33,10 +33,6 @@ class Solution {
         return result;
     }
 }
-
-
-
-
 
 
 
