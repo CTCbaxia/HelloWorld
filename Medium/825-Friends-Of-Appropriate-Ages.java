@@ -10,6 +10,38 @@ NOTES:
 2. 注意看题目给的范围
 */
 /*
+对于可能有很多重复的情况，要看组合：
+先对每个年龄段的人数统计。这样可以减少比较次数
+
+Time: O(120^2) + O(n)
+Space: O(120)
+*/
+class Solution {
+    public int numFriendRequests(int[] ages) {
+        int result = 0;
+        int[] numsInAge = new int[121];
+        for(int i : ages) numsInAge[i]++;
+        
+        for(int i = 1; i <= 120; i++){//A is i, B is j
+            if(numsInAge[i] == 0) continue;
+            for(int j = 1; j <= i; j++){//condition age[B] > age[A] ->should age[A] <= age[A]
+                if(i <= 0.5*j + 7) continue;//if age[B] <= 0.5 * age[A] + 7, no request
+                if(i == j) result += numsInAge[i] * (numsInAge[j] - 1);// one can not friend request himself
+                else result += numsInAge[i] * numsInAge[j];
+            }
+        }
+        return result;
+    }
+}
+
+
+
+
+
+
+
+
+/*
 SOLUTION REFERENCE:
 TIME: 0821 - 30min
 RESULT: 83% - 9ms
