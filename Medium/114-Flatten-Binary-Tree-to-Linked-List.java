@@ -11,6 +11,70 @@ NOTES:
 3. 这种题要学会利用题目的这个函数，用 recursive 来带。
 */
 /*
+Recursive:
+Helper function: flatten 且 return last Node 以减少每次都要loop left node 的操作
+
+Time: O(n) -- 和结果完全相反的情况
+Space: O(h) due to recursive program stack, where h is tree height.
+*/
+class Solution {
+    public void flatten(TreeNode root) {
+        flattenHelper(root);
+        return;
+    }
+    public TreeNode flattenHelper(TreeNode root){//flatten and return last node 
+        if(root == null) return root;
+        TreeNode leftLast = flattenHelper(root.left);
+        TreeNode rightLast = flattenHelper(root.right);
+        
+        if(leftLast != null){//如果 root 有左子树
+            leftLast.right = root.right;
+            root.right = root.left;
+            root.left = null;
+        }
+        //如果右边有点，返回右边；如果没有，如果左边有点，返回左边；如果都没有，返回root
+        return rightLast != null ? rightLast : (leftLast != null ? leftLast : root);
+    }
+}
+
+
+
+
+
+
+
+
+/*
+Recursive
+
+Time: O(n^2) -- 和结果完全相反的情况
+Space: O(h) due to recursive program stack, where h is tree height.
+*/
+class Solution {
+    public void flatten(TreeNode root) {
+        if(root == null) return;
+        flatten(root.left);
+        flatten(root.right);
+        
+        TreeNode node = root.left;//找到左边list的最后一个点
+        if(node == null) return;//左边为null就直接结束了
+        while(node.right != null){
+            node = node.right;
+        }
+        
+        node.right = root.right;//右边搭到左边的结尾
+        root.right = root.left;
+        root.left = null;
+        return;
+    }
+}
+
+
+
+
+
+
+/*
 Preorder
 Flatten left
 Flatten right
