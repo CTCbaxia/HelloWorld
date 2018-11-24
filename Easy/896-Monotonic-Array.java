@@ -7,6 +7,30 @@ NOTES:
 */
 /*
 asc + desc + && 趋势
+两种同时判断
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public boolean isMonotonic(int[] A) {
+        boolean asc = true;
+        boolean desc = true;
+        for(int i= 1; i < A.length; i++){
+            asc = asc && (A[i - 1] <= A[i]);
+            desc = desc && (A[i - 1] >= A[i]);
+        }
+        return asc || desc;
+    }
+}
+
+
+
+
+
+
+/*
+asc + desc + && 趋势
 
 Time: O(n)
 Space: O(1)
