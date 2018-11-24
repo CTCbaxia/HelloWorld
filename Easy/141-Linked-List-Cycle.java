@@ -2,7 +2,24 @@
 EASY
 141. Linked List Cycle
 https://leetcode.com/problems/linked-list-cycle/description/
+*/
+/*
+快慢指针
+*/
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        ListNode fast = head;
+        ListNode slow = head;
+        while(fast != null && fast.next != null){
+            fast = fast.next.next;
+            slow = slow.next;
+            if(fast == slow) return true;
+        }
+        return false;
+    }
+}
 
+/*
 TIME: 0717 - 1h
 RESULT: 90.98% - 1ms
 NOTES:
@@ -40,6 +57,7 @@ Complexity analysis:
 我们只使用了慢指针和快指针两个节点
 
 */
+
 /**
  * Definition for singly-linked list.
  * class ListNode {
