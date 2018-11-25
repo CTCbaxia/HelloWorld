@@ -4,7 +4,33 @@ https://leetcode.com/problems/battleships-in-a-board/description/
 
 TIME: 0710
 RESULT: 100%, 2ms
+*/
+/*
+only count for the head
+be careful for the boundary
 
+Time: O(n^2)
+Space: O(1)
+*/
+class Solution {
+    public int countBattleships(char[][] board) {
+        int res = 0;
+        for(int i = 0; i < board.length; i++){
+            for(int j = 0; j < board[0].length; j++){
+                if(board[i][j] == 'X'){
+                    if(i > 0 && board[i - 1][j] != '.') continue;
+                    if(j > 0 && board[i][j - 1] != '.') continue;
+                    res++;
+                }
+            }
+        }
+        return res;
+    }
+}
+
+
+
+/*
 NOTE:
 题解：船已经画好，只需要数船数量；board 中不会有十字交叉的船，也不会有平行相邻的船（没有船是互相挨着的）
 At least one horizontal or vertical cell separates between two battleships - there are no adjacent battleships.
