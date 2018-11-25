@@ -11,6 +11,71 @@ if the first num in nums has 4 * num > target -> none
 
 
 */
+/*
+Sort + 固定两个数，然后 two sum
+排序可以binary search
+
+Time: O(nlogn) + O(n^3)
+Space: O(1)
+*/
+class Solution {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.sort(nums);
+        for(int i = 0; i < nums.length - 3; i++){
+            for(int j = i + 1; j < nums.length - 2; j++){
+                int lo = j + 1, hi = nums.length - 1;
+                while(lo < hi){
+                    int sum = nums[i] + nums[j] + nums[lo] + nums[hi];
+                    if(sum == target){
+                        res.add(Arrays.asList(nums[i], nums[j], nums[lo], nums[hi]));
+                        lo++;
+                        hi--;
+                        while(lo < hi && nums[lo] == nums[lo - 1]) lo++;
+                        while(lo < hi && nums[hi] == nums[hi + 1]) hi--;
+                    }
+                    else if(sum < target) lo++;
+                    else hi--;
+                }
+                while(j + 1 < nums.length - 2 && nums[j] == nums[j + 1]) j++;
+            }
+            while(i + 1 < nums.length - 3 && nums[i] == nums[i + 1]) i++;
+        }
+        return res;
+    }
+}
+
+/*
+固定两个数，然后 two sum
+1. list can avoid duplicate
+2. set will avoid duplicate
+
+Time: O(nlogn) + O(n^3)
+Space: O(n) - set
+*/
+class Solution {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.sort(nums);
+        for(int i = 0; i < nums.length - 3; i++){
+            for(int j = i + 1; j < nums.length - 2; j++){
+                int n = target - nums[i] - nums[j];
+                Set<Integer> set = new HashSet<>();
+                for(int k = j + 1; k < nums.length; k++){
+                    if(set.contains(n - nums[k])){
+                        List<Integer> r = Arrays.asList(nums[i], nums[j], n - nums[k], nums[k]);
+                        if(!res.contains(r)) res.add(r);//list can avoid duplicate
+                    }
+                    set.add(nums[k]);//set will avoid duplicate
+                }
+            }
+        }
+        return res;
+    }
+}
+
+
+
 //-------2 ROUND FOR MS-------------------------------------------------------------------------
 class Solution {
     public List<List<Integer>> fourSum(int[] nums, int target){
