@@ -17,6 +17,32 @@ Space: O(1)
 */
 class Solution {
     public int singleNumber(int[] nums) {
+        int res = 0;
+        for(int i = 0; i < 32; i++){
+            int count = 0;//count 1 for that bit
+            for(int n : nums){
+                if(((n >> i) & 1) == 1) count++;
+            }
+            res += (count % 3) << i;//count % 3 = 1 or 0
+        }
+        return res;
+    }
+}
+
+
+
+
+
+
+/*
+Bit Calculation
+for 32 bit, check every bit if that bit is 1 in the single number
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public int singleNumber(int[] nums) {
         int result = 0;
         for(int i = 0; i < 32; i++){
             int sum = 0;//sum how many 1 in that bit
