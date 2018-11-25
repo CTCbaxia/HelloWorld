@@ -8,6 +8,8 @@ NOTES:
 这种对比题肯定是横扫
 */
 /*
+先pointer比较，后面完全相等的情况直接string比较
+
 Time: O(n)
 Space: O(1)
 */
@@ -30,6 +32,10 @@ class Solution {
         return (lens != lent);//if no difference and same len, false; if no difference, diff len, true
     }
 }
+/*
+helper function to find the diff index, or -1 if totally the same
+
+*/
 class Solution {
     public boolean isOneEditDistance(String s, String t) {
         int index = isSame(s, t);
