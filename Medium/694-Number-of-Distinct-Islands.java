@@ -26,11 +26,11 @@ class Solution {
     public int numDistinctIslands(int[][] grid) {
         if(grid.length == 0 || grid[0].length == 0) return 0;
         
-        Set<String> result = new HashSet<String>();
+        Set<String> result = new HashSet<String>();//avoid duplicate
         for(int i = 0; i < grid.length; i++){
             for(int j = 0; j < grid[0].length; j++){
                 if(grid[i][j] == 1){
-                    StringBuilder sb = new StringBuilder();
+                    StringBuilder sb = new StringBuilder();//for the whole island
                     find(grid, i, j, i, j, sb);
                     String s = sb.toString();
                     if(result.contains(s)) continue;
@@ -40,12 +40,16 @@ class Solution {
         }
         return result.size();
     }
+    /*
+    find the whole island, and make all 相对位置 to oi, oj into a string
+    because for two same island, the traverse order should also be the same
+    */
     private void find(int[][] grid, int i, int j, int oi, int oj, StringBuilder sb){
         if(i < 0 || j < 0 || i >= grid.length || j >= grid[0].length) return;
         
         if(grid[i][j] == 1){
-            sb.append(i - oi).append(j - oj);
-            grid[i][j] = 0;
+            sb.append(i - oi).append(j - oj);//relative position
+            grid[i][j] = 0;//marked so we won't treat it as island again
         }else return;
         
         int[][] moves = {{1, 0},{-1, 0}, {0, 1},{0, -1}};
@@ -55,6 +59,4 @@ class Solution {
         return;
     }
 }
-
-
 
