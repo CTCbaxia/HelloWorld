@@ -22,6 +22,47 @@ Space: O(1)
 */
 class Solution {
     public List<Integer> findClosestElements(int[] arr, int k, int x) {
+        //find the small or equal 
+        int lo = 0, hi = arr.length - 1;
+        while(lo < hi){
+            int mid = lo + (hi - lo)/2 + 1;
+            if(arr[mid] > x) hi = mid - 1;
+            else lo = mid;
+        }
+        hi++;//now arr[lo] <= x && arr[hi] >= x
+        List<Integer> res = new ArrayList<>();
+        while(k > 0){
+            if(lo < 0) res.add(arr[hi++]);//lo not in range
+            else if(hi >= arr.length) res.add(0, arr[lo--]);//hi not in range
+            else if(x - arr[lo] <= arr[hi] - x){//if they are all in range
+                res.add(0, arr[lo--]);
+            }else{
+                res.add(arr[hi++]);
+            }
+            k--;
+        }
+        return res;
+    }
+}
+
+
+
+
+
+/*
+Binary Search:
+Find the last one that is smaller or equal than x --- lo
+and use two pointers 
+lo: arr[lo] <= x
+hi: arr[hi] >= x (by hi++)
+
+find the suitable value using two pointers and insert or add to the result list
+
+Time: O(logn + k)
+Space: O(1)
+*/
+class Solution {
+    public List<Integer> findClosestElements(int[] arr, int k, int x) {
         int lo = 0; 
         int hi = arr.length - 1;
         //find the last one that is smaller or equal as x
