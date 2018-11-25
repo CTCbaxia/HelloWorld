@@ -8,6 +8,57 @@ RESULT: 100% - 0ms
 NOTES:
 1. 好好体会 one pass + swap
 */
+/*
+bucket sort
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public void sortColors(int[] nums) {
+        int[] bucket = new int[3];
+        for(int n : nums){
+            bucket[n]++;
+        }
+        int index = 0;
+        for(int i = 0; i < bucket.length; i++){
+            while(bucket[i]-- > 0) nums[index++] = i;
+        }
+        return;
+    }
+}
+
+
+
+/*
+Pointers + swap
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public void sortColors(int[] nums) {
+        int lo = 0, hi = nums.length - 1;
+        for(int i = 0; i <= hi; i++){//the upper bound should be hi (hi is pointed to unknow value)
+            if(nums[i] == 0) swap(nums, i, lo++);//i 扫过的地方不会有 2，nums[lo ~ i] = 1
+            else if(nums[i] == 2) swap(nums, i--, hi--);//因为有未知element交换回来了，要调回 i recheck
+        }
+        return;
+    }
+    private void swap(int[] nums, int i, int j){
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+        return;
+    }
+}
+
+
+
+
+
+
+
 
 /*
 SOLUTION REFERENCE: one pass + swap
