@@ -12,6 +12,27 @@ iterative: 正着得到结果
 
 */
 
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        ListNode res = null;
+        while(head != null){
+            ListNode newHead = head.next;
+            head.next = res;
+            res = head;
+            head = newHead;
+        }
+        return res;
+    }
+}
+
+
+
+
+
+
+
+
+
 //---------2 ROUND FOR MS ------------------------------------------------------
 //O(n) 2 pass
 //O(len)
