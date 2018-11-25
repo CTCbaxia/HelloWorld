@@ -6,7 +6,7 @@ RESULT:
 NOTES: 
 */
 /*
-DFS
+Recursive
 get the result with level known for each nestedlist
 
 Time: O(n)
