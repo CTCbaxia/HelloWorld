@@ -9,6 +9,34 @@ this is a optimization problem, which can be usually solved by DP( SEE: https://
 DP 的关键就是找到子问题，使子问题能和后续问题产生联系，在此就是包含有 Opt(i) = nums[i] + ((Opt(i - 1) > 0) ? Opt(i - 1) : 0)
 
 */
+/*
+Dynamic Programming
+dp[i]: 以 i-th index 结尾的，最大presum
+如果前面的dp[i - 1] < 0， dp[i] 就是 num[i]自己
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public int maxSubArray(int[] nums) {
+        int[] dp = new int[nums.length];
+        dp[0] = nums[0];
+        int res = dp[0];//non empty array
+        for(int i = 1; i < nums.length; i++){
+            if(dp[i - 1] > 0) dp[i] = dp[i - 1] + nums[i];
+            else dp[i] = nums[i];
+            res = Math.max(res, dp[i]);
+        }
+        return res;
+    }
+}
+
+
+
+
+
+
+
 class Solution {
     public static int maxSubArray(int[] A) {
         if(A.length == 0) return 0;
