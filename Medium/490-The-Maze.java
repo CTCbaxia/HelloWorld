@@ -8,12 +8,16 @@ NOTES:
 
 */
 /*
-BFS: 
+BFS: mark the place (-1) that we have already visited
 for every level, put all reachable points (that haven't been visited) to the queue
 until we find the destination
 
-improve: we can use maze to mark visited: set the value to -1
+improve: 
+- we can use maze to mark visited: set the value to -1
+- if not allowed to modify, we can have boolean[][] visited
 
+Time: O(mn) worst case need to traverse all point
+Space: O(mn)
 */
 class Solution {
     public boolean hasPath(int[][] maze, int[] start, int[] destination) {
@@ -53,6 +57,10 @@ class Solution {
         return new int[]{i, j};
     }
 }
+
+
+
+
 /*
 DFS: 
 make every move and finish one path, use set for visited point
