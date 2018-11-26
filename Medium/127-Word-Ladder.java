@@ -2,7 +2,68 @@
 MEDIUM
 127. Word Ladder
 https://leetcode.com/problems/word-ladder/description/
+*/
 
+/*
+BFS:
+
+每一层都更新能匹配的单词，直到找到单词
+
+Time: O(n^2)
+Space: O(n)
+*/
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        Queue<String> q = new LinkedList<>();
+        Set<String> visited = new HashSet<>();
+        int res = 1;
+        q.offer(beginWord);
+        while(!q.isEmpty()){
+            res++;//匹配的是下一层
+            Queue<String> newQ = new LinkedList<>();//next level
+            while(!q.isEmpty()){
+                String word = q.poll();
+                for(String s : wordList){
+                    if(visited.contains(s)) continue;
+                    if(isMatch(word, s)){
+                        if(s.equals(endWord)) return res;
+                        newQ.offer(s);
+                        visited.add(s);
+                    }
+                }
+            }
+            q = newQ;
+        }
+        return 0;
+    }
+    private boolean isMatch(String s1, String s2){
+        //word have same length
+        int count = 0;
+        for(int i = 0; i < s1.length(); i++){
+            if(s1.charAt(i) != s2.charAt(i)) count++;
+            if(count > 1) return false;
+        }
+        return count == 1;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 TIME: 0712 - 5h
 RESULT: TIME LIMIT EXCEED
 NOTES:
