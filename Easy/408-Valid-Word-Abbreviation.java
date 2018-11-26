@@ -6,6 +6,42 @@ RESULT:
 NOTES: 
 */
 /*
+Two Pointers
+if letter, compare
+if digit, wait until all digit comming out -- num
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public boolean validWordAbbreviation(String word, String abbr) {
+        char[] wc = word.toCharArray();
+        char[] ac = abbr.toCharArray();
+        int i = 0, j = 0;
+        while(i < wc.length && j < ac.length){
+            char w = wc[i];
+            char a = ac[j];
+            if(Character.isLetter(w) && Character.isLetter(a)){
+                if(w != a) return false;
+                i++;
+                j++;
+            }else{//abbr is num
+                if(ac[j] == '0') return false;//should not have leading 0
+                int num = 0;
+                while(j < ac.length && Character.isDigit(ac[j])){
+                    num = num * 10 + ac[j] - '0';
+                    j++;
+                }
+                i = i + num;
+            }
+        }
+        return i == wc.length && j == ac.length;
+    }
+}
+
+
+
+/*
 Two pointers
 
 Time: O(n)
