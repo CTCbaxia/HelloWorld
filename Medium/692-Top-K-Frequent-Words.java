@@ -9,6 +9,104 @@ NOTES:
 1. map.values() 的 inherit 特性：http://javatutorialhq.com/java/util/hashmap-class/values-method-example/
 2. how to sort collections: https://stackoverflow.com/questions/2477261/how-to-sort-a-collectiont
 */
+/*
+PriorityQueue
+
+Time: O(n) + O(nlogk) (worst case #key = n)
+Space: O(n)
+*/
+class Solution {
+    public class wordFreq{
+        String word;
+        int freq;
+        public wordFreq(String _word, int _freq){
+            word = _word;
+            freq = _freq;
+        }
+    }
+    public List<String> topKFrequent(String[] words, int k) {
+        Map<String, Integer> map = new HashMap<>();
+        PriorityQueue<wordFreq> pq = new PriorityQueue<>(new Comparator<wordFreq>(){
+            public int compare(wordFreq wf1, wordFreq wf2){
+                if(wf1.freq == wf2.freq){   
+                    return wf2.word.compareTo(wf1.word);//want the smaller to be poll later(小的字母相当于有更大的freq权重)
+                }else{
+                    return wf1.freq - wf2.freq;//should be min heap
+                }
+            }
+        });
+        for(String word : words){
+            map.put(word, map.getOrDefault(word, 0) + 1);
+        }
+        for(String s : map.keySet()){
+            pq.offer(new wordFreq(s, map.get(s)));
+            if(pq.size() > k) pq.poll();
+        }
+        List<String> res = new ArrayList<>();
+        while(!pq.isEmpty()){
+            res.add(0, pq.poll().word);
+        }
+        return res;
+    }
+}
+
+
+
+
+
+
+
+//string comparison can be String1.compareTo(String2)
+class Solution {
+    public class wordFreq{
+        String word;
+        int freq;
+        public wordFreq(String _word, int _freq){
+            word = _word;
+            freq = _freq;
+        }
+    }
+    public List<String> topKFrequent(String[] words, int k) {
+        Map<String, Integer> map = new HashMap<>();
+        PriorityQueue<wordFreq> pq = new PriorityQueue<>(new Comparator<wordFreq>(){
+            public int compare(wordFreq wf1, wordFreq wf2){
+                if(wf1.freq == wf2.freq){
+                    int i = 0;
+                    String w1 = wf1.word;
+                    String w2 = wf2.word;
+                    while(i < w1.length() && i < w2.length()){
+                        if(w1.charAt(i) == w2.charAt(i)) i++;
+                        else{
+                            return w2.charAt(i) - w1.charAt(i);
+                        } 
+                    }
+                    return w1.length() - w2.length();
+                }else{
+                    return wf1.freq - wf2.freq;//should be min heap
+                }
+            }
+        });
+        for(String word : words){
+            map.put(word, map.getOrDefault(word, 0) + 1);
+        }
+        for(String s : map.keySet()){
+            pq.offer(new wordFreq(s, map.get(s)));
+            if(pq.size() > k) pq.poll();
+        }
+        List<String> res = new ArrayList<>();
+        while(!pq.isEmpty()){
+            res.add(0, pq.poll().word);
+        }
+        return res;
+    }
+}
+
+
+
+
+
+
+
 
 /*
 TIME: 0819 - 2h
