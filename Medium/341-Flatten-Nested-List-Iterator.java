@@ -31,6 +31,12 @@ NOTES:
  *     public List<NestedInteger> getList();
  * }
  */
+/*
+Stack: 保证最上面的是int
+
+Time: O(n)
+Space: O(1)
+*/
 public class NestedIterator implements Iterator<Integer> {
     private Stack<NestedInteger> stack = new Stack<NestedInteger>();
     
@@ -50,10 +56,11 @@ public class NestedIterator implements Iterator<Integer> {
         if(stack.size() == 0) return false;
         if(stack.peek().isInteger()) return true;
         else{
+        //while the top is not int, while until it is
             while(stack.size() != 0 && !stack.peek().isInteger()){
                 List<NestedInteger> tmp = stack.pop().getList();
                 if(tmp.size() == 0) continue;
-                for(int i = tmp.size() - 1; i >= 0; i--){
+                for(int i = tmp.size() - 1; i >= 0; i--){//把这个list 撸平
                     stack.push(tmp.get(i));
                 }
             }
