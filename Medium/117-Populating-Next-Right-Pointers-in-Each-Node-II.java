@@ -7,6 +7,81 @@ TIME: 0828 - 30min
 RESULT: 87% - 1ms
 
 */
+/**
+ * Definition for binary tree with next pointer.
+ * public class TreeLinkNode {
+ *     int val;
+ *     TreeLinkNode left, right, next;
+ *     TreeLinkNode(int x) { val = x; }
+ * }
+ */
+/*
+BFS and use a pre node 
+
+Time: O(n)
+Space: O(1)
+*/
+//更 intuitive
+public class Solution {
+    public void connect(TreeLinkNode root) {
+        if(root == null) return;
+        TreeLinkNode head = root;
+        TreeLinkNode node = root;
+        while(head != null){
+            node = head;
+            TreeLinkNode pre = null;
+            while(node != null){//loop for this level
+                if(node.left != null){//left child
+                    if(pre != null) pre.next = node.left;
+                    pre = node.left;
+                }
+                
+                if(node.right != null){//right child
+                    if(pre != null) pre.next = node.right;
+                    pre = node.right;
+                }
+
+                node = node.next;//loop this level
+            }
+            //找到下一个层的起始点：in this level, find the head that has a child
+            while(head != null && head.left == null && head.right == null){
+                head = head.next;
+            }
+          if(head == null) return;//if no node has a child
+          head = head.left != null ? head.left : head.right;
+        }
+    }
+}
+//更简洁
+public class Solution {
+    public void connect(TreeLinkNode root) {
+        if(root == null) return;
+        TreeLinkNode head = root;
+        TreeLinkNode node = root;
+        while(head != null){
+            node = head;
+            head = null;//除非这一层的节点有child，才会更新head，才会有下一个loop
+            TreeLinkNode pre = null;
+            while(node != null){//loop for this level
+                if(node.left != null){//left child
+                    if(pre == null) head = node.left;//first child from this level
+                    if(pre != null) pre.next = node.left;
+                    pre = node.left;
+                }
+                
+                if(node.right != null){//right child
+                    if(pre == null) head = node.right;//first child from this level
+                    if(pre != null) pre.next = node.right;
+                    pre = node.right;
+                }
+                node = node.next;//loop this level
+            }
+        }
+    }
+}
+
+
+
 public class Solution {
     public void connect(TreeLinkNode root) {
         while(root != null){
