@@ -2,10 +2,30 @@
 26. Remove Duplicates from Sorted Array
 Solution 2：beat 96%
 
-
-思路：遍历数组，若遇到数>现有nums[lens-1]的，就把他移到nums[lens]来
 */
+/*
+two pointers
 
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int pointer = 0;
+        for(int i = 0; i < nums.length; i++){
+            if(i == 0 || nums[i] != nums[i - 1]){
+                nums[pointer++] = nums[i];
+            }
+        }
+        return pointer;
+    }
+}
+
+
+
+
+
+//思路：遍历数组，若遇到数>现有nums[lens-1]的，就把他移到nums[lens]来
 class Solution {
     public int removeDuplicates(int[] nums) {
         int index = 0; 
