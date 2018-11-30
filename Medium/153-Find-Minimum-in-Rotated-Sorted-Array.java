@@ -8,8 +8,8 @@ RESULT: 100% - 0ms
 //最小值肯定在断层处
 //注意题目并没有说一定有 rotate（所有的某一个位置处，可能就是没有该颠倒位）
 */
-
 /*
+Binary Search
 we only need to detect where is the drop
 and make sure we will not jump over the drop
 
@@ -23,14 +23,13 @@ class Solution {
         int hi = nums.length - 1;
         while(lo < hi){
             int mid = lo + (hi - lo)/2; 
+            //if nums[hi] > nums[mid], 说明右边是单调的
             if(nums[hi] > nums[mid]) hi = mid; //通过右边判断，不要左边，因为左边会遇到 lo = mid 的状况
             else lo = mid + 1;//we know mid is not the answer because there is nums[hi] < nums[mid] 
         }
         return nums[lo];//lo == hi
     }
 }
-
-
 
 
 

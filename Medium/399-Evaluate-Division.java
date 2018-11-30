@@ -5,6 +5,11 @@ https://leetcode.com/problems/evaluate-division/description/
 
 TIME: 0809 - 3h
 RESULT: 75% - 2ms
+*/
+
+
+
+/*
 NOTES: 
 0. 可以只用一个 map 存所有节点的 link，再用一个 map 存对应的 value。
 1. mapRight.getOrDefault(equations[i][1], new HashSet<Integer>()).add(i);   mapRight.getOrDefault 只是得到返回值，并没有把值添加到 map 里面去

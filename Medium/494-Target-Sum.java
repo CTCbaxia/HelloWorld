@@ -6,6 +6,50 @@ TIME: 1008 - 20min
 RESULT: 100% - 7ms
 
 */
+/*
+Dynamic Programming:
+pos - neg = S
+pos + neg = sumofnums
+just need to make sum of subset = (S + sumofnums) / 2
+
+二维
+dp[i][j] = dp[i - 1][j] + dp[i - 1][j - nums[i]];注意index范围
+一维
+dp[i] += dp[i - nums[j]], j要从后往前算
+
+Time: O(n^2)
+Space: O(n*S)
+*/
+class Solution {
+    public int findTargetSumWays(int[] nums, int S) {
+        int sum = 0;
+        for(int n : nums) sum += n;
+        if((S + sum) % 2 > 0 || sum < S) return 0;
+        return findSubset(nums,(S + sum)/2);
+    }
+    private int findSubset(int[] nums, int target){
+        int[][] dp = new int[nums.length][target + 1];//dp[i][j] if we have i nums, could we add to j
+        if(nums[0] <= target) dp[0][nums[0]] = 1;
+        // for(int i = 0; i < nums.length; i++){
+        //     dp[i][0] = 1;
+        // }
+        
+        dp[0][0] = 1 + (nums[0] == 0 ? 1 : 0);//there might be 0, and can be chosen or not
+        
+        for(int i = 1; i < dp.length; i++){
+            for(int j = 0; j < dp[0].length; j++){
+                dp[i][j] += dp[i - 1][j];
+                if(j >= nums[i]) dp[i][j] += dp[i -1][j - nums[i]];
+            }
+            
+        }
+        return dp[nums.length - 1][target];
+    }
+}
+
+
+
+
 
 //------2 ROUND FOR MS------------------------------------------------------------
 /*

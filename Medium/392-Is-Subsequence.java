@@ -15,11 +15,14 @@ NOTES:
 3. 新建 List<Integer>[] charS = new list[26];
 */
 /*
-SOLUTION 0: 
-TIME: 0915 - 15min
-RESULT: 57% - 22ms
+Pointers
+for every char in s(short),check whether it is in t(using an index)
+
 1. you cannot sort this because you need to maintain the position
 2. for each s, you need to check from the 1 to n
+
+Time: O(n)
+Space: O(1)
 */
 class Solution {
     public boolean isSubsequence(String s, String t) {
@@ -33,6 +36,13 @@ class Solution {
         return true;
     }
 }
+
+
+
+
+
+
+
 /*
 SOLUTION REFERENCE: 
 TIME: 0915 - 20min
