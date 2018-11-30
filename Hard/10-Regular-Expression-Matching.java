@@ -7,6 +7,7 @@ RESULT:
 */
 /*
 Dynamic Programming:
+https://www.youtube.com/watch?v=l3hda49XcDE
 
 dp[i][j] is true: until s.charAt(i - 1) and p.charAt(j - 1) is matched
 if p.charAt(i - 1) is letter or '.'
