@@ -5,6 +5,36 @@ Notes:
 1.对于for循环，可以有int i=1这样的起步，因为对于空数组来说，一开始的初始化之后，判断终止条件就会发现for循环无法执行，所以不会运行for循环。
 2.对于字符串内字符的增加和联合，直接把两个字符串相加就好
 */
+/*
+compare every letter
+use first string as standard
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public String longestCommonPrefix(String[] strs){
+        if(strs.length == 0) return "";
+
+        String res = "";
+        for(int i = 0; i < strs[0].length(); i++){
+            char c = strs[0].charAt(i);
+            for(int j = 1; j < strs.length; j++){
+                if(i >= strs[j].length()) return res;
+                if(c != strs[j].charAt(i)) return res;
+            }
+            res += c;
+        }
+        return res;
+    }
+}
+
+
+
+
+
+
+
 class Solution {
     public String longestCommonPrefix(String[] strs) {
         if(strs.length == 0) return "";
