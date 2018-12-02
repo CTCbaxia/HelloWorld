@@ -11,12 +11,13 @@ NOTES:
 
 */
 /*
-SOLUTION REFERENCE: 
-TIME: 0823 - 10min
-RESULT: 100% - 4ms
-THOUGHTS:
+From Back to Front, find the closet point every index should reach
 如果一个点可以到达 last，那么一定也可以到达 last 前面的任何一个点。
 一步一步往回走，确定每一步都是可以慢慢走到 last 的
+遍历结束后看看这个点是不是等于 0
+
+Time: O(n)
+Space: O(1)
 */
 class Solution {
     public boolean canJump(int[] nums) {
@@ -28,6 +29,8 @@ class Solution {
     }
 
 }
+
+
 /*
 SOLUTION REFERENCE: 
 TIME: 0823 - 10min
