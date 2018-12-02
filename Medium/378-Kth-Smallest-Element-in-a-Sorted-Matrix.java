@@ -6,6 +6,100 @@ TIME:
 RESULT: 
 NOTES:
 */
+/*
+PriorityQueue 存每行最小值
+
+Time: O(n + klogk)
+1. put the first line into pq and the elements in pq is the smallest one in each column
+
+2. do the following
+    and poll the smallest in pq (that would be the smallest for the matrix)
+    and push the next element to the pop element in that column (pq still holds smallest for each column)
+
+3. untill we pop (k - 1) smallest, we got the kth smallest on the top
+
+this method only need to make sure the column is in order (rows don't have to be)
+*/
+class Solution {
+    public int kthSmallest(int[][] matrix, int k) {
+        if(matrix.length == 0 || matrix[0].length == 0) return 0;
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>(new Comparator<int[]>(){
+            public int compare(int[] i1, int[] i2){
+                return i1[2] - i2[2];
+            }
+        });//[x,y,val]
+
+        //put the first row into pq
+        for(int i = 0; i < matrix[0].length; i++){
+            pq.offer(new int[]{0, i, matrix[0][i]});
+        }
+        //poll till the kth smallest elements
+        for(int i = 0; i < k - 1; i++){
+            int[] point = pq.poll();
+            int x = point[0];
+            int y = point[1];
+            if(x + 1 < matrix.length) pq.offer(new int[]{x + 1, y, matrix[x + 1][y]});//永远记得检查index范围
+        }
+        return pq.poll()[2];
+    }
+}
+
+/*
+Binary search: guess + count + 缩小范围
+
+Time: O(nlogX) X=max-min
+first assign lo = min, hi = max, 
+then we do binary search to find count of smallOrEqual than min, total log(max - min) times
+
+each time, count how many point is less or equal than current mid
+since each row and column is sorted, we can do this in O(n) time by 
+starting from left bottom corner
+if val <= mid, done with this column, j++;(the count for this column is i + 1)
+else i--;
+until we reach right up corner, since we never go back, total step is O(n)
+
+and back in the main method, we hold the pending point(mid) that satisfy the answer using hi = mid, 
+but we still don't know whether the mid exist in the matrix
+but it is clear that lo <= answer <= pending point(mid) <= hi
+so we make lo and hi closer till meet lo == hi
+return lo
+*/
+class Solution {
+    public int kthSmallest(int[][] matrix, int k) {
+        if(matrix.length == 0 || matrix[0].length == 0) return 0;
+        int m = matrix.length, n = matrix[0].length;
+        int lo = matrix[0][0];
+        int hi = matrix[m - 1][n - 1];
+
+        while(lo < hi){//O(logX)
+            int mid = lo + (hi - lo) / 2;//count how many elements smallerOrEqual than mid
+            int count = countSmallOrEqual(matrix, mid);//O(n)
+            if(count < k) lo = mid + 1;
+            else hi = mid;
+        }
+        return hi;
+
+    }    
+    public int countSmallOrEqual(int[][] matrix, int mid){
+        //start from the left down corner
+        int i = matrix.length - 1, j = 0;
+        int count = 0;
+        while(i >= 0 && j < matrix[0].length){
+            if(matrix[i][j] <= mid){
+                count += i + 1;
+                j++;
+            }else{
+                i--;
+            }
+        }
+        return count;
+    }
+}
+
+
+
+
 
 /*
 binary search
@@ -62,9 +156,9 @@ class Solution {
 
 
 /*
-PriorityQueue
+PriorityQueue 存每行最小值
 
-Time: O(n + logk)
+Time: O(n + klogk)
 1. put the first line into pq and the elements in pq is the smallest one in each column
 
 2. do the following
@@ -75,6 +169,34 @@ Time: O(n + logk)
 
 this method only need to make sure the column is in order (rows don't have to be)
 */
+
+//用int[]{x, y, matrix[x][y]} 实现
+class Solution {
+    public int kthSmallest(int[][] matrix, int k) {
+        if(matrix.length == 0 || matrix[0].length == 0) return 0;
+        PriorityQueue<int[]> pq = new PriorityQueue<int[]>(new Comparator<int[]>(){
+            public int compare(int[] p1, int[] p2){
+                return p1[2] - p2[2];
+            }
+        });
+        for(int j = 0; j < matrix[0].length; j++){
+            pq.offer(new int[]{0, j, matrix[0][j]});
+        }
+        
+        //pop the smallest element in pq
+        for(int i = 0; i < k - 1; i++){
+            int[] point = pq.poll();// smallest element in pq
+            if(point[0] == matrix.length - 1) continue;//if the end of that column, we don't add more
+            else{
+                int x = point[0];
+                int y = point[1];
+                pq.offer(new int[]{x + 1, y, matrix[x + 1][y]});
+            }
+        }
+        return pq.poll()[2];
+    }
+}
+
 //用构造函数实现
 class Solution {
     public class pointVal{
@@ -112,30 +234,3 @@ class Solution {
 }
 
 
-
-//用int[]{x, y, matrix[x][y]} 实现
-class Solution {
-    public int kthSmallest(int[][] matrix, int k) {
-        if(matrix.length == 0 || matrix[0].length == 0) return 0;
-        PriorityQueue<int[]> pq = new PriorityQueue<int[]>(new Comparator<int[]>(){
-            public int compare(int[] p1, int[] p2){
-                return p1[2] - p2[2];
-            }
-        });
-        for(int j = 0; j < matrix[0].length; j++){
-            pq.offer(new int[]{0, j, matrix[0][j]});
-        }
-        
-        //pop the smallest element in pq
-        for(int i = 0; i < k - 1; i++){
-            int[] point = pq.poll();// smallest element in pq
-            if(point[0] == matrix.length - 1) continue;//if the end of that column, we don't add more
-            else{
-                int x = point[0];
-                int y = point[1];
-                pq.offer(new int[]{x + 1, y, matrix[x + 1][y]});
-            }
-        }
-        return pq.poll()[2];
-    }
-}
