@@ -14,55 +14,54 @@ Time: Add: O(1) | Find O(n)
 Space: O(n)
 */
 class TwoSum {
-    public Map<Integer, Integer> map;
+    Map<Integer, Integer> map;
     /** Initialize your data structure here. */
     public TwoSum() {
-        map = new HashMap<Integer, Integer>();
+        map = new HashMap<>();
     }
     
     /** Add the number to an internal data structure.. */
     public void add(int number) {
-        if(map.containsKey(number)) map.put(number, 2);
-        else map.put(number, 1);
+        map.put(number, map.getOrDefault(number, 0) + 1);
+        
     }
     
     /** Find if there exists any pair of numbers which sum is equal to the value. */
     public boolean find(int value) {
-        
-        for(int i : map.keySet()){
-            if(value == 2 * i){
-                if(map.get(i) == 2) return true;
-            }else if(map.containsKey(value - i)){
-                return true;
-            } 
+        for(int n : map.keySet()){
+            if(map.containsKey(value - n)){
+                if(value - n == n && map.get(value - n) < 2) continue;
+                else return true;
+            }
         }
         return false;
     }
 }
 /*
-HashSet: Quick Find
+HashSet: Quick Find - put every sum into the set
 
 if less add, more find --- care more about find complexity
 
 Time: add : O(n)  | find O(1)
 Space: O(n)
 */
+
 class TwoSum {
-    public Set<Integer> num;
-    public Set<Integer> sum;
+    Set<Integer> num;
+    Set<Integer> sum;
     /** Initialize your data structure here. */
     public TwoSum() {
-        num = new HashSet<Integer>();
-        sum = new HashSet<Integer>();
+        num = new HashSet<>();
+        sum = new HashSet<>();
     }
     
     /** Add the number to an internal data structure.. */
     public void add(int number) {
         Iterator<Integer> it = num.iterator();
         while(it.hasNext()){
-            int tmp = it.next();
-            sum.add(tmp + number);
+            sum.add(number + it.next());
         }
+
         num.add(number);
     }
     
