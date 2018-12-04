@@ -8,8 +8,8 @@ NOTES:
 
 */
 /*
-stack + maxStack
-maxStack 只保存更大的值，见过更好的就再也不会回去
+双重stack: stack + maxStack
+maxStack 只保存比当前 peek 更大的值，见过更好的就再也不会回去
 stack:    1 0 2 1 0 3 1 0 1
 maxStack: 1 1 2 2 2 3 3 3 3
 
@@ -81,3 +81,54 @@ class MaxStack {
  * int param_4 = obj.peekMax();
  * int param_5 = obj.popMax();
  */
+
+//push max 的时候只push >= max.peek() 的写法
+class MaxStack {
+    Stack<Integer> stack;
+    Stack<Integer> max;
+    /** initialize your data structure here. */
+    public MaxStack() {
+        stack = new Stack<>();
+        max = new Stack<>();
+    }
+    
+    public void push(int x) {
+        stack.push(x);
+        if(max.isEmpty() || max.peek() <= x) max.push(x);
+    }
+    
+    public int pop() {
+        if(stack.isEmpty()) return -1;
+        int top = stack.pop();
+        if(max.peek() == top) max.pop();
+        return top;
+    }
+    
+    public int top() {
+        if(stack.isEmpty()) return -1;
+        return stack.peek();
+    }
+    
+    public int peekMax() {
+        if(max.isEmpty()) return -1;
+        return max.peek();
+    }
+    
+    public int popMax() {
+        if(max.isEmpty()) return -1;
+        int maxNum = max.pop();
+        Stack<Integer> tmp = new Stack<>();
+        int num = stack.pop();
+        while(!stack.isEmpty() && num != maxNum){
+            tmp.push(num);
+            num = stack.pop();
+        }
+        //find the position
+        while(!tmp.isEmpty()){
+            num = tmp.pop();
+            if(max.isEmpty() || max.peek() <= num) max.push(num);
+            stack.push(num);
+        }
+        return maxNum;
+    }
+}
