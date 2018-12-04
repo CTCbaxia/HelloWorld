@@ -9,6 +9,51 @@ NOTES:
 */
 /*
 Recursive + global i
+跟 basic calculator 一样的套路,注意 global i
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    int i = 0;
+    public String decodeString(String s) {
+        return decodeHelper(s);
+    }
+    private String decodeHelper(String s){
+        int num = 0;
+        String res = "";
+        for(; i < s.length() && s.charAt(i) != ']'; i++){//只会算一个[]内的内容
+            char c = s.charAt(i);
+            if(c == '['){
+                i++;
+                String tmp = decodeHelper(s);
+                while(num-- > 0){
+                    res += tmp;
+                }
+            }else if(Character.isDigit(c)){
+                num = getNum(s);
+                i--;//这时候因为 getNum 之后会变成不是数字的东西，所以i--抵消自增
+            }else if(Character.isLetter(c)){
+                res += c;
+            }
+        }
+        return res;
+    }
+    private int getNum(String s){
+        int num = 0;
+        while(i < s.length() && Character.isDigit(s.charAt(i))){
+            num = num * 10 + s.charAt(i++) - '0';
+        }
+        return num;
+    }
+}
+
+
+
+
+
+/*
+Recursive + global i
 
 Time: O(n)
 Space: O(1)
