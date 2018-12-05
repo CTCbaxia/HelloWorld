@@ -5,7 +5,6 @@ MEDIUM
 TIME: 
 RESULT: 
 NOTES:
-
 */
 /*
 Binary Search: climbing the mountain
