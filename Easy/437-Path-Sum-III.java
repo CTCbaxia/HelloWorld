@@ -39,6 +39,32 @@ class Solution {
     }
 }
 
+//if we want sum from the root to the node, we don't need the map, just keep the curSum in backtracking
+class Solution {
+    public int pathSum(TreeNode root, int sum) {
+        return pathHelper(root, 0, sum);
+    }
+    private int pathHelper(TreeNode node, int curSum, int target){
+        if(node == null) return 0;
+        curSum += node.val;//current sum for this sigle path
+        if(curSum == target) res++;
+        res += pathHelper(node.left, curSum, target);
+        res += pathHelper(node.right, curSum, target);
+        
+        curSum -= node.val;//backtrack 的时候移走这条track的sum，以免影响后面的另一条track
+        return res;
+    }
+}
+
+
+
+
+
+
+
+
+
+
 
 
 /*
