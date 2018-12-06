@@ -43,7 +43,7 @@ class Solution {
         
         //push into pq sorted by freq
         for(char c = 'a'; c <= 'z'; c++){
-            if(counter[c - 'a'] != 0){
+            if(counter[c - 'a'] != 0){//important! : need to put existing letter
                 pq.offer(new wordFreq(c, counter[c - 'a']));
             }
         }
