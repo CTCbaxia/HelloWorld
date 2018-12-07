@@ -18,30 +18,30 @@ update O(n)
 sumRange: O(1)
 */
 class NumArray {
-    int[] sum;//maintain the sum array from 0 to i
-    int[] num;
+    int[] sums;//maintain the sums array from 0 to i
+    int[] nums;
     public NumArray(int[] nums) {
-        num = nums;
-        sum = new int[nums.length];
+        this.nums = nums;
+        sums = new int[nums.length];
+        int sum = 0;
         for(int i = 0; i < nums.length; i++){
-            sum[i] += nums[i];
-            if(i > 0) sum[i] += sum[i - 1];
+            sum += nums[i];
+            sums[i] = sum;
         }
     }
     
     public void update(int i, int val) {
-        //modify sum
-        int diff = val - num[i];//-1
-        for(int k = i; k < sum.length; k++){
-            sum[k] += diff;//update the sum after i with diff
+        
+        int diff = val - nums[i];
+        nums[i] = val;//modify nums (we will use it in sumRange)
+        for(int k = i; k < sums.length; k++){//modify sums
+            sums[k] += diff;
         }
         
-        //modify num (we will use it in sumRange)
-        num[i] = val;
     }
     
     public int sumRange(int i, int j) {
-        return sum[j] - sum[i] + num[i];
+        return sums[j] - sums[i] + nums[i];
     }
 }
 
