@@ -6,16 +6,46 @@ https://leetcode.com/problems/group-anagrams/description/
 TIME: 0721 - 1h
 RESULT: 95% - 15ms
 NOTES:
+*/
+/*
+Sort + Map
+对每个单词 sort，得到key = sort code，value = word
+
+Time: O(nklogk)
+Space: O(n)
+*/
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs){
+        //sort string and put into map
+        List<List<String>> result = new ArrayList<>();
+        Map<String, List<String>> map = new HashMap<>();
+        for(String s : strs){
+            char[] c = s.toCharArray();
+            Arrays.sort(c);
+            String sorted = new String(c);
+
+            if(!map.containsKey(sorted)){
+                map.put(sorted, new ArrayList<>());
+            }
+            map.get(sorted).add(s);
+        }
+
+        //put map into result
+        for(Map.Entry<String, List<String>> entry : map.entrySet()){
+            result.add(entry.getValue());
+        }
+        return result;
+    }
+}
+/*
+SOLUTION REFERENCE:
+注意简洁的写法也语法
+
 1. String s = String.valueOf(ch); 直接把 char[] 转成字符串 
 2. Map<String,List<String>>
 3. 直接添加一个新建的内容： 比如 result.add(new ArrayList<String>()); 还比如： map.put(s, new ArrayList<String>());
 4. 直接返回一个新建的内容： return new ArrayList<List<String>>(map.values());
 5. new 对象的时候可以直接带入 collection
-*/
-
-/*
-SOLUTION REFERENCE:
-注意简洁的写法也语法
 */
 class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
