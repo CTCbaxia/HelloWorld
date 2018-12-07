@@ -5,10 +5,43 @@ https://leetcode.com/problems/single-number-iii/description/
 
 TIME: 0722 - 1h
 RESULT: 100% - 1ms
+*/
+/*
+XOR + 分组
+如果只想要 check 某一个 bit 位是不是 1，要 &
+如果想两两抵消（check 是否相等），用 ^
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public int[] singleNumber(int[] nums) {
+        int n = 0;
+        for(int i = 0; i < nums.length; i++){
+            n = n ^ nums[i];
+        }//then n is A^B
+        int flag = Integer.highestOneBit(n);//flag = n ^ -n
+        int[] result = new int[2];
+        for(int i = 0; i < nums.length; i++){
+            if((nums[i] & flag) == 0){
+                result[0] ^= nums[i];
+            }else{//这里 nums[i] & flag == flag 而不是 1
+                result[1] ^= nums[i];
+            }
+        }
+        return result;
+    }
+    
+}
+
+
+
+
+/*
+
 METHOD:
 1. HashSet
 2. XOR, &&
-
 
 
 
@@ -17,9 +50,6 @@ NOTES:
 2. REFERENCE: 
     - https://leetcode.com/problems/single-number-iii/discuss/68900/Accepted-C++Java-O(n)-time-O(1)-space-Easy-Solution-with-Detail-Explanations
     - https://segmentfault.com/a/1190000004886431
-*/
-
-/*
 SOLUTION REFERENCE:
 
 TIME: 0722 - 1h
