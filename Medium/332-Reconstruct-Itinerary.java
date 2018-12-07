@@ -9,6 +9,54 @@ RESULT: 44% - 10ms
 
 */
 /*
+Build Graph + DFS(backtracking)
+要 backtracking，因为不知道你现在的路是不是正确的
+
+Time: O(?)
+Space: O(n)
+*/
+class Solution {
+    public List<String> findItinerary(String[][] tickets){
+        Map<String, List<String>> map = new HashMap<>();
+        List<String> result = new ArrayList<>();
+        //build directed graph
+        for(String[] route: tickets){
+            if(!map.containsKey(route[0])) map.put(route[0], new ArrayList<String>());
+            map.get(route[0]).add(route[1]);
+        }
+
+        //sort destination
+        for(Map.Entry<String, List<String>> entry : map.entrySet()){
+            Collections.sort(entry.getValue());
+        }
+        //build iternary using DFS
+        result.add("JFK");
+        dfs(map, result, "JFK", tickets.length + 1);//backtracking
+        return result;
+    }
+    private boolean dfs(Map<String, List<String>> map, List<String> result, String loc, int n){
+        if(result.size() == n) return true;//find all 
+        if(!map.containsKey(loc)) return false;//mind the order, final destination might not be in map
+        
+        List<String> des = map.get(loc);
+        for(int i = 0; i < des.size(); i++){
+            loc = des.get(i);
+            des.remove(i);
+            result.add(loc);
+            if(dfs(map, result, loc, n)) return true;
+            result.remove(result.size() - 1);//移除最后一个
+            des.add(i, loc);            
+        }
+        return false;
+    }
+}
+
+
+
+
+
+
+/*
 SOLUTION REFERENCE: Eulerian Path
 TIME: 0831 - 1h
 RESULT: 51% - 9ms
@@ -97,7 +145,7 @@ class Solution {
         }
         
         result.add("JFK");
-        if(findNext(map, "JFK", result, len)) return result;
+        if(findNext(map, "JFK", result, )) return result;
         return null;
     }
     private boolean findNext(Map<String, List<String>> map, String from, List<String> result, int len){
