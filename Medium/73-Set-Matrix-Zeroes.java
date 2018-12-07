@@ -1,0 +1,133 @@
+/*
+0705
+
+73. Set Matrix Zeroes
+
+TIME: 0705
+RESULT: 93%
+*/
+/*
+Marker for row and col: for each row and col, mark if it should be all 0
+1) standard: use extra boolean[] for each row and col
+2) better: use first line of row and col as a mark: ex matrix[i][0] = 0; matrix[0][j] = 0;
+也就是我们要将mark存在不会影响我们后续遍历的格子里
+
+后续赋值的时候，要先对 first row and first col 之外赋值
+Time: O(mn)
+Space: O(1)
+*/
+class Solution {
+    public void setZeroes(int[][] matrix){
+        if(matrix.length == 0 || matrix[0].length == 0) return;
+        int m = matrix.length;
+        int n = matrix[0].length;
+
+        //mark for each row and col
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(matrix[i][j] == 0){
+                    matrix[i][0] = 0;
+                    matrix[0][j] = 0;
+                }
+            }
+        }
+        //set for rows and cols except first line
+        for(int i = 1; i < m; i++){
+            for(int j = 1; j < n; j++){
+                if(matrix[i][0] == 0|| matrix[0][j] == 0){
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+        //first line
+        if(matrix[0][0] == 0){
+            for(int i = 0; i < m; i++) matrix[i][0] = 0;
+            for(int j = 0; j < n; j++) matrix[0][j] = 0;
+        }
+        return;
+    }
+
+}
+
+/*
+Marker for row and col: for each row and col, mark if it should be all 0
+1) standard: use extra boolean[] for each row and col
+2) better: use first line of row and col as a mark: ex matrix[i][0] = 0; matrix[0][j] = 0;
+也就是我们要将mark存在不会影响我们后续遍历的格子里
+
+**[0,0] 的双向性： 需要 firstCol 来区分first col, 
+matirx[0,0] == 0 表示 i = 0 这一行都是 0
+firstCol == 0，才表示 j = 0 这一列都是 0
+后续赋值的时候，要先对 first row and first col 之外赋值,然后根据 matrix[0][0] 和 firstCol 来赋值首行首列
+
+Time: O(mn)
+Space: O(1)
+*/
+class Solution {
+    public void setZeroes(int[][] matrix){
+        if(matrix.length == 0 || matrix[0].length == 0) return;
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int firstCol = 1;//since [0,0] both represent row and line, we need another flag
+
+        //mark for each row and col
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(matrix[i][j] == 0){
+                    matrix[i][0] = 0;
+                    if(j == 0) firstCol = 0;//如果 j = 0，要单独标记第一列
+                    else matrix[0][j] = 0;
+                }
+            }
+        }
+        //set for rows and cols except first line
+        for(int i = 1; i < m; i++){
+            for(int j = 1; j < n; j++){
+                if(matrix[i][0] == 0|| matrix[0][j] == 0){
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+        //first line
+        if(matrix[0][0] == 0) for(int j = 0; j < n; j++) matrix[0][j] = 0;
+        if(firstCol == 0) for(int i = 0; i < m; i++) matrix[i][0] = 0;
+        return;
+    }
+
+}
+
+
+
+
+
+
+class Solution {
+    public void setZeroes(int[][] matrix) {
+
+        HashSet<Integer> row = new HashSet<Integer>();
+        HashSet<Integer> column = new HashSet<Integer>();
+        for(int i = 0; i < matrix.length; i++){
+            for(int j = 0; j < matrix[0].length; j++){
+                if(matrix[i][j] == 0){
+                    //make row = 0, log column
+                    if(!row.contains(i)){
+                        row.add(i);
+                    }
+                    if(!column.contains(j)){
+                        column.add(j);
+                    }
+                }
+            }
+        }
+        for(int i: row){
+            for(int j = 0; j < matrix[0].length; j++){
+                matrix[i][j] = 0;
+            }
+        }
+        for(int j: column){
+            for(int i = 0; i < matrix.length; i++ ){
+                matrix[i][j] = 0;
+            }
+        }
+    }
+}
