@@ -8,7 +8,7 @@ NOTES:
 
 */
 /*
-3 Reverse: 
+3 Reverse: 翻转能够达到循环位移的效果
 1. reverse all 0 ~ len - 1
 2. reverse 0 ~ k - 1
 3. reverse k ~ len - 1
