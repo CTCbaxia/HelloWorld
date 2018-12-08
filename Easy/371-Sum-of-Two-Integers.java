@@ -13,15 +13,41 @@ NOTES:
 
 I really recommend those who are afraid of doing bitwise problems to have a try of the lab 1 in CMU 15-213, which can be easily found on Google
 */
-
 /*
 Bit Manipulation:
 按 32 位每个bit计算：add every bit and using a carry
-按位运算的话，其实加减都是一样，对于位运算都是相加
+1) 应该把每一位移到个位
+2) 按位运算的话，其实加减都是一样，对于位运算都是相加
+3) 
+1 的个数  carry  bit
+0          0     0
+1          0     1
+2          1     0
+3          1     1
+bit 有偶数为0性质，用XOR
+carry跟数量有关，用 &|
 
 Time: O(32)
 Space: O(1)
 */
+class Solution {
+    public int getSum(int a, int b){
+        int res = 0;
+        int carry = 0;
+        for(int i = 0; i < 32; i++){//因为int是双向的，所以只到 31 位: -2^31 ~ 2^31 - 1
+            int ai = (a >> i) & 1;//获取倒数第i位bit
+            int bi = (b >> i) & 1;
+
+            //对于互不干扰的按位相加 用 x | y
+            res |= (ai ^ bi ^ carry) << i;//第 i bit 位的结果，偶数1则为0
+            carry = (ai & bi) | (bi & carry) | (ai & carry);// 两个或三个 1 则为 1
+        }
+        return res;
+    }
+}
+
+
+
 class Solution {
     public int getSum(int a, int b) {
         int carry = 0;
