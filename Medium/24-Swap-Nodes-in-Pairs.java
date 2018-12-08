@@ -7,6 +7,42 @@ TIME: 1006 - 15min
 RESULT: 70% - 2ms
 思路：这种题需要找好几个pointer
 */
+/*
+三个指针移动
+
+Time: O(n)
+Space: O(1)
+*/
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        ListNode result = new ListNode(0);
+        result.next = head;
+        ListNode pre = result;
+        while(pre.next != null && pre.next.next != null){
+            ListNode first = pre.next;
+            ListNode second = pre.next.next;
+            pre.next = second;
+            first.next = second.next;
+            second.next = first;
+
+            pre = first;
+        }
+        return result.next;
+
+    } 
+}
+
+
+
+
 /**
  * Definition for singly-linked list.
  * public class ListNode {
