@@ -40,6 +40,7 @@ class Solution {
 
 /*
 Copy the array and use corresponding index (i + k) % len
+这种题复制最直接
 
 Time: O(n)
 Space: O(n)
@@ -54,8 +55,41 @@ class Solution {
     }
 }
 
+/*
+1) 先存下前面要移到后面的elments
+2) 再把后面的 element 移到前面
+3) 再把queue里面的 element 往后跟上
+0 1 2 3 4
 
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public void rotate(int[] nums, int k) {
+        int n = nums.length;
+        if(n == 0) return;
+        k = k % n;
 
+        //put num after k into queue
+        Queue<Integer> q = new LinkedList<>();
+        int len = nums.length - k;//k 之后能 hold 几个移动量
+        int i = 0;
+        while(i < len){
+            q.offer(nums[i++]);
+        }
+        //move back to front
+        int index = 0;//update val from 0 to nums.length - 1
+        while(i < nums.length){
+            nums[index++] = nums[(i++)%n];
+        }
+        //move elements in queue to the back
+        while(index < nums.length){
+            nums[index++] = q.poll();
+        }
+        return;
+    }
+
+}
 
 
 /*
