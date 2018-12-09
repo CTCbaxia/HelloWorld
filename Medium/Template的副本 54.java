@@ -1,9 +1,0 @@
-/*
-MEDIUM
-
-
-TIME: 
-RESULT: 
-NOTES:
-
-*/
