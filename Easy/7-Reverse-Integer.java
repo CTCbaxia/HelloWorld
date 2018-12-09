@@ -1,6 +1,38 @@
 /*
-Solution 1
+EASY
+7. Reverse Integer
 
+*/
+/*
+Sign + % /   ----注意overflow: res > Integer.MAX_VALUE / 10
+
+Time: O(len)
+Space: O(1)
+*/
+class Solution {
+    public int reverse(int x){
+        int res = 0;
+        int sign = (x >= 0) ? 1 : -1;
+        x = Math.abs(x);
+
+        while(x > 0){
+            if(res > Integer.MAX_VALUE / 10 || (res == Integer.MAX_VALUE / 10 && x % 10 >= 8)){
+                return 0;
+            }
+            res = res * 10 + x % 10;
+            x = x / 10;
+        }
+        return sign * res;//Integer.MIN_VALUE 也成立
+    }
+}
+
+
+
+
+
+
+
+/*
 Note:
 递归方式
 对于一个type进行运算，得出的结果也会遵循type的limit（即使还没有赋值给int type的变量）
@@ -12,7 +44,6 @@ Note:
  
 负数取余运算:
 http://liujinpan75.iteye.com/blog/548625
-
 
 */
 class Solution {
