@@ -7,6 +7,92 @@ TIME: 10.6 - 30min
 RESULT: 62% - 6ms
 
 */
+/*
+Move empty to the end + Reverse Whole String + Reverse every letter
+
+Time: O(n)
+Space: O(1)   -ch is result
+*/
+public class Solution {
+    public String reverseWords(String s){
+        char[] ch = s.toCharArray();
+        int end = moveEmpty(ch);
+        //reverse whole string
+        reverse(ch, 0, end);
+        
+        //reverse each letter
+        int pre = 0;
+        for(int i = 0; i <= end; i++){
+            if(ch[i] == ' '){
+                reverse(ch, pre, i - 1);
+                pre = i + 1;
+            }else if(i == end){
+                reverse(ch, pre, i);
+            }
+        }
+        return new String(ch).substring(0,end + 1);
+    }
+    private int moveEmpty(char[] ch){//move the empty char to the end, and save one space between letters
+        int i = 0;//for valid
+        int j = 0;//loop the array
+        while(j < ch.length && ch[j] == ' ') j++;//skip pre spaces
+        
+        while(j < ch.length){
+            while(j < ch.length && ch[j] != ' ') ch[i++] = ch[j++];
+            while(j < ch.length && ch[j] == ' ') j++;//skip spaces
+            if(j < ch.length) ch[i++] = ' ';//for a space
+        }
+        return i - 1;
+    }
+    private void reverse(char[] ch, int lo, int hi){
+        while(lo < hi){
+            char tmp = ch[lo];
+            ch[lo] = ch[hi];
+            ch[hi] = tmp;
+            lo++;
+            hi--;
+        }
+        return;
+    }
+}
+
+
+/*
+Stack + StringBuilder
+
+Time: O(n)
+Space: O(n)
+*/
+public class Solution {
+    public String reverseWords(String s){
+        Stack<String> stack = new Stack<>();
+        StringBuilder sb = new StringBuilder();
+        int index = 0;
+        while(index < s.length()){
+            //skip empty
+            while(index < s.length() && s.charAt(index) == ' '){
+                index++;
+            }
+            //get String
+            int start = index;
+            if(start == s.length()) break;
+            while(index < s.length() && s.charAt(index) != ' '){
+                index++;
+            }
+            stack.push(s.substring(start, index));
+        }
+        while(!stack.isEmpty()) sb.append(stack.pop()).append(" ");
+        if(sb.length() > 0) sb.deleteCharAt(sb.length() - 1);
+        return sb.toString();
+    }
+}
+/*
+利用split
+
+
+Time: O(n)
+Space: O(1)
+*/
 public class Solution {
     public String reverseWords(String s){
         String[] str = s.trim().split(" +");
