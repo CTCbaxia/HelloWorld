@@ -8,6 +8,27 @@ RESULT: 62% - 6ms
 
 */
 public class Solution {
+    public String reverseWords(String s){
+        String[] str = s.trim().split(" +");
+        StringBuilder sb = new StringBuilder();
+        for(int i = str.length - 1; i >= 0; i--){
+            sb.append(str[i]).append(" ");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        return sb.toString();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+public class Solution {
     public String reverseWords(String s) {
         Stack<String> stack = new Stack<String>();
         StringBuilder sb = new StringBuilder();
@@ -32,9 +53,10 @@ public class Solution {
 /*
 SOLUTION REFERENCE:
 
+
 String.trim(): copy a string with leading and trailing spaces omitted.
 String.split(" +"): split with space (no matter how long the space is using " +" - regular expression)
-
+对于单纯的 s.split(" ")，如果有两个连续的"a  b",会分出一个"a","","b"
 */
 
 public class Solution {
