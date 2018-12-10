@@ -7,10 +7,49 @@ TIME: 0715 - 5h
 RESULT: 96% - 2ms
 
 */
+/*
+preHead + newHead 逐步交换法
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public ListNode reverseBetween(ListNode head, int m, int n){
+        ListNode dummyHead = new ListNode(0);//以防要交换的从第一个元素开始
+        ListNode preHead = dummyHead;
+        dummyHead.next = head;
+
+        int k = n - m;//要交换的次数
+        while(m-- > 1) preHead = preHead.next;//走到 m 之前
+
+        ListNode newHead = preHead.next;//永远连在 preHead 之后
+        ListNode node = preHead.next;//m 一直往后挪
+        ListNode then = node.next;//m 之后的要挪到 preHead 之后的node
+        while(k-- > 0){
+            preHead.next = then;
+            node.next = then.next;
+            then.next = newHead;
+            newHead = then;
+
+            then = node.next;
+        }
+        return dummyHead.next;
+    } 
+}
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+
+
+
 //reference : 就是要在 x.next 赋值之前把他给托付出去
 class Solution {
     public ListNode reverseBetween(ListNode head, int m, int n) {
-        int count = n - m;
         ListNode result = new ListNode(0);
         result.next = head;
         ListNode pre = result;
