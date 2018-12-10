@@ -7,6 +7,74 @@ RESULT: 99%, 8ms
 NOTE:
 
 */
+
+/*
+Stack(keep MONO desc stack)
+
+loop the array to build node one by one, every time we build a node:
+1) pop stack if peek is smaller than this node, assign to its left child
+2) assign this node as right child of the stack.peek() if stack is not empty
+3) add this node into stack(stack is still desc)
+stack是很好的保持 mono object的东西
+
+return final node in stack
+
+Time: O(n) every node go into stack once
+Space: O(n)
+*/
+class Solution {
+    public TreeNode constructMaximumBinaryTree(int[] nums){
+        Stack<TreeNode> stack = new Stack<TreeNode>();//keep mono desc stack
+        for(int i = 0; i < nums.length; i++){
+            TreeNode node = new TreeNode(nums[i]);
+            //the previous node that is smaller than node, will not have children any more
+            while(!stack.isEmpty() && stack.peek().val < node.val){
+                node.left = stack.pop();//assign node smaller than node but it the largest smaller one
+            }
+            if(!stack.isEmpty()) stack.peek().right = node;
+            stack.push(node);//push node because we don't know what's next
+        }
+        while(stack.size() > 1) stack.pop();
+        return stack.size() == 0 ? null : stack.pop();
+    }
+}
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+/*
+范围内找大值
+
+Time: O(n^2)
+Space: O(1)
+*/
+class Solution {
+    public TreeNode constructMaximumBinaryTree(int[] nums){
+        return build(nums, 0, nums.length - 1);
+    }
+    private TreeNode build(int[] nums, int lo, int hi){
+        if(lo > hi) return null;
+        int max = nums[lo];
+        int index = lo;
+        for(int i = lo; i <= hi; i++){
+            if(nums[i] > max){
+                max = nums[i];
+                index = i;
+            }
+        }
+        TreeNode root = new TreeNode(max);
+        root.left = build(nums, lo, index - 1);
+        root.right = build(nums, index + 1, hi);
+        return root;
+    } 
+}
+
+
 /*
 Stack 逐渐构建 tree （太 tricky 了）
 
