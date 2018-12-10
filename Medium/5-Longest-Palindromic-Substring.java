@@ -10,6 +10,36 @@ Note：
 
 */
 /*
+Two Pointers
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public String longestPalindrome(String s){
+        String result = "";
+        for(int i = 0; i < s.length(); i++){
+            String res1 = pal(s, i, i);
+            String res2 = "";
+            if(i + 1 < s.length()) res2 = pal(s, i, i + 1);
+
+            if(result.length() < res1.length()) result = res1;
+            if(result.length() < res2.length()) result = res2;
+        }
+        return result;
+    }    
+    private String pal(String s, int i1, int i2){
+        while(i1 >= 0 && i2 < s.length()){
+            if(s.charAt(i1) != s.charAt(i2)) return s.substring(i1 + 1, i2);
+            i1--;
+            i2++;
+        }
+        return s.substring(i1 + 1, i2);
+    }    
+}
+
+
+/*
 Two pointers: center extend
 
 Time: O(n^2)
