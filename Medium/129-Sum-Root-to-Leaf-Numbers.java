@@ -5,8 +5,45 @@ https://leetcode.com/problems/sum-root-to-leaf-numbers/description/
 
 TIME: 0831 - 30min
 RESULT: 100% - 0ms
-METHOD: DFS
 */
+/*
+DFS 记录每条 path 当前 curSum
+
+Time: O(n)
+Space: O(logn)
+*/
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int sumNumbers(TreeNode root){
+        return dfs(root, 0);
+    }
+    private int dfs(TreeNode node, int curSum){
+        if(node == null) return 0;//for if there is no this path
+
+        curSum = curSum * 10 + node.val;
+        if(node.left == null && node.right == null) return curSum;
+
+        int left = dfs(node.left, curSum);
+        int right = dfs(node.right, curSum);
+
+        return left + right;
+    }
+}
+
+
+
+
+
+
+
 
 /*
 SOLUTION 0: 
