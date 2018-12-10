@@ -6,6 +6,35 @@ TIME: 1007 - 20min
 RESULT: 99% - 8ms
 
 */
+/*
+Fast and Slow pointer
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n){
+        if(head == null || n == 0) return head;
+        ListNode result = new ListNode(0);
+        result.next = head;
+
+        ListNode fast = result;
+        ListNode slow = result;
+        while(n-- > 0){//2
+            fast = fast.next;
+            if(fast == null) return head;//if n is not always valid
+        } 
+        while(fast.next != null){
+            fast= fast.next;
+            slow = slow.next;
+        }
+        slow.next = slow.next.next;
+        return result.next;
+    }  
+}
+
+
+
 class Solution {
     public ListNode removeNthFromEnd(ListNode head, int n) {
         ListNode faster = head;
