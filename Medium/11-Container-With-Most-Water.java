@@ -7,6 +7,34 @@ TIME: 0524 - 2h
 RESULT: 85%
 */
 /*
+Two Pointer + Greedy
+每次拉进一格，移动 height 更小的一方。
+木桶效应：
+只有移动矮的，才有可能得到更大值。
+如果移动高的，只可能得到更小值。
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public int maxArea(int[] height){
+        int lo = 0, hi = height.length - 1;
+        int res = 0;
+        while(lo < hi){
+            res = Math.max(res, Math.min(height[lo], height[hi]) * (hi - lo));
+            if(height[lo] >= height[hi]) hi--;
+            else lo++;
+        }
+        return res;
+    }
+}
+
+
+
+
+
+
+/*
 Solution 1: 85%
 
 思路：
