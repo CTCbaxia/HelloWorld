@@ -6,10 +6,37 @@ https://leetcode.com/problems/search-a-2d-matrix-ii/description/
 TIME: 0720 - 2h
 RESULT: 100% - 7ms
 NOTES:
-1. 当你意识到算法太过复杂的时候，要换个思路
-2. 横竖有序，一定要利用有序的规则，但是不要跳跃一个层次把问题弄复杂了
-
 */
+/*
+左下 -> 右上 遍历法
+matrix[i][j] > target: 这一整行右边的元素都不会是答案
+matrix[i][j] < target: 这一整列上面的元素都不会是答案
+
+Time: O(m + n)
+Space: O(1)
+*/
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target){
+        if(matrix.length == 0 || matrix[0].length == 0) return false;
+        int i = matrix.length - 1;
+        int j = 0;
+        while(i >= 0 && j < matrix[0].length){
+            if(matrix[i][j] == target) return true;
+            else if(matrix[i][j] > target) i--;
+            else j++;
+        }
+        return false;
+    }    
+}
+
+
+
+
+
+
+
+
+
 class Solution {
     public boolean searchMatrix(int[][] matrix, int target) {
         if(matrix == null || matrix.length == 0) return false;
@@ -24,6 +51,9 @@ class Solution {
     }
 }
 /*
+1. 当你意识到算法太过复杂的时候，要换个思路
+2. 横竖有序，一定要利用有序的规则，但是不要跳跃一个层次把问题弄复杂了
+
 Wrong Code
 陷入到对角线关系中不能自拔。其实当对角线得划分那么多区域的时候，就该意识到肯定不是最优解。（尤其是复杂度不是 O(m + n) 的时候）
 */
