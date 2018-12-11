@@ -9,6 +9,47 @@ NOTES:
 1. 注意范围：[[]] - matrix.length = 1 but matrix[0].length = 0
 2. 按照线性顺序找到矩阵内的元素： matrix[midIndex / n][midIndex % n];(n = column number)
 */
+/*
+Binary Search:
+in total in order, just need to find the corresponding position: matrix[mid / n][mid % n];
+
+Time: O(logmn)
+Space: O(1)
+
+Notes:
+while(lo <= hi)
+    lo = mid + 1
+    hi = mid - 1
+适合找到某个 target
+这个模式比较了所有可能的元素，如果有对应值就弹出
+没有就直到最后
+*/
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target){
+        if(matrix.length == 0 || matrix[0].length == 0) return false;
+        int m = matrix.length; 
+        int n = matrix[0].length;
+        int lo = 0, hi = m * n - 1;
+
+        while(lo <= hi){
+            int mid = lo + (hi - lo)/2;
+            int x = mid / n;
+            int y = mid % n;
+            if(matrix[x][y] == target) return true;
+
+            if(matrix[x][y] < target){
+                lo = mid + 1;
+            }else{
+                hi = mid - 1;
+            }
+        }
+        return false;
+    }
+}
+
+
+
+
 
 /*
 Binary Search:
