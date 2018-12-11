@@ -15,6 +15,43 @@ METHOD:
 
     
 */
+/*
+XOR
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+public int singleNumber(int[] nums){
+        int res = 0;
+        for(int n : nums){
+            res ^= n;
+        }
+        return res;
+    }  
+}
+
+
+/*
+Hashset
+
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public int singleNumber(int[] nums){
+        Set<Integer> set = new HashSet<>();
+        for(int n : nums){
+            if(set.contains(n)) set.remove(n);
+            else set.add(n);
+        }
+        return set.iterator().next();
+    }
+}
+
+
+
+
+
 //--------2 ROUND FOR MS ------------------------------------------------
 class Solution {
     public int singleNumber(int[] nums) {
