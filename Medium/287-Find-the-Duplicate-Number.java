@@ -8,6 +8,38 @@ RESULT: 100% - 1ms
 NOTES:
 */
 /*
+Binary Search
+we are trying to find a num between 1 to n (range is clear)
+so we guess and check (similar: LC 378)
+
+1) do binary search to gusess answer
+2) count nums smaller than guess (if num has duplicate, it must 抢占别的数字)
+
+
+Time: O(nlogn)
+Space: O(1)
+*/   
+class Solution {
+    public int findDuplicate(int[] nums){
+        int lo = 1, hi = nums.length - 1;//biased if we will use hi = mid - 1
+        while(lo < hi){
+            int mid = lo + (hi - lo)/2 + 1;
+            int count = 0;
+            for(int n : nums){
+                if(n < mid) count++;
+            }
+            if(count < mid) lo = mid;//[1,2,3,4,5,6] -> [3,3,3,4,5,6] | [1,2,3,4,3,3]
+            else hi = mid - 1;
+        }
+        return hi;
+    }
+}
+
+
+
+
+
+/*
 Time: O(nlogn)
 Space: O(1)
 
