@@ -6,6 +6,44 @@ TIME:
 RESULT: 
 */
 /*
+Recursive: 注意 0 要在主函数处理
+recursive 每一次按照单位量处理
+注意 getNum 要得到前后没有空格的数字
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public String numberToWords(int num) {
+        if(num == 0) return "Zero";//单独处理
+        else return getNum(num);//9800 最后会有一个 " " 要去掉
+    }
+    
+    private String getNum(int num){//得到前后没有空格的数字
+        String[] lessThanTwenty = new String[]{"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen","Eighteen", "Nineteen"};
+        String[] tens = new String[]{"", "","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"};
+        String[] unit = new String[]{"", "Hundred","Thousand","Million","Billion"};
+
+        String res = "";
+        if(num < 100){
+            if(num < 20) res = lessThanTwenty[num];
+            else res = tens[num / 10] + " " + lessThanTwenty[num % 10];
+        }else if(num < 1000){
+            res = getNum(num / 100) + " " + unit[1] + " " + getNum(num % 100);
+        }else if(num < 1000000){
+            res = getNum(num / 1000) + " " + unit[2] + " " + getNum(num % 1000);
+        }else if(num < 1000000000){
+            res = getNum(num / 1000000) + " " + unit[3] + " " + getNum(num % 1000000);
+        }else{
+            res = getNum(num / 1000000000) + " " + unit[4] + " " + getNum(num % 1000000000);
+        }
+        return res.trim();//50868
+    }                                
+}
+
+
+
+/*
 Recursive for < 1000 + Iterative for >= 1000
 小于 1000 的处理之后return，
 大于 1000 的每三个为一个block，处理之后加上 Hundred 等的单位，然后 iterative 继续剩下的 block
@@ -44,3 +82,5 @@ class Solution {
     }
 
 }
+
+
