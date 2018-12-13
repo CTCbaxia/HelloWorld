@@ -8,6 +8,58 @@ RESULT:
 NOTES:
 
 */
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node left;
+    public Node right;
+
+    public Node() {}
+
+    public Node(int _val,Node _left,Node _right) {
+        val = _val;
+        left = _left;
+        right = _right;
+    }
+};
+*/
+/*
+Inorder traversal + Helper Function inorder
+
+Time: O(n)
+Space: O(logn)
+*/
+class Solution {
+    Node pre;
+    public Node treeToDoublyList(Node root){
+        if(root == null) return root;//头尾链接会出问题
+        Node head = new Node();
+        pre = head;
+
+        inorder(root);
+        //pre is now the last node, manage the last head and tail
+        pre.right = head.right;//如果只有一个node，这里就在自成环
+        head.right.left = pre;
+
+        return pre.right;
+    }
+    private void inorder(Node node){
+        if(node == null) return;
+
+        inorder(node.left);
+        
+        pre.right = node;
+        node.left = pre;
+        pre = node;//move the node
+
+        inorder(node.right);
+        return;
+    }
+
+}
+
+
 
 /*
 Helper Function DFS + Inorder Traversal
