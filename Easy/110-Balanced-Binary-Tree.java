@@ -5,9 +5,7 @@ EASY
 TIME: 
 RESULT: 
 NOTES:
-
 */
-
 /*
 One Traverse: (返回的 depth 里面多存一个值，减少一遍 traverse)
 Get the right and left depth, at the same time, return whether it is balanced
@@ -33,6 +31,39 @@ class Solution {
         else return 1 + Math.max(left, right);
     }
 }
+
+
+
+
+//use class
+class Solution {
+    public class nodeBalance{
+        boolean isBalance;
+        int depth;
+        public nodeBalance(boolean _isBalance, int _depth){
+            isBalance = _isBalance;
+            depth = _depth;
+        }
+    }
+    public boolean isBalanced(TreeNode root){
+        return depth(root).isBalance;
+    }
+    public nodeBalance depth(TreeNode node){
+        if(node == null) return new nodeBalance(true, 0);
+        nodeBalance left = depth(node.left);
+        nodeBalance right = depth(node.right);
+        int d = Math.max(left.depth, right.depth) + 1;
+        if(Math.abs(left.depth - right.depth) > 1 || !left.isBalance || !right.isBalance) return new nodeBalance(false, d);
+        else return new nodeBalance(true, d);
+    }
+
+}
+
+
+
+
+
+
 
 
 //depth(node, len)
