@@ -8,12 +8,12 @@ NOTES:
 
 */
 /*
-DFS go through every path + Prefix Sum
+DFS (backtracking) go through every path + Prefix Sum Map
 一样是思路：subarray sum = nums[j] - nums[i]
 Map: <presum, number of way to get that presum>
+
 only keep cumulative sum in one path
 so need to remove once finish traverse that path (backtracking)
-
 
 
 Time: O(n)
@@ -22,7 +22,7 @@ Space: O(logn)
 class Solution {
     public int pathSum(TreeNode root, int sum) {
         Map<Integer, Integer> preSum = new HashMap<Integer, Integer>();
-        preSum.put(0, 1);///fake sum, 如果选择 path 目前为止所有的值，有一种选法
+        preSum.put(0, 1);///!!!fake sum, 如果选择 path 目前为止所有的值，有一种选法
         return pathHelper(root, 0, preSum, sum);
     }
     private int pathHelper(TreeNode node, int curSum, Map<Integer, Integer> preSum, int target){
