@@ -7,6 +7,55 @@ TIME: 10.06 - 3h
 RESULT: 100% - 2ms
 
 */
+/*
+Array sort + PriorityQueue
+我们只会在有新 meeting 的时候 poll form pq，并且一定会放入至少一个meeting进去
+所以 pq 的 size 只会越来越多
+
+sort the array by starting time
+use pq to save all active meeting, sorted using the finishing time(pq.poll() get the smallest end time out)
+    1. if end before start, no need for more room and we update the finishing time for that room
+    2. else, add more room (put this meeting into pq)
+return pq.size()
+*/
+class Solution {
+    public int minMeetingRooms(Interval[] intervals){
+        if(intervals.length == 0) return 0;
+        //sort using start time
+        Arrays.sort(intervals, new Comparator<Interval>(){
+            public int compare(Interval i1, Interval i2){
+                return i1.start - i2.start;
+            }
+        });
+        //end using pq, min rooms == size of pq
+        PriorityQueue<Interval> pq = new PriorityQueue<>(new Comparator<Interval>(){
+            public int compare(Interval i1, Interval i2){
+                return i1.end - i2.end;
+            }
+        });
+
+        for(Interval i: intervals){
+            if(pq.size() == 0) pq.offer(i);//put the first one into pq
+            else{
+                Interval finished = pq.poll();
+                if(i.start < finished.end){
+                    pq.offer(i);
+                }else{
+                    finished.end = i.end;
+                }
+                pq.offer(finished);//always keep the room occupied in pq
+            }
+
+        }
+        return pq.size();
+
+    }                       
+
+}
+
+
+
+
 /**
  * Definition for an interval.
  * public class Interval {
