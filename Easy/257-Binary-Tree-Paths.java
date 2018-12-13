@@ -26,6 +26,7 @@ class Solution {
         return;
     }
 }
+
 /* 
 DFS(backtracking) + StringBuilder + sb.setLength(len)
 helper 函数里面 node != null
@@ -40,6 +41,32 @@ Time: O(n)
 Space: O(h)
 RESULT: 94% - 10ms
 */
+class Solution {
+    public List<String> binaryTreePaths(TreeNode root){
+        List<String> result = new ArrayList<>();
+        dfs(root, result, new StringBuilder());
+        return result;
+    }
+    private void dfs(TreeNode node, List<String> result, StringBuilder sb){
+        if(node == null) return;
+        int len = sb.length();
+
+        sb.append(node.val);
+
+        if(node.left == null && node.right == null){
+            result.add(sb.toString());
+        }else{
+            sb.append("->");
+            dfs(node.left, result, sb);
+            dfs(node.right, result, sb);
+        }
+        sb.setLength(len);
+        return;
+    }
+
+}
+
+
 class Solution {
     public List<String> binaryTreePaths(TreeNode root) {
         List<String> result = new ArrayList<String>();
