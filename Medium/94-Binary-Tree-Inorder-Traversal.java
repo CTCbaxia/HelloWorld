@@ -14,7 +14,7 @@ NOTES:
 DFS
 
 Time: O(n)
-Space: O(1)
+Space: O(logn)
 */
 class Solution {
     public List<Integer> inorderTraversal(TreeNode root) {
@@ -32,7 +32,7 @@ class Solution {
     }
 }
 /*
-Stack
+Iterative: Stack
 
 Time: O(n)
 Space: O(logn)
@@ -41,7 +41,7 @@ class Solution {
     public List<Integer> inorderTraversal(TreeNode root) {
         Stack<TreeNode> stack = new Stack<TreeNode>();
         List<Integer> result = new ArrayList<Integer>();
-        while(!stack.isEmpty() || root != null){//root for initialization
+        while(!stack.isEmpty() || root != null){//if the tree only have right children
             while(root != null){
                 stack.push(root);
                 root = root.left;
@@ -54,6 +54,11 @@ class Solution {
     }
 }
 
+/*
+5
+ 6
+   7
+*/
 
 
 
