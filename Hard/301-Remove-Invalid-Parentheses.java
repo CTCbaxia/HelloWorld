@@ -19,7 +19,7 @@ then, dfs the remaining string, removing from the last removing position
 And to check left, reverse the string and do the same
 
 last_i: before are all valid
-last_j: last position remove )
+last_j: last position remove ), to avoid duplicate result
 
 The program only generates valid answers. Every path in the search generates one valid answer. 
 Time: O(nk) for every res, we loop the string once
@@ -60,3 +60,37 @@ class Solution {
                
     }
 }
+
+/*
+Time:
+The whole search space is a tree with k leaves. The number of nodes in the tree is roughly O(k). But this is not always true, for example a degenerated tree.
+To generate one node it requires O(n) time from the string concatenation among other things. 
+So roughly O(nk). Accurately O(nm) where m is the total "number of recursive calls" or "nodes in the search tree". Then you need to relate m to n in the worst case.
+*/
+
+
+//简化版本 只返回一个结果
+class Solution {
+    public List<String> removeInvalidParentheses(String s){
+        String res1 = validParenthese(s, 0, '(', ')');
+        String reverse = new StringBuilder(res1).reverse().toString();
+        String res2 = validParenthese(reverse, 0, ')', '(');
+        String result = new StringBuilder(res2).reverse().toString();
+        return new ArrayList<>();
+    }   
+    private String validParenthese(String s, int start, char lc, char rc){
+        int left = 0;
+        for(int i = start; i < s.length(); i++){
+            if(s.charAt(i) == lc) left++;
+            else if(s.charAt(i) == rc){
+                left--;
+                if(left < 0) return validParenthese(s.substring(0, i) + s.substring(i + 1), i, lc, rc);
+            }
+        }
+        return s;
+    }
+}
+
+
+
+
