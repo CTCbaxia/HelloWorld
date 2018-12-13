@@ -7,6 +7,59 @@ RESULT:
 NOTES: https://leetcode.com/problems/minimum-window-substring/discuss/26808/Here-is-a-10-line-template-that-can-solve-most-'substring'-problems
 */
 /*
+Sliding Window: MAP
+Map: <key, number of key need match>
+count = map.size()
+
+while(match  : count == 0) keep making window smaller by moveing start while still matching, 
+update the res and minLen
+
+Time: O(n)
+Space: O(#key)
+*/
+//map
+class Solution {
+    public String minWindow(String s, String t){
+        Map<Character, Integer> map = new HashMap<>();
+        for(char c : t.toCharArray()){
+            map.put(c, map.getOrDefault(c, 0) + 1);
+        }
+        int count = map.size();//key
+        int minLen = Integer.MAX_VALUE;
+        int start = 0, end = 0;
+        String res = "";
+
+        while(end < s.length()){
+            char c = s.charAt(end);
+            if(map.containsKey(c)){
+                map.put(c, map.get(c) - 1);
+                if(map.get(c) == 0) count--;//这个key匹配完成
+            }
+            end++;
+
+            while(count == 0){//while match, keep making window smaller
+                if(minLen > end - start){
+                    minLen = end - start;
+                    res = s.substring(start, end);
+                }
+                char removeChar = s.charAt(start++);
+                if(map.containsKey(removeChar)){
+                    map.put(removeChar, map.get(removeChar) + 1);
+                    if(map.get(removeChar) > 0) count++;//这个key失去匹配
+                }
+            }
+        }
+        return res;
+    } 
+}
+
+
+
+
+
+
+
+/*
 Sliding Window
 1. 先数 key 的数量
 2. count = 小 string 的字母数（需要匹配的数量）
@@ -16,47 +69,6 @@ Sliding Window
 Time: O(n)
 Space: O(128)
 */
-//map
-class Solution {
-    public String minWindow(String s, String t) {
-        Map<Character, Integer> map = new HashMap<>();
-        for(char c : t.toCharArray()){
-            map.put(c, map.getOrDefault(c, 0) + 1);
-        }
-        int start = 0, end = 0, len = Integer.MAX_VALUE;
-        int count = map.size();
-        String res = "";
-        while(end < s.length()){
-            char c = s.charAt(end);
-            if(map.containsKey(c)){
-                map.put(c, map.get(c) - 1);
-                if(map.get(c) == 0) count--;
-            }
-            end++;
-            while(count == 0){
-                char c2 = s.charAt(start);
-                if(map.containsKey(c2)){
-                    map.put(c2, map.get(c2) + 1);
-                    if(map.get(c2) > 0) count++;
-                }
-                if(end - start < len){
-                    len = end - start;
-                    res = s.substring(start, end);
-                }
-                start++;
-            }
-        }
-        return res;
-    }
-}
-
-
-
-
-
-
-
-
 //array
 class Solution {
     public String minWindow(String s, String t) {
