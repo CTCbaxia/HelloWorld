@@ -14,7 +14,7 @@ DFS + Level + List Insert
 2. 用level奇偶判断add顺序
 
 Time: O(n)
-Space: O(1)
+Space: O(h)
 */
 class Solution {
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
