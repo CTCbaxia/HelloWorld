@@ -8,6 +8,37 @@ RESULT: 25% - 7ms
 NOTES:
 1.不一定经过 root
 */
+/*
+SinglePath Helper
+计算 SinglePath 返回值的同时，update result
+SinglePath: 只选其中一个最大值
+result: 选left + right 最大值
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+
+    int maxLen = 0;
+    public int diameterOfBinaryTree(TreeNode root){
+        depth(root);
+        return maxLen;
+    }
+    private int depth(TreeNode node){//no null
+        if(node == null) return 0;
+        int left = depth(node.left);
+        int right = depth(node.right);
+        maxLen = Math.max(maxLen, left + right);
+        return Math.max(left, right) + 1;
+    }
+
+
+}
+
+
+
+
+
 
 /*
 SinglePath Helper
