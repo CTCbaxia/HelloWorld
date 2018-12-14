@@ -20,8 +20,7 @@ class Solution {
         String result = "";
         for(int i = 0; i < s.length(); i++){
             String res1 = pal(s, i, i);
-            String res2 = "";
-            if(i + 1 < s.length()) res2 = pal(s, i, i + 1);
+            String res2 = pal(s, i, i + 1);
 
             if(result.length() < res1.length()) result = res1;
             if(result.length() < res2.length()) result = res2;
@@ -37,8 +36,6 @@ class Solution {
         return s.substring(i1 + 1, i2);
     }    
 }
-
-
 /*
 Two pointers: center extend
 
