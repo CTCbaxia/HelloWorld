@@ -11,7 +11,8 @@ Two conditions:
 1. target has no right child --- should be its larger parent
 2. target has right child --- should be its right child's leftmost child
 
-Keep the result updated while traverse the tree
+Keep track of the larger parent, 
+if target has right child, find all the way to the left
 
 parent: update before move down
 children: update after move down but make sure it is not null

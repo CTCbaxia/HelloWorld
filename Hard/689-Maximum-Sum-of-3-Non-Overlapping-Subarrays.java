@@ -7,6 +7,56 @@ RESULT:
 */
 /*
 calculate ksum first + Dynamic Programing
+先计算 ksum[i] 每k个元素一个和
+再计算左右最大值出现的点：
+left[i]: elements index before i with largest ksum
+right[i]: elements index after i with largest ksum
+
+然后看如果控制中间模块 i 的移动，左右部分再范围限制内可以取的最大值是多少
+
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public int[] maxSumOfThreeSubarrays(int[] nums, int k){
+        int len = nums.length;
+        int[] ksum = new int[len - k + 1];//10 个元素会有 8 个 ksum
+
+        for(int i = 0; i < k; i++) ksum[0] += nums[i];
+        for(int i = 1; i < ksum.length; i++){
+            ksum[i] = ksum[i - 1] + nums[i + k - 1] - nums[i - 1];
+        }
+        int[] left = new int[ksum.length];
+        int maxIndex = 0;
+        for(int i = 0; i < left.length; i++){
+            if(ksum[i] > ksum[maxIndex]) maxIndex = i;
+            left[i] = maxIndex;
+        }
+        int[] right = new int[ksum.length];
+        maxIndex = ksum.length - 1;
+        for(int i = maxIndex; i >= 0; i--){
+            if(ksum[i] >= ksum[maxIndex]) maxIndex = i;//等于保证index取得最小
+            right[i] = maxIndex;
+        }
+        int l = 0, r = 0;//index
+        int maxSum = 0;
+        int[] result = new int[3];
+        for(int m = k; m < ksum.length - k; m++){
+            l = left[m - k];
+            r = right[m + k];
+            if(ksum[l] + ksum[m] + ksum[r] > maxSum){
+                maxSum = ksum[l] + ksum[m] + ksum[r];
+                result = new int[]{l, m, r};
+            }
+        }
+        return result;
+    }             
+}
+
+
+
+/*
+calculate ksum first + Dynamic Programing
 然后看如果控制中间模块 i 的移动，左右部分再范围限制内可以取的最大值是多少
 
 Time: O(n)

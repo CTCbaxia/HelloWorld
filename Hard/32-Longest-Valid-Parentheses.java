@@ -7,7 +7,7 @@ RESULT:
 NOTES: 
 */
 /*
-Stack for index + recursive
+Stack for index + recursive for remaining
 每次 ）都计算当前匹配的长度，update res
     如果 stack 为空：0 - i 全部匹配，i + 1
     如果 stack 不为空：从 stack peek index 到 i 都匹配

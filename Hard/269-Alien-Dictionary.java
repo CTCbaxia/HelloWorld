@@ -62,7 +62,7 @@ class Solution {
                         after.add(c2);//add to c1's after set
                         degree.put(c2, degree.get(c2) + 1);//increase degree as we found one more before
                     }
-                    break;
+                    break;//only compare the first diff char
                 }
             }
         }

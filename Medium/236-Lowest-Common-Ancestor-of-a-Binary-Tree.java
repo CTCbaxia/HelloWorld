@@ -9,6 +9,7 @@ NOTES:
 */
 /*
 Recursive:
+lowestCommonAncestor: 只要有返回值，就说明找到了；null就说明没找到
 如果我在左右分支的一边找到了match，那么 LCA 一定是第一个匹配点
 如果我在两边都找到了match，那么root一定是返回值
 
@@ -17,15 +18,17 @@ Space: O(1)
 */
 class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if(root == null || root == p || root == q) return root;//return once we find a target
+        //return the first time we find anyone of them
+        //this function will return null if we don't find them
+        
+        if(root == null || root == p || root == q) return root;
+        
         TreeNode left = lowestCommonAncestor(root.left, p, q);
         TreeNode right = lowestCommonAncestor(root.right, p, q);
-        if(left != null && right != null) return root; //if left and right both have one, then root
-        return left != null ? left : right;
         
-
+        if(left != null && right != null) return root;
+        else return left != null ? left : right;//return the one that is not null, or null
     }
-
 }
 //test case
 

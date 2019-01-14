@@ -83,7 +83,25 @@ class Solution {
 }
 
 
-
+// if task order should be kept and cool down time exists only between same task
+// map solution
+// space overhead is big if number of task type is huge
+class Solution{
+    public int leastInterval(char[] tasks, int n){
+        int res = 0;//time
+        Map<Character, Integer> map = new HashMap<>();
+        for(int i = 0; i < tasks.length; i++){
+            if(!map.containsKey(tasks[i]) || map.get(tasks[i]) <= res){
+                res++;
+            }else{
+                res = map.get(tasks[i]);
+            }
+            map.put(tasks[i], res + n + 1);
+            System.out.println(res);
+        }
+        return res;
+    }    
+}
 
 
 

@@ -18,6 +18,58 @@ Time: O(n)
 Space: O(n)
 */
 class Solution {
+    //sliding window
+    public List<Integer> findAnagrams(String s, String p){
+        Map<Character, Integer> map = new HashMap<>();
+        //build map
+        for(char c : p.toCharArray()){
+            map.put(c, map.getOrDefault(c, 0) + 1);
+        }
+        int start = 0, end = 0;
+        int count = map.size();
+        List<Integer> result = new ArrayList<>();
+        
+        //find window
+        while(end < s.length()){
+            char c = s.charAt(end);
+            if(map.containsKey(c)){
+                map.put(c, map.get(c) - 1);
+                if(map.get(c) == 0) count--;
+            }
+            end++;
+            while(count == 0){
+                if(end - start == p.length()) result.add(start);
+                char removeChar = s.charAt(start++);
+                if(map.containsKey(removeChar)){
+                    map.put(removeChar, map.get(removeChar) + 1);
+                    if(map.get(removeChar) > 0) count++;//因为之前有可能有的key多匹配了，只有某一个removeChar导致map.get() > 0,匹配才失效
+                }
+            }
+        }
+
+        return result;
+
+    }                                
+
+
+}
+
+
+
+
+
+
+
+
+/*
+Sliding Window:
+count = map.size()
+只看 key 的匹配，当 count = 0 的时候，检查 end - start 是不是等于 p.length()
+
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
     public List<Integer> findAnagrams(String s, String p) {
         List<Integer> result = new ArrayList<>();
         Map<Character, Integer> map = new HashMap<>();
