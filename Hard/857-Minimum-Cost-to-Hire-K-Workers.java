@@ -5,6 +5,8 @@ HARD
 */
 /*
 两层排序：
+这种复杂组合问题，要用排序的思路简化，而因为有两个变量 ratio * quality sum，则需要两层排序，递增 ratio, 同时找到每个 ratio 对应的最小 quality sum
+
 Array for ratio
 PQ for quality
 最终希望 group 内部 max ratio * group sum 最小，则可以控制一个最小值 ratio，然后找到这个最小值对应的 group sum 最小
