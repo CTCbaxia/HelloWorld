@@ -5,8 +5,10 @@ HARD
 https://leetcode.com/problems/k-empty-slots/discuss/107948/Iterate-over-time-vs.-iterate-over-position
 
 */
+
+//Searching over Position
 /*
-Loop over position
+Searching over Position: Sliding Window
 
 1. transfer time array to position array: for every position, when will they get lighted
 2. use a fixed sliding window [left, right] that for every i inside the window:
@@ -47,9 +49,54 @@ class Solution {
     }
 }
 
+/*
+Searching over Position: Deque
+
+Time: O(nlogn)
+Space: O(n)
+*/
+class Solution {
+    public int kEmptySlots(int[] flowers, int k) {
+        int n = flowers.length;
+        int[] light = new int[n];
+        Deque<Integer> window = new LinkedList<>();
+        
+        //get lighted time
+        for(int i = 0; i < n; i++){
+            light[flowers[i] - 1] = i + 1;
+        } 
+        
+        //check windows
+        int result = n + 1;
+        for(int i = 0; i < n; i++){
+            window.offerLast(light[i]);
+            if(window.size() == k + 2){
+                int l = window.pollFirst();
+                int r = window.getLast();
+                
+                while(window.getFirst() > window.getLast()) window.pollFirst();
+                if(window.size() == 1){
+                    //valid window
+                    result = Math.min(result, Math.max(l, r));
+                }else{
+                    i = (flowers[window.getFirst() - 1] - 1) - 1;
+                    window = new LinkedList<>();
+                }
+                
+            }else{
+                //if one position failed to be larger than left, delete all before it
+                while(window.getFirst() > window.getLast()) window.pollFirst();
+            }
+            
+        }
+        return result == n + 1 ? -1 : result;
+    }
+}
 
 
 
+
+//Searching over Time
 /*
 Check for every lighted position
 Time: O(nk)
@@ -92,7 +139,7 @@ class Solution {
 // count = 2
 
 /*
-Loop over time: BST
+Loop over time: BST Binary Search Tree - TreeSet
 Time: O(nlogn)
 Space: O(n)
 */
