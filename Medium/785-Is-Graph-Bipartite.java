@@ -1,7 +1,6 @@
 /*
 MEDIUM
-825. Friends Of Appropriate Ages
-https://leetcode.com/problems/friends-of-appropriate-ages/description/
+785-Is-Graph-Bipartite
 
 TIME: 0821 - 2.5h
 RESULT: 7.5% - 16ms
