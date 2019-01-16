@@ -14,6 +14,11 @@ result = # all island - numOfIsland
 
 Time: O(n^2) 加了 visited 之后，只会把 graph 遍历一遍
 Space: O(n^2)
+
+Follow up: how to print the remove order?
+Answer: 
+In every connected graph, we remember the order we find the connection, and the remove order can be the reversed one, and except the first node
+类似于 topological order
 */
 class Solution {
     public int removeStones(int[][] stones) {    
