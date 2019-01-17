@@ -23,7 +23,7 @@ class Solution {
                 char p = pattern.charAt(i);
                 if(!m1.containsKey(w)) m1.put(w, p);
                 if(!m2.containsKey(p)) m2.put(p, w);
-                if(m1.get(w) != p || m2.get(p) != w) break;
+                if(m1.get(w) != p || m2.get(p) != w) break;//如果至少有一个方向的映射有误
 
             }
             if(i == word.length()) result.add(word);
@@ -60,3 +60,37 @@ class Solution {
         return result;
     }
 }
+
+/*
+Normalize:
+normalize the string using the key and the number of key so far
+对于 word and pattern，转化成一个数组，对于每一位，对应的值为：这是第几个新出现的key
+
+Time: O(n * len) n is the number of word in words, len is the len of pattern
+Space: O(26)
+*/
+class Solution {
+    public List<String> findAndReplacePattern(String[] words, String pattern) {
+        List<String> result = new ArrayList<>();
+        int[] p = normal(pattern);
+        
+        for(String word : words){
+            int[] w = normal(word);
+            if(Arrays.equals(p, w)) result.add(word);
+        }
+        return result;
+    }
+    private int[] normal(String s){
+        int n = s.length();
+        int[] res = new int[n];
+        Map<Character, Integer> map = new HashMap<>();//key, order of key first seen
+        
+        for(int i = 0; i < n; i++){
+            char c = s.charAt(i);
+            map.putIfAbsent(c, map.size());
+            res[i] = map.get(c);
+        }
+        return res;
+    }
+}
+
