@@ -5,6 +5,19 @@ MEDIUM
 */
 /*
 BFS: 
+Hint:
+example:
+q = [
+        [3],
+        [2,3],
+        [1,2,3]
+    ]
+
+1. 每个 subarray 内部数字要连续，则 BFS 的时候只要外部断层，所有的 subarray 都失效了。所以每次都会对所有 subarray 是否能够继续有一个结论
+2. 既然每次都会有结论，q 内部所有的 subarray 都是以同一个数字结尾。所以只需要放该 subarray 的长度就好。所以转化为 q = [1, 2, 3]
+3. queue 顺序应该按 subarray 长度排序。对于新的尾巴，优先加在最短的 subarray 上。
+
+
 每一层遍历同一个数字，每一个 queue 存同一个结尾数
 deque里存现在还在继续增加的 subarray
 
@@ -31,8 +44,8 @@ class Solution {
             while(!q.isEmpty()){
                 if(q.pollFirst() < 3) return false;
             }
-            q = newQ;
-            pre = n;
+            q = newQ;//更新 q
+            pre = n;//更新上一层数字
         }
         while(!q.isEmpty()){
                 if(q.pollFirst() < 3) return false;
@@ -40,6 +53,13 @@ class Solution {
         return true;
     }
 }
+
+
+
+
+
+
+
 /*
 Deque:
 题目已经是有序的，所以解答中应该是没有任何排序相关复杂度消耗的。
