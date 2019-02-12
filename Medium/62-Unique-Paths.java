@@ -30,7 +30,7 @@ class Solution {
 }
 
 /*
-Follow-up
+Follow-up: 继续缩小space
 Dynamic Programming
 matrix 上面每一个点的路径数，都是由其上，左两个点的路径数加和而来
 
