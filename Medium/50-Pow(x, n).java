@@ -5,10 +5,23 @@ https://leetcode.com/problems/powx-n/description/
 
 TIME: 0902 - 20min
 RESULT: 39% - 13ms
-NOTES:
-1. 对于 int，当要取负运算的时候注意边界
-2. 要学会减少复杂的子运算，用更简单的表达式代替（能储存子运算的结果，在后面调用的时候就不要重复进行该运算了）：return tmp * tmp * x; 而不是 myPow(x, n/2) * myPow(x, n/2 + 1)
 */
+class Solution {
+    public double myPow(double x, int n) {
+        if(n == 0) return 1;
+        if(n > 0){
+            //odd
+            if(n % 2 != 0) return x * myPow(x * x, (n - 1) / 2);
+            //even
+            else return myPow(x * x, n / 2); 
+        }else{
+            return 1/x * myPow(1/x, -(n + 1));//1.00000, -2147483648
+        }
+
+    }
+}
+
+
 /*
 Divide and Conquer
 
@@ -16,6 +29,10 @@ Divide and Conquer
 2. be careful for n < 0 : deal with it only when we use x
 Time: O(logn)  T(n) = T(n/2)
 Space: O(1)
+NOTES:
+1. 对于 int，当要取负运算的时候注意边界
+2. 要学会减少复杂的子运算，用更简单的表达式代替（能储存子运算的结果，在后面调用的时候就不要重复进行该运算了）：return tmp * tmp * x; 而不是 myPow(x, n/2) * myPow(x, n/2 + 1)
+
 */
 class Solution {
     public double myPow(double x, int n) {
