@@ -104,6 +104,38 @@ class Solution {
 
 
 
+//update Previous Permutation
+class Solution{
+    public void previousPermutation(int[] nums){
+        
+        for(int i = nums.length - 2; i >= 0; i--){
+            if(nums[i] <= nums[i + 1]) continue;//find the changing point A
+
+            //find the first point B from right to left that is smaller than A
+            int j = nums.length - 1;
+            while(j > i && nums[j] >= nums[i]) j--;
+
+            //swap A and B
+            swap(nums, i, j);
+
+            //reverse nums after current B
+            reverse(nums, i + 1, nums.length - 1);
+            return;
+        }
+        reverse(nums, 0, nums.length - 1);
+        return;
+        
+    } 
+    public void swap(int[] nums, int i, int j){
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
+    public void reverse(int[] nums, int lo, int hi){
+        while(lo < hi) swap(nums, lo++, hi--);
+    }
+
+}
 
 
 

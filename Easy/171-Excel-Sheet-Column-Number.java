@@ -16,3 +16,14 @@ class Solution {
         return res;
     }
 }
+
+class Solution {
+    public int titleToNumber(String s) {
+        int res = 0;
+        for(int i = 0; i < s.length(); i++){
+            char c = s.charAt(s.length() - 1 - i);
+            res += Math.pow(26, i) * ((c - 'A') + 1);
+        }
+        return res;
+    }
+}
