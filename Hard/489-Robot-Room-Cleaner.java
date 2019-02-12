@@ -30,7 +30,7 @@ class Solution {
     }
     private void backtracking(Robot robot, int[] pos, int iniDir, Set<String> visited){
         
-        int[][] directions = {{0, -1},{1, 0},{0, 1},{-1, 0}};
+        int[][] directions = {{0, -1},{-1, 0},{0, 1},{1, 0}};
         String posString = pos[0] + "," + pos[1];
         if(visited.contains(posString)){
             return;
@@ -77,9 +77,5 @@ class Solution {
  *     public void clean();
  * }
  */
-
-
-
-
 
 

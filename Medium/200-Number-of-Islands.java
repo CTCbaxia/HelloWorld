@@ -4,8 +4,45 @@ https://leetcode.com/problems/number-of-islands/description/
 
 TIME: 0706
 RESULT: 100%
-NOTE: 思路很重要
+
 */
+// modify the input
+class Solution {
+    public int numIslands(char[][] grid) {
+        if(grid.length == 0 || grid[0].length == 0) return 0;
+        int res = 0;
+        for(int i = 0; i < grid.length; i++){
+            for(int j = 0; j < grid[0].length; j++){
+                if(grid[i][j] == '1'){
+                    res++;
+                    dfs(grid, i, j);
+                } 
+            }
+        }
+        return res;
+    }
+    private void dfs(char[][] grid, int i, int j){
+        if(i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] == '0'){
+            return;//important to check grid[i][j] == '0'
+        }
+        int[][] directions = {{1,0},{-1,0},{0,1},{0,-1}};
+        grid[i][j] = '0';
+        
+        for(int[] dir : directions){
+            dfs(grid, i + dir[0], j + dir[1]);
+        }
+        return;
+    }
+}
+
+
+
+
+
+
+
+
+//------------for Facebook
 /*
 When we find one island, make the whole island 0
 
