@@ -8,6 +8,53 @@ NOTES:
 
 */
 /*
+BFS
+*/
+class Solution {
+    public boolean hasPath(int[][] maze, int[] start, int[] destination) {
+        if(maze.length == 0 || maze[0].length == 0) return false;
+        
+        int m = maze.length;
+        int n = maze[0].length;
+        boolean[][] visited = new boolean[m][n];
+        int[][] directions = {{1, 0},{-1, 0},{0,1},{0,-1}};
+        
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(start);
+        
+        while(!q.isEmpty()){
+            int[] from = q.poll();
+            for(int[] dir : directions){
+                int[] to = goDir(maze, from, dir);
+                
+                if(visited[to[0]][to[1]]) continue;
+                if(to[0] == destination[0] && to[1] == destination[1]) return true;
+
+                visited[to[0]][to[1]] = true;
+                q.offer(to);
+            }
+            
+        }
+        return false;
+    }
+    private int[] goDir(int[][] maze, int[] point, int[] dir){
+        int i = point[0], j = point[1];
+        while(i >= 0 && i < maze.length && j >= 0 && j < maze[0].length && maze[i][j] != 1){
+            i += dir[0];
+            j += dir[1];
+        }
+        i -= dir[0];
+        j -= dir[1];
+        
+        return new int[]{i, j};
+    }
+}
+
+
+
+
+
+/*
 BFS: mark the place (-1) that we have already visited
 for every level, put all reachable points (that haven't been visited) to the queue
 until we find the destination
