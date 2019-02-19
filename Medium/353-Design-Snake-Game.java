@@ -1,79 +1,6 @@
 /*
 353. Design Snake Game
 */
-/*
-Deque<Integer> snake: 方便 O(1) 顺移 node
-Set<Integer> set: 方便 check 是否 crash
-
-Time: O(1)
-Space: O(n)
-*/
-class SnakeGame {
-    /** Initialize your data structure here.
-        @param width - screen width
-        @param height - screen height 
-        @param food - A list of food positions
-        E.g food = [[1,1], [1,0]] means the first food is positioned at [1,1], the second is at [1,0]. */
-    Deque<Integer> snake;
-    Set<Integer> set;
-    int fi;
-    int[][] food;
-    int width;
-    int height;
-    Map<String, int[]> map;
-    
-    public SnakeGame(int width, int height, int[][] food) {
-        fi = 0;//foodindex
-        snake = new LinkedList<>();
-        snake.offerFirst(0);
-        set = new HashSet<>();
-        set.add(0);
-        
-        this.food = food;
-        this.width = width;
-        this.height = height;
-        
-        map = new HashMap<>();
-        map.put("U", new int[]{-1, 0});
-        map.put("L", new int[]{0, -1});
-        map.put("R", new int[]{0, 1});
-        map.put("D", new int[]{1, 0});
-    }
-    
-    /** Moves the snake.
-        @param direction - 'U' = Up, 'L' = Left, 'R' = Right, 'D' = Down 
-        @return The game's score after the move. Return -1 if game over. 
-        Game over when snake crosses the screen boundary or bites its body. */
-    public int move(String direction) {
-        int headx = snake.peekFirst() / width;
-        int heady = snake.peekFirst() % width;
-        
-        headx += map.get(direction)[0];
-        heady += map.get(direction)[1];
-        
-        int head = headx * width + heady;
-        
-        if(headx < 0 || headx >= height || heady < 0 || heady >= width){//outside
-            return -1;
-        }else if(fi < food.length && headx == food[fi][0] && heady == food[fi][1]){//eat food
-            fi++;
-        }else{//crash itself
-            int tail = snake.peekLast();
-            set.remove(tail);
-            if(set.contains(head)) return -1;
-        }
-        snake.offerFirst(head);
-        return fi;
-    }
-}
-
-/**
- * Your SnakeGame object will be instantiated and called as such:
- * SnakeGame obj = new SnakeGame(width, height, food);
- * int param_1 = obj.move(direction);
- */
-
-
 
 /*
 Deque<Integer> snake: 方便 O(1) 顺移 node
@@ -146,6 +73,8 @@ class SnakeGame {
  * SnakeGame obj = new SnakeGame(width, height, food);
  * int param_1 = obj.move(direction);
  */
+
+
 
 
 
