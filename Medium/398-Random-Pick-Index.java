@@ -85,3 +85,11 @@ Since we have four target number 5 here, the final probability of keeping result
 
 You may ask what is the probability of picking the last possible index 4? Well, it simpler. You may ignore all operations before the loop where i = 4, and the only thing you have to do is to get the random number 0 among {0,1,2,3} in the loop where i = 4, so the probability is exactly 1/4.
 */
+
+
+
+
+
+
+
+
