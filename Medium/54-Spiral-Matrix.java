@@ -9,6 +9,55 @@ NOTES:
 1. matrix : 矩阵  |   spiral order ： 旋风螺旋顺序
 2. 注意尽量找规律，也要考虑到只有一行的避免重复
 */
+/*
+四个边界控制
+
+Time: O(mn)
+Space: O(1)
+*/
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> result = new ArrayList<>();
+        if(matrix.length == 0 || matrix[0].length == 0) return result;
+        
+        int rowStart = 0, rowEnd = matrix.length - 1, colStart = 0, colEnd = matrix[0].length - 1;
+        while(rowStart <= rowEnd && colStart <= colEnd){
+            for(int j = colStart; j <= colEnd; j++){
+                result.add(matrix[rowStart][j]);
+            }
+            rowStart++;
+            
+            for(int i = rowStart; i <= rowEnd; i++){
+                result.add(matrix[i][colEnd]);
+            }
+            colEnd--;
+            
+            if(rowStart <= rowEnd){//check to avoid duplicate
+                for(int j = colEnd; j >= colStart; j--){
+                    result.add(matrix[rowEnd][j]);
+                }     
+                rowEnd--;
+            }
+            
+            if(colStart <= colEnd){
+                for(int i = rowEnd; i >= rowStart; i--){
+                    result.add(matrix[i][colStart]);
+                }
+                colStart++;                
+            }
+        }
+        return result;
+    }
+}
+
+
+
+
+
+
+
+
+
 
 class Solution {
     public List<Integer> spiralOrder(int[][] matrix) {
