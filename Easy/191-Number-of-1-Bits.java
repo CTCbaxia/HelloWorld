@@ -40,7 +40,7 @@ public class Solution {
     // you need to treat n as an unsigned value
     public int hammingWeight(int n) {
         int num = 0;
-        for(int i = 0; i < 32; i++){
+        for(int i = 0; i < 32; i++){//这里只比较 32 位，所以首位的 1 或者变换后 n 的大小没影响
             if((n & 1) == 1) num++;
             n = n >> 1;
             
