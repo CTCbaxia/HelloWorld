@@ -1,10 +1,11 @@
 /*
 163. Missing Ranges
 */
-
 /*
 Two Pointers
 注意 check min max int 的情况
+[-2147483648, -1, 0, 2, 2147483647]
+[-2147483648 -- 2147483647]
 
 Time: O(n)
 Space: O(1)
