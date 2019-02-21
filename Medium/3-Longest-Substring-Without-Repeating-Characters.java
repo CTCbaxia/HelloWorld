@@ -7,6 +7,42 @@ RESULT: 80%
 NOTE: HashSet
 */
 /*
+Map
+
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        Map<Character, Integer> map = new HashMap<>();
+        int i = 0, j = 0;
+        int res = 0;
+        while(j < s.length()){
+            char c = s.charAt(j);
+            if(map.containsKey(c) && map.get(c) >= i){
+                i = map.get(c) + 1;
+            }else{
+                res = Math.max(res, j - i + 1);
+            }
+            map.put(c, j);
+            j++;
+        }
+        return res;
+    }
+}
+
+// "abcabcbb"
+//     i
+//        j
+//  res = 3
+//  map = {
+//  [a = 0] [b = 1][c = 2]
+//  }
+
+
+
+
+/*
 Two Pointers + HashMap
 
 map: <char, index> 
