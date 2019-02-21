@@ -6,6 +6,34 @@ RESULT: 7ms
 
 */
 /*
+Stack
+
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public boolean isValid(String s) {
+        Stack<Character> stack = new Stack<>();
+        for(char c : s.toCharArray()){
+            if(c == '(' || c == '[' || c == '{'){
+                stack.push(c);
+            }else{
+                if(stack.isEmpty()) return false;
+                char l = stack.pop();
+                
+                if(c == ')' && l != '(') return false;
+                if(c == ']' && l != '[') return false;
+                if(c == '}' && l != '{') return false;
+            }
+        }
+        return stack.isEmpty();
+    }
+}
+
+
+
+
+/*
 Stack:
 Different type (need position)
 once right, pop stack and check type, false if not match
