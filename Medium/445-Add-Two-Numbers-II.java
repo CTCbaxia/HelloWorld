@@ -9,6 +9,56 @@ NOTES:
 2. Reverse Result - Space better but extremly complicated
 */
 /*
+Stack + Carry + Reverse
+
+Time: O(n)
+Space: O(n)
+*/
+
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        Stack<Integer> s1 = new Stack<>();
+        Stack<Integer> s2 = new Stack<>();
+        while(l1 != null){
+            s1.push(l1.val);
+            l1 = l1.next;
+        }
+        while(l2 != null){
+            s2.push(l2.val);
+            l2 = l2.next;
+        }
+        ListNode dummy = new ListNode(0);
+        ListNode node = dummy;
+        int carry = 0;
+        while(!s1.isEmpty() || !s2.isEmpty()){
+            int n1 = s1.isEmpty() ? 0 : s1.pop();
+            int n2 = s2.isEmpty() ? 0 : s2.pop();
+            int n = n1 + n2 + carry;
+            node.next = new ListNode(n % 10);
+            carry = n / 10;
+            
+            node = node.next;
+        }    
+        if(carry != 0) node.next = new ListNode(carry);
+        
+        ListNode result = null;
+        node = dummy.next;
+        while(node != null){
+            ListNode newHead = node.next;
+            node.next = result;
+            result = node;
+            node = newHead;
+        }
+        return result;
+    }
+}
+
+
+
+
+
+
+/*
 Stack: more intuitive!!
 
 we first put everything into the stack
