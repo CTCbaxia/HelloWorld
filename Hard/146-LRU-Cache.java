@@ -12,6 +12,101 @@ Double Linked Node + HashMap
 Double Linked Node : 实现移除，加到顶点 O(1)
 Map<Integer, DLinkedNode>: 实现 get O(1)
 
+这题用 Double Linked Node 而不用 List<Node> 的原因是 list 的 remove(node) 和 add(0,node) 操作是 O(n) 的
+如果就用 Double Linked Node 想要 O(n) 遍历，就去掉 map
+
+
+Time: O(1)
+Space: O(1)
+*/
+class LRUCache {
+    private class DLinkedList{
+        int key;
+        int value;
+        DLinkedList pre;
+        DLinkedList next;
+        public DLinkedList(int _key, int _value){
+            key = _key;
+            value = _value;
+        }
+    }
+    private void addToHead(DLinkedList node){
+        node.next = head.next;
+        head.next.pre = node;
+        
+        head.next = node;
+        node.pre = head;
+    }
+    private void remove(DLinkedList node){
+        node.pre.next = node.next;
+        node.next.pre = node.pre;        
+    }
+        
+    DLinkedList head;
+    DLinkedList tail;
+    Map<Integer, DLinkedList> map;//可以将 put,get 变成 O(1) 不让还是要 O(n) 遍历 DLinkedList
+    int maxSize;
+    public LRUCache(int capacity) {
+        head = new DLinkedList(0,0);
+        tail = new DLinkedList(0,0);
+        head.next = tail;
+        tail.pre = head;
+        map = new HashMap<>();
+        maxSize = capacity;
+    }
+    
+    public int get(int key) {
+        if(!map.containsKey(key)) return -1;
+        DLinkedList node = map.get(key);
+        remove(node);
+        addToHead(node);
+        return node.value;
+    }
+    
+    public void put(int key, int value) {
+        if(map.containsKey(key)){
+            DLinkedList node = map.get(key);
+            node.value = value;
+            remove(node);
+            addToHead(node);
+        }else{
+            DLinkedList node = new DLinkedList(key, value);
+            map.put(key, node);
+            addToHead(node);
+            
+            if(map.size() > maxSize){
+                map.remove(tail.pre.key);
+                remove(tail.pre);
+            }
+        }
+    }
+}
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
+
+
+
+
+
+
+
+
+
+ 
+/*
+Double Linked Node + HashMap
+重点是每次能够很快将一个中间的点，移到最前。
+就用 map 帮我们 get 那个点，然后用 Double Linked Node 的操作快速添加和删除
+Double Linked Node : 实现移除，加到顶点 O(1)
+Map<Integer, DLinkedNode>: 实现 get O(1)
+
+这题用 Double Linked Node 而不用 List<Node> 的原因是 list 的 remove(node) 和 add(0,node) 操作是 O(n) 的
+
 Time: O(1)
 Space: O(1)
 */
