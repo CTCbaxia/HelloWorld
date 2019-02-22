@@ -15,6 +15,56 @@ METHODS:
 
 */
 /*
+Boundary check
+
+Time: O(n)
+Space: O(logn - n)
+*/
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        return isValid(root, null, null);
+    }
+    private boolean isValid(TreeNode node, TreeNode min, TreeNode max){
+        if(node == null) return true;
+        if(min != null && node.val <= min.val) return false;
+        if(max != null && node.val >= max.val) return false;
+        
+        return isValid(node.left, min, node) && isValid(node.right, node, max);
+    }
+}
+/*
+Inorder Traverse
+
+Time: O(n)
+Space: O(logn - n)
+*/
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        TreeNode pre = null;//注意这里 TreeNode 而非 int
+        Stack<TreeNode> stack = new Stack<>();
+        while(!stack.isEmpty() || root != null){
+            while(root != null){
+                stack.push(root);
+                root = root.left;
+            }
+            TreeNode node = stack.pop();
+            if(pre != null && pre.val >= node.val) return false;//这里的比较尽量不要带入 min max 和 + 1
+            pre = node;
+            root = node.right;
+        }
+        return true;
+    }
+    
+}
+
+
+
+
+
+
+
+
+/*
 Range check:
 
 Time: O(n)
