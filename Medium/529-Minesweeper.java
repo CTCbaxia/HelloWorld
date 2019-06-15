@@ -4,8 +4,9 @@ MEDIUM
 */
 /*
 DFS for each unclicked pos, count num of Adj Mines, and decide the next step
+BFS also ok
 
-Time: O(mn)
+Time: O(mn) will only explore every node once
 Space:O(1)
 */
 class Solution {
