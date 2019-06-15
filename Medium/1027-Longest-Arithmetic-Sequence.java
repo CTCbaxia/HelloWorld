@@ -3,9 +3,9 @@ MEDIUM
 1027. Longest Arithmetic Sequence
 */
 /*
-DP + List of Map
+DP + Map<Integer, Integer>[] dp
 Map<distance, len>
-
+用 map 来对每个数记录他能提供的可选间隔（distance），以及该间隔目前为止的长度（len）
 
 Time: O(n^2) = use map to make finding at O(1)
 Space: O(n^2)
