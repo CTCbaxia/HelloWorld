@@ -8,7 +8,7 @@ BFS to find specific level of nodes for each parent(including the target itself)
 ** need to not include the lastNode we went (don't go back)
 
 Time: O(n + 2^(logn + 1)) = O(n)
-Space: O(n/2)
+Space: O(logn) - a list of parents
 */
 class Solution {
     public List<Integer> distanceK(TreeNode root, TreeNode target, int K) {
@@ -34,12 +34,12 @@ class Solution {
         list.add(node);
         if(node == target) return true;
         if(findTarget(node.left, list, target)){
-            return true;
+            return true;//once find the target, stop adding any nodes
         }
         if(findTarget(node.right, list, target)){
-            return true;
+            return true;//once find the target, stop adding any nodes
         }
-        list.remove(node);
+        list.remove(node);//backtracking
         return false;
     }
     private void findLevelNodes(TreeNode root, TreeNode notIncludeNode, List<Integer> levelNodes, int level){
