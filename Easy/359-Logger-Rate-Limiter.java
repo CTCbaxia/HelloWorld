@@ -3,11 +3,13 @@ EASY
 359. Logger Rate Limiter
 
 */
+
+
 /*
 Map
 
 Time: O(1)
-Space: O(n)
+Space: O(n) ---❗️需要 keep all of the old messages，空间占有高
 */
 class Logger {
 
