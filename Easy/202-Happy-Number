@@ -1,0 +1,24 @@
+/*
+Recursion + HashSet
+
+Time: O()
+Space: O()
+*/
+class Solution {
+    public boolean isHappy(int n) {
+        return isHappyHelper(n, new HashSet<Integer>());
+    }
+    private boolean isHappyHelper(int n, Set<Integer> visited){
+        if(visited.contains(n)) return false;
+        
+        visited.add(n);
+        int sum = 0;
+        while(n != 0){
+            int digit = n % 10;
+            n /= 10;
+            sum += digit * digit;
+        }
+        if(sum == 1) return true;
+        else return isHappyHelper(sum, visited);
+    }
+}
