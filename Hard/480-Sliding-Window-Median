@@ -1,0 +1,89 @@
+/*
+TreeMap -- 写不出来
+
+*/
+class Solution {
+    public double[] medianSlidingWindow(int[] nums, int k) {
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        for(int i = 0; i < k; i++){
+            map.put(nums[i], map.getOrDefault(nums[i], 0) + 1);
+        }
+        //get the median
+        double[] res = new double[nums.length - k + 1];
+        if(k % 2 != 0){
+            int median = getMedianOdd(map, k);
+            res[0] = median;
+            
+            int right = k, left = 1;
+            while(right < nums.length){
+                if(nums[right] > median && nums[left] <= median){
+                    median = moveOneRight(map, median);
+                }else if(nums[right] < median && nums[left] >= median){
+                    median = moveOneLeft(map, median);
+                }
+                res[left] = median;
+                    
+                if(map.get(nums[left]) > 1) map.put(nums[left], map.get(nums[left]) - 1);
+                else map.remove(nums[left]);
+                
+                map.put(nums[right], map.getOrDefault(nums[right], 0) + 1);
+                
+                right++;
+                left++;
+            }
+        }else{
+            int[] median = getMedianEven(map, k);
+            int medianL = median[0], medianR = median[1];
+            res[0] = (double)(medianL + medianR)/2;
+            
+            int right = k, left = 1;
+            while(right < nums.length){
+                if(nums[right] > median && nums[left] <= median){
+                    medianL = medianR;
+                    medianR = moveOneRight(map, medianR);
+                }else if(nums[right] < median && nums[left] >= median){
+                    medianR = medianL;
+                    medianL = moveOneLeft(map, medianL);
+                }
+                res[left] = (double)(medianL + medianR)/2;
+                
+                if(map.get(nums[left]) > 1) map.put(nums[left], map.get(nums[left]) - 1);
+                else map.remove(nums[left]);
+                
+                map.put(nums[right], map.getOrDefault(nums[right], 0) + 1);
+                
+                right++;
+                left++;
+            }
+        }
+        return res;
+    }
+    private int moveOneRight(TreeMap<Integer, Integer> map, int key){
+        
+    }
+    private int moveOneLeft(TreeMap<Integer, Integer> map, int key){
+        
+    }
+    private int getMedianOdd(TreeMap<Integer, Integer> map, int k){
+        int num = (k - 1) / 2;
+        int preKey = Integer.MIN_VALUE;
+        while(num > 0){
+            int curKey = map.ceilingKey(preKey);
+            num -= map.getOrDefualt(preKey, 0);
+            preKey = curKey;
+        }
+        if(num == 0) return map.higherKey(preKey);//find the next one
+        else return preKey;//find the last one
+    }
+    private int[] getMedianEven(TreeMap<Integer, Integer> map, int k){
+        int num = k / 2;
+        int preKey = Integer.MIN_VALUE;
+        while(num > 0){
+            int curKey = map.ceilingKey(preKey);
+            num -= map.getOrDefualt(preKey, 0);
+            preKey = curKey;
+        }
+        if(num == 0) return new int[]{preKey, map.higherKey(preKey)};
+        else return new int[]{preKey, preKey};
+    }
+}
