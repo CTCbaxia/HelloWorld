@@ -1,4 +1,76 @@
 /*
+PriorityQueue:
+left - maxHeap
+right - minHeap
+
+! Tricky 1: 
+always make the left pq size == leftSize == k/2
+if k is odd, then the median is the first num in right
+
+! Tricky 2: 
+need half the number before add them up
+((double)left.peek() + (double)right.peek())/2
+((double)left.peek()/2 + (double)right.peek()/2)
+
+! Tricky 3: 
+PQ maxHeap should be implemented by i2.compareTo(i1)
+
+Time: O(n(logn + n))
+Space: O(n)
+*/
+class Solution {
+    public double[] medianSlidingWindow(int[] nums, int k) {
+        if(nums == null || nums.length == 0) return null;
+        
+        PriorityQueue<Integer> right = new PriorityQueue<>();
+        PriorityQueue<Integer> left = new PriorityQueue<>(new Comparator<Integer>(){
+            public int compare(Integer i1, Integer i2){
+                return i2.compareTo(i1);//不能 i2 - i1 因为 Integer.MAX_VALUE, Integer.MIN_VALUE 相关的操作会溢出
+            }
+        });
+        
+        int leftSize = k / 2; //if k is odd, the first num in right is the median
+        double[] res = new double[nums.length - k + 1];
+        //initialization
+        for(int i = 0; i < k; i++){
+            left.offer(nums[i]);
+        } 
+        balancePQ(left, right, leftSize);
+        res[0] = k == leftSize * 2 ? ((double)left.peek() + (double)right.peek())/2 : right.peek();
+        
+        //move the sliding window
+        for(int i = k; i < nums.length; i++){
+            addNum(left, right, res[i - k], nums[i]);
+            removeNum(left, right, res[i - k], nums[i - k]);
+            balancePQ(left, right, leftSize);
+            res[i - k + 1] = k == leftSize * 2 ? ((double)left.peek() + (double)right.peek())/2 : right.peek();
+        }
+        return res;
+    }
+    private void addNum(PriorityQueue<Integer> left, PriorityQueue<Integer> right, double median, int num){
+        if(num < median) left.offer(num);
+        else right.offer(num);
+    }
+    
+    private void removeNum(PriorityQueue<Integer> left, PriorityQueue<Integer> right, double median, int num){
+        if(num < median) left.remove(num);
+        else right.remove(num);
+    }
+    
+    private void balancePQ(PriorityQueue<Integer> left, PriorityQueue<Integer> right, int leftSize){
+        while(left.size() > leftSize){
+            right.offer(left.poll());
+        }
+        if(left.size() < leftSize){
+            left.offer(right.poll());
+        }
+    }
+    
+}
+
+
+
+/*
 TreeMap -- 写不出来
 
 */
