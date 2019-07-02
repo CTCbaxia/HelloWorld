@@ -4,6 +4,8 @@
 /*
 method is not modifiable
 Three marker + check duplicate
+在无法预测极值是否等于会出现的时候，不要用 Integer.MIN_VALUE 这种东西
+
 tips: using Integer and initialization = null
 
 Time: O(n)
