@@ -9,7 +9,7 @@ fail:[1,-2147483648,2]
 */
 class Solution {
     public int thirdMax(int[] nums) {
-        int first = Integer.MIN_VALUE, second = Integer.MIN_VALUE, third = Integer.MIN_VALUE;
+        int first = Integer.MIN_VALUE, second = Integer.MIN_VALUE, third = Integer.MIN_VALUE;//对于可能有 Integer.MIN_VALUE 值的情况，不要用这个来初始化
         int  count = 0;
         for(int num : nums){
             
