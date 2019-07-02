@@ -2,6 +2,7 @@
 414. Third Maximum Number
 */
 /*
+method is not modifiable
 Three marker + check duplicate
 tips: using Integer and initialization = null
 
@@ -30,8 +31,71 @@ class Solution {
         return third == null ? first:third;
     }
 }
+/*
+PriorityQueue + Set
+
+
+Time: O(n)
+Space: O(1)
+
+*/
+class Solution {
+    public int thirdMax(int[] nums) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        Set<Integer> set = new HashSet<>();
+        
+        for(int num : nums){
+            if(set.contains(num)) continue;
+            pq.offer(num);
+            set.add(num);
+            
+            if(pq.size() > 3) set.remove(pq.poll());
+        }
+        if(pq.size() == 3){
+            return pq.poll();
+        }else{
+            while(pq.size() > 1) pq.poll();
+            return pq.poll();
+        }
+    }
+}
+
+
+
+
 
 /*
+list + insert
+
+
+Time: O(n)
+Space: O(1)
+
+*/
+class Solution {
+    public int thirdMax(int[] nums) {
+        List<Integer> list = new ArrayList<>();
+        for(int num : nums){//should be Integer
+            if(list.size() > 0 && list.get(0) == num) continue;
+            if(list.size() > 1 && list.get(1) == num) continue; 
+            if(list.size() > 2 && list.get(2) == num) continue;
+            
+            if(list.size() == 0 || num > list.get(0)){
+                list.add(0, num);
+            }else if(list.size() == 1 || (num > list.get(1) && num < list.get(0))){
+                list.add(1, num);
+            }else if(list.size() == 2 || (num > list.get(2) && num < list.get(1))){
+                list.add(2, num);
+            } 
+            if(list.size() == 4) list.remove(3);
+        }
+        return list.size() == 3 ? list.get(2) :list.get(0);
+    }
+}
+
+
+/*
+❌initialization is problematic
 Three marker + check duplicate
 Time: O(n)
 Space: O(1)
