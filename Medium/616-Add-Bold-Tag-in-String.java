@@ -77,3 +77,143 @@ class Solution {
         return end;
     }
 }
+/*
+Mark boolean bold for every char
+
+length of s : n
+length of dic : num, avgLen
+Time: (num * avgLen * n + n)
+Space: O(n)
+*/
+public class Solution {
+    public String addBoldTag(String s, String[] dict) {
+        boolean[] bold = new boolean[s.length()];
+        for(String str : dict){
+            int start = 0;
+            while(start < s.length()){
+                start = s.indexOf(str, start);//每次跨过之前匹配的
+                if(start < 0) break;
+                int end = start + str.length();
+                for(int i = start; i < end; i++){
+                    bold[i] = true;
+                }
+                start++;
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        boolean inBold = false;
+        for(int i = 0; i < s.length(); i++){
+            if(!inBold && bold[i]){//first bold char
+                inBold = true;
+                sb.append("<b>");
+            }else if(inBold && !bold[i]){//first char out of bold
+                inBold = false;
+                sb.append("</b>");
+            } 
+            sb.append(s.charAt(i));
+        }
+        if(inBold) sb.append("</b>");//🙅注意结尾要check
+        return sb.toString();
+    }
+}
+
+
+
+
+
+
+//---------------------trial
+/*
+Mark boolean bold for every char
+
+length of s : n
+length of dic : num, avgLen
+Time: (num * avgLen * n + n)
+Space: O(n)
+*/
+class Solution {
+    public String addBoldTag(String s, String[] dict) {
+        boolean[] bold = new boolean[s.length()];
+        for(String str : dict){
+            int index = 0;
+            int end = 0;//avoid duplicate assign boolean
+            while(index < s.length()){
+                int start = s.indexOf(str, index);
+                if(start >= 0){//❌"zzz",["zz"] 会出现错误，因为不会再匹配最后一个 z
+                    int preEnd = end == 0 ? start : end;//为了减少重复赋值
+                    end = start + str.length();//🙅end is not included
+                    for(int i = Math.max(preEnd,start); i < end; i++){//为了减少重复赋值
+                        bold[i] = true;
+                    }
+                }
+                index++;
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        boolean inBold = false;
+        for(int i = 0; i < s.length(); i++){
+            if(!inBold && bold[i]){//first bold char
+                inBold = true;
+                sb.append("<b>");
+            }else if(inBold && !bold[i]){//first char out of bold
+                inBold = false;
+                sb.append("</b>");
+            } 
+            sb.append(s.charAt(i));
+        }
+        if(inBold) sb.append("</b>");//🙅注意结尾要check
+        return sb.toString();
+    }
+}
+
+
+
+
+/*❌
+Mark boolean bold for every char
+
+length of s : n
+length of dic : num, avgLen
+Time: (num * avgLen * n + n)
+Space: O(n)
+*/
+class Solution {
+    public String addBoldTag(String s, String[] dict) {
+        boolean[] bold = new boolean[s.length()];
+        for(String str : dict){
+            int index = 0;
+            int end = -1;//avoid duplicate assign boolean
+            while(index < s.length()){
+                int start = s.indexOf(str, index);
+                //find a str in s that starts later than previous end, 
+                //🙅 mind start: initial end value is -1, but start should always be >= 0 to mean find str
+                //🙅 mind end: updated end value is 1 larger than the previous actual end
+                if(start >= 0 && start >= end){//❌"zzz",["zz"] 会出现错误，因为不会再匹配最后一个 z
+                    end = start + str.length();//🙅end is not included
+                    for(int i = start; i < end; i++){
+                        bold[i] = true;
+                    }
+                }
+                index++;
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        boolean inBold = false;
+        for(int i = 0; i < s.length(); i++){
+            if(!inBold && bold[i]){//first bold char
+                inBold = true;
+                sb.append("<b>");
+            }else if(inBold && !bold[i]){//first char out of bold
+                inBold = false;
+                sb.append("</b>");
+            } 
+            sb.append(s.charAt(i));
+        }
+        if(inBold) sb.append("</b>");//🙅注意结尾要check
+        return sb.toString();
+    }
+}
+
+
+
+
