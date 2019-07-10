@@ -1,0 +1,36 @@
+/*
+
+1055. Shortest Way to Form String
+*/
+/*
+Greedy 每次尝试匹配最多的 target，
+
+如果一个 substring 可以匹配，那么这个 substring 的 substring 也可以匹配
+所以每次都尽量匹配最长的substring
+
+loop every char in target, see if there is any match in source.
+when comes to the end of the source, just go back to the beginning of the source.
+
+Time: O(mn) m = len of source, n = len of target | if only the last letter matches
+Space: O(1)
+*/
+class Solution {
+    public int shortestWay(String source, String target) {
+        int count = 0;
+        int i = 0, j = 0, preI = -1;;
+        while(i < target.length()){
+            count++;
+            while(j < source.length() && i < target.length()){
+                if(source.charAt(j) == target.charAt(i)){
+                    i++;
+                }
+                j++;
+            }
+            //出来的时候 i 总是指向还未匹配的 char
+            j = 0;
+            if(i == preI) return -1;// if there is no this letter in source, return -1
+            preI = i;
+        }
+        return count;
+    }
+}
