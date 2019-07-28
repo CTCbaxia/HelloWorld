@@ -5,12 +5,12 @@ M
 /*
 Find all possibility: Recursion + Dynamic Programming(save time)
 
-Time: O(n^3)
-Space: O(n^2)
 
 dp[i][j] = from node i to j, get the smallest possible sumTree
 dp[i][j] = Math.min(dp[i][j], dp[i][k] + dp[k + 1][j] + max[i][k] * max[k + 1][j]);
-Space: 
+
+Time: O(n^3)
+Space: O(n^2)
 */
 class Solution {
 
@@ -44,16 +44,11 @@ class Solution {
     }
 
 }
-
-
 /*
 Find all possibility: Recursion + Dynamic Programming(save time)
 
 Time:
-T(n) = T(k) + T(n - k) = [T(1) + T(n - 1)] + [T(2) + T(n - 2)] + [T(3) + T(n - 3)] + ... + 2*T(n/2)
-     = [T(1) + T(2) + T(3) + ... + T(n/2)] + [T(n/2) + ... + T(n - 2) + T(n - 1)]
-     = T(1) + T(2) + ...+ T(n - 1)
-     ???
+按理说应该是只算了所有 ij 列，所以是
 Space: O(n^2)
 */
 class Solution {
@@ -99,10 +94,16 @@ TLE!!
 Find all possibility: Recursion (Brute Force)
 
 Time:
-T(n) = T(k) + T(n - k) = [T(1) + T(n - 1)] + [T(2) + T(n - 2)] + [T(3) + T(n - 3)] + ... + 2*T(n/2)
-     = [T(1) + T(2) + T(3) + ... + T(n/2)] + [T(n/2) + ... + T(n - 2) + T(n - 1)]
-     = T(1) + T(2) + ...+ T(n - 1) 不知道怎么算
-     
+T(n) = T(k) + T(n - k) 
+     = [T(1) + T(n - 1)] + [T(2) + T(n - 2)] + [T(3) + T(n - 3)] + ... + [T(n - 1) + T(1)]
+     = 2[T(n - 1) + T(n - 2) + ... + T(2) + T(1)]
+     = 2([[T(n - 3) + T(n - 4) + ... + T(1)] + [T(n - 3) + T(n - 4) + ... + T(1)]])
+     = 2^2 [T(n - 3) + T(n - 4) + ... + T(1)]
+     = 2^3 [T(n - 3) + T(n - 4) + ... + T(1)]
+     = 2^4 [T(n - 4) + ... + T(1)]
+     = 2^(n - 1)T(1)
+     = O(2^n)
+     指数级肯定不行
 Space: O(1)
 */
 class Solution {
