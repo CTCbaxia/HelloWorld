@@ -3,7 +3,8 @@ H
 975. Odd Even Jump
 */
 /*
-Dynamic Programming
+Dynamic Programming + TreeMap
+
 Use array to log the next number for the odd and even jump for the current index
 Use treemap<number, index> to find the next number in O(1) by ceil and floor function
 
