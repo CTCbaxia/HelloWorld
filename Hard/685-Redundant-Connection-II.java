@@ -8,7 +8,8 @@ Union Find + Find Circle
 1) one node has two parents --> remove one candidate edge, try union find to see if there is only one group
 2) a directed circle --> remove the last edge
 
-
+Time: O(n) Only traverse the tree three times
+Space: O(n)
 */
 class Solution {
     public int[] findRedundantDirectedConnection(int[][] edges) {
@@ -21,6 +22,7 @@ class Solution {
                 candidate1 = new int[]{parents.get(edge[1]), edge[1]};
                 candidate2 = new int[]{edge[0], edge[1]};//make this edge invalid but candidate it
                 edge[0] = -1;//mark remove this edge
+                break;
             }else{
                 parents.put(edge[1], edge[0]);
             }
@@ -41,29 +43,20 @@ class Solution {
         for(int[] edge : edges){
             if(edge[0] == -1) continue;
             int u = edge[0], v = edge[1], pu = find(u, parents);
-            if(pu == v){//there is a circle
+            if(pu == v){//在添加这个 edge 之前就要check，不然死循环。there is a circle
                 if(candidate2 != null) return candidate1;
                 else return edge;
             }
             parents.put(v, pu);
             count--;
         }
-        if(count > 1) return candidate1;//disjoint set
-        else return candidate2;
+        if(count > 1) return candidate1;//disjoint set, should return the other one
+        else return candidate2;//the tree is valid
         
         
     }
-    private int[] findCircleRedundant(int[][] edges){
-        Set<Integer> set = new HashSet<>();
-        for(int[] edge : edges){
-            if(set.contains(edge[0]) && set.contains(edge[1])) return edge;
-            set.add(edge[0]);
-            set.add(edge[1]);
-        }
-        return null;
-    }
+
     private int find(int p, Map<Integer, Integer> parents){
-        System.out.println("find:"+p);
         if(parents.get(p) != p) parents.put(p, find(parents.get(p), parents));
         return parents.get(p);
     }
