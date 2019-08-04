@@ -34,6 +34,37 @@ class Solution {
 
 }
 /*
+Iterative
+每一轮都把所有首位都配对，得到新的 string[]
+然后对于新生成的数组，继续首尾配对
+
+note: 其实可以不用每次都新生成一个 string[], 每次都利用前一半都数组来存当前的更新值就好
+
+Time: O(n) = O(n) + O(n/2) + O(n/4) + ... + O(1)
+Space: O(n)
+*/
+class Solution {
+    public String findContestMatch(int n) {
+        String[] data = new String[n];
+        // initialize
+        for(int i = 0; i < n; i++){
+            data[i] = String.valueOf(i + 1);
+        }
+        
+        while(n > 1){
+            int l = 0, r = n - 1, i = 0;
+            while(l < r){
+                data[i++] = "(" + data[l] + "," + data[r] + ")";
+                l++;
+                r--;
+            }
+            n /= 2;
+        }
+        return data[0];
+    }
+
+}
+/*
 Recursion
 每一轮都把所有首位都配对，得到新的 string[]
 然后对于新生成的数组，继续首尾配对
