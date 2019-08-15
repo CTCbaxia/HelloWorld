@@ -36,7 +36,6 @@ class Solution {
         List<Integer> res = new ArrayList<>();
         Stack<TreeNode> stack = new Stack<>();
         
-        if(root == null) return res;
         while(root != null || !stack.isEmpty()){
             while(root != null){
                 stack.push(root);
