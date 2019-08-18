@@ -4,6 +4,14 @@ M
 */
 /*
 Mark the impossible part
+1. mark all O point conncted to the boundary to A, which cannot be closed
+2. mark all rest O point to X as it must be closed
+3. mark all A back to O
+
+X X X X           X X X X             X X X X
+X X O X  ->       X X O X    ->       X X X X
+X O X X           X 1 X X             X O X X
+X O X X           X 1 X X             X O X X
 
 Time: O(mn)
 Space: O(mn)
@@ -34,20 +42,19 @@ class Solution {
             }
         }
         
-        // for(int i = 0; i < m; i++){
-        //     for(int j = 0; j < n; j++){
-        //         if(board[i][j] == 'O'){
-        //             findConnected(board, i, 0, 'O', 'X');
-        //         }
-        //     }
-        // }
-        // for(int i = 0; i < m; i++){
-        //     for(int j = 0; j < n; j++){
-        //         if(board[i][j] == 'A'){
-        //             findConnected(board, i, 0, 'A', 'O');
-        //         }
-        //     }
-        // }
+        // for all center O, change to X
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(board[i][j] == 'O'){
+                    findConnected(board, i, j, 'O', 'X');
+                }
+            }
+        }
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(board[i][j] == 'A') board[i][j] = 'O';
+            }
+        }
         return;         
     }
     private void findConnected(char[][] board, int i, int j, char preVal, char newVal){
