@@ -1,10 +1,77 @@
 /*
 EASY
 844. Backspace String Compare
-
-RESULT: 
-NOTES: 
 */
+
+/*
+Google Mock Interview
+Two Pointers
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public boolean backspaceCompare(String S, String T) {
+        int i1 = S.length() - 1, i2 = T.length() - 1;
+        while(i1 >= 0 || i2 >= 0){
+            int count = 0;
+            while(i1 >= 0 && (S.charAt(i1) == '#' || count > 0)){// "ab##" cannot just skip # by i -= 2
+                if(S.charAt(i1) == '#'){
+                    count++;// need to calculate the number of # to use it up
+                }else{
+                    count--;
+                }
+                i1--;
+            } 
+            while(i2 >= 0 && (T.charAt(i2) == '#' || count > 0)){
+                if(T.charAt(i2) == '#'){
+                    count++;
+                }else{
+                    count--;
+                }
+                i2--;
+            } 
+            if(i1 < 0 && i2 < 0) return true;
+            else if(i1 < 0 || i2 < 0) return false;
+            else{
+                if(S.charAt(i1) != T.charAt(i2)) return false;
+            }
+            i1--;
+            i2--;
+        }
+        return i1 < 0 && i2 < 0;
+    }
+}
+
+/*
+Stack
+
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public boolean backspaceCompare(String S, String T) {
+        Stack<Character> stack1 = new Stack<>();
+        Stack<Character> stack2 = new Stack<>();
+        preprocess(S, stack1);
+        preprocess(T, stack2);
+        while(!stack1.isEmpty() && !stack2.isEmpty()){
+            if(stack1.pop() != stack2.pop()) return false;
+        }
+        return stack1.isEmpty() && stack2.isEmpty();
+    }
+    private void preprocess(String s, Stack<Character> stack){
+        for(char c : s.toCharArray()){
+            if(c == '#'){
+                if(!stack.isEmpty()) stack.pop();
+            }else{
+                stack.push(c);
+            }
+        }
+    }
+}
+
+
 /*
 Back checking: check from the end, count for # and jump while count > 0
 也可以用stack，先得出两个 string 的实际内容，然后比较
