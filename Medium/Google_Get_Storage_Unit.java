@@ -1,5 +1,5 @@
 /*
-Google Onsite Interview
+Google Onsite Interview - Similar to LC 379
 You have N storage Unit
 you need to implement two methods:
 1. markAsUsed(index)
