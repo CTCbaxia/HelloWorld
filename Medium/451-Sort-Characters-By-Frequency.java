@@ -1,3 +1,9 @@
+/*
+Bucket Sort | also PQ can work
+
+Time: O(n)
+Space: O(n)
+*/
 class Solution {
     public String frequencySort(String s) {
         Map<Character, Integer> map = new HashMap<>();
