@@ -20,7 +20,7 @@ class Solution {
     public int maxProfit(int[] prices, int fee) {
         int n = prices.length;
         int[] buy = new int[n], sell = new int[n];
-        buy[0] = -prices[0];
+        buy[0] = -prices[0];//因为这个时候必须是hold一个的状态，所以强行先 hold 第一个
         for(int i = 1; i < n; i++){
             buy[i] = Math.max(buy[i - 1], sell[i - 1] - prices[i]);
             sell[i] = Math.max(sell[i - 1], buy[i - 1] + prices[i] - fee);//pay fee when sell
@@ -28,9 +28,6 @@ class Solution {
         return sell[n - 1];
     }
 }
-
-
-
 
 /*
 Greedy
