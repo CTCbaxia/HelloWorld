@@ -1,8 +1,68 @@
 /*
 HARD
 1092. Shortest Common Supersequence
-
 */
+/*
+Dynamic Programming
+最小公约数 --> 最大公倍数
+Find the Longest Common Subsequence in str1 and str2 using DP
+And then fill the rest of the result
+
+Time: O(mn) + O(m + n)
+Space: O(mn)
+*/
+class Solution {
+    public String shortestCommonSupersequence(String str1, String str2) {
+        // find the LCS first and add " " as terminal
+        // so that all the rest of the chars in str1 and str2 after the LCS can be added to the res
+        // because there is no " " in str1 and str2, which means all chars till end will be appended
+        String LCS = findLCS(str1, str2) + " ";
+        System.out.println(LCS);
+        StringBuilder sb = new StringBuilder();
+        int i1 = 0, i2 = 0;
+        for(int i = 0; i < LCS.length(); i++, i1++, i2++){//need to increase for all i, i1, i2
+            while(i1 < str1.length() && str1.charAt(i1) != LCS.charAt(i)){
+                sb.append(str1.charAt(i1++));
+            }
+            while(i2 < str2.length() && str2.charAt(i2) != LCS.charAt(i)){
+                sb.append(str2.charAt(i2++));
+            }
+            sb.append(LCS.charAt(i));
+        }
+        return sb.deleteCharAt(sb.length() - 1).toString();
+    }
+    private String findLCS(String s1, String s2){
+        String res = "";
+        int n1 = s1.length(), n2 = s2.length();
+        String[][] dp = new String[n1 + 1][n2 + 1];
+        
+        //inialization
+        for(int i = 0; i < n1 + 1; i++){
+            Arrays.fill(dp[i], "");
+        }
+        
+        //assign value
+        for(int i = 1; i < n1 + 1; i++){
+            for(int j = 1; j < n2 + 1; j++){
+                if(s1.charAt(i - 1) == s2.charAt(j - 1)){
+                    dp[i][j] = dp[i - 1][j - 1] + s1.charAt(i - 1);
+                    if(dp[i][j].length() > res.length()){
+                        res = dp[i][j];
+                    }
+                }else{
+                    dp[i][j] = dp[i][j - 1].length() > dp[i - 1][j].length()
+                        ? dp[i][j - 1]
+                        : dp[i - 1][j];
+                }
+            }
+        }
+        return res;
+    }
+}
+
+
+
+
 
 /*❌
 Recursion:

@@ -2,14 +2,43 @@
 MEDIUM
 241. Different Ways to Add Parentheses
 https://leetcode.com/problems/different-ways-to-add-parentheses/description/
-
-TIME: 
-RESULT: 
-METHOD:
-
-NOTES:
-
 */
+/*
+Recursion
+每次看到一个符号，就把左边和右边的按照括号整体计算
+将两边的计算结果再带入当前计算
+
+Time: O()
+Space: O()
+*/
+class Solution {
+    public List<Integer> diffWaysToCompute(String input) {
+        List<Integer> res = new ArrayList<>();
+        for(int i = 0; i < input.length(); i++){
+            char c = input.charAt(i);
+            if(c == '+' || c == '-' || c == '*'){
+                List<Integer> left = diffWaysToCompute(input.substring(0, i));
+                List<Integer> right = diffWaysToCompute(input.substring(i + 1));
+                for(int l : left){
+                    for(int r : right){
+                        if(c == '+') res.add(l + r);
+                        else if(c == '-') res.add(l - r);
+                        else res.add(l * r);
+                    }
+                }
+            }
+        }
+        if(res.size() == 0){
+            res.add(Integer.parseInt(input));
+        }
+        return res;
+    }
+}
+
+
+
+
+
 /*
 (*(-(*)))
 ((*)-(*))
