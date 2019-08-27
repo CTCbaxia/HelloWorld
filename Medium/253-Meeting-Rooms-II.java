@@ -8,6 +8,49 @@ RESULT: 100% - 2ms
 
 */
 /*
+Line sweep: start and end separation, count room
+只需要给每一个时间点标记开始和结束，然后按照时间排序，每次start都增加一个房间，end都结束一个房间。
+一直更新最大房间占有量
+
+** need to be careful for SAME start and end time
+
+Time: O(nlogn)
+Space: O(n)
+*/
+class Solution {
+    public int minMeetingRooms(int[][] intervals) {
+        int res = 0;
+        int room = 0;
+        
+        PriorityQueue<int[]> pq = new PriorityQueue<>(new Comparator<int[]>(){
+            public int compare(int[] i1, int[] i2){
+                if(i1[0] != i2[0]) return i1[0] - i2[0];//asc time
+                else return i2[1] - i1[1];//desc end first, start next
+                
+            }
+        });
+        //separate the timeline
+        //[time, start/end], start = 0, end = 1
+        for(int[] i : intervals){
+            pq.offer(new int[]{i[0], 0});
+            pq.offer(new int[]{i[1], 1});
+        }
+        
+        while(!pq.isEmpty()){
+            int[] t = pq.poll();
+            if(t[1] == 0) room++;// start
+            else if(t[1] == 1) room--;// end
+            
+            res = Math.max(res, room);
+        }
+        return res;
+    }
+}
+
+
+
+
+/*
 Array sort + PriorityQueue
 我们只会在有新 meeting 的时候 poll form pq，并且一定会放入至少一个meeting进去
 所以 pq 的 size 只会越来越多
