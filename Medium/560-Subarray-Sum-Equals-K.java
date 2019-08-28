@@ -1,15 +1,37 @@
 /*
 MEDIUM
 560. Subarray Sum Equals K
-https://leetcode.com/problems/subarray-sum-equals-k/description/
 
-TIME: 0713 - 4h
-RESULT: 2.17% - 574ms
-NOTES:
-1. 注意传参部分：pre++ 和 pre + 1 的区别
-2. 双重循环 SUM[i, j] = SUM[0, j] - SUM[0, i - 1] 的思想很重要
-3. HashMap 该学了
 */
+/*
+PreSum + Map check(curSum - target)
+
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        Map<Integer, Integer> preSum = new HashMap<>();
+        preSum.put(0, 1);//initialization, help to get the subarray [0, ... curIndex]
+        int curSum = 0;
+        int res = 0;
+        for(int n : nums){
+            curSum += n;
+            if(preSum.containsKey(curSum - k)) res += preSum.get(curSum - k);
+            preSum.put(curSum, preSum.getOrDefault(curSum, 0) + 1);
+        }
+        return res;
+    }
+}
+
+
+
+
+
+
+
+
+
 /*
 PreSum + Map
 连续的 subarry sum -- presum
