@@ -6,6 +6,36 @@ TIME:
 RESULT: 
 */
 /*
+Recursion
+
+Time: O(1) - O(9)?
+Space: O(1) - stack O(3)?
+
+*/
+class Solution {
+    public String numberToWords(int num) {
+        if(num == 0) return "Zero";//单独处理 0
+        return getNum(num);
+    }
+    private String getNum(int num){
+        String[] belowTwenty = {"","One","Two","Three","Four","Five","Six","Seven", "Eight","Nine","Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"};
+        String[] tens = {"", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+        String[] unit = {"", "Hundred", "Thousand", "Million", "Billion"};
+        
+        String res;//不能直接返回，要去除尾部空格
+        if(num < 20) res = belowTwenty[num];
+        else if(num < 100) res = tens[num / 10] + " " + belowTwenty[num % 10];
+        else if(num < 1000) res = getNum(num / 100) + " " + unit[1] + " " +  getNum(num % 100);
+        else if(num < 1000000) res = getNum(num / 1000) + " " +  unit[2] + " " +  getNum(num % 1000);
+        else if(num < 1000000000) res = getNum(num / 1000000) + " " +  unit[3] + " " +  getNum(num % 1000000);
+        else res = getNum(num / 1000000000) + " " +  unit[4] + " " +  getNum(num % 1000000000);
+        return res.trim();// 去掉尾部空格， getNum 应该得到一个没有前后空格的结果
+    }
+}
+
+
+
+/*
 Recursive: 注意 0 要在主函数处理
 recursive 每一次按照单位量处理
 注意 getNum 要得到前后没有空格的数字
