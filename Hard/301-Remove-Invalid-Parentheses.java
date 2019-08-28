@@ -2,10 +2,64 @@
 HARD
 301. Remove Invalid Parentheses
 
-TIME: 
-RESULT: 
-NOTES: 
 */
+/*
+Explanation:
+We all know how to check a string of parentheses is valid using a stack. Or even simpler use a counter.
+The counter will increase when it is ‘(‘ and decrease when it is ‘)’. Whenever the counter is negative, we have more ‘)’ than ‘(‘ in the prefix.
+
+To make the prefix valid, we need to remove a ‘)’. The problem is: which one? The answer is any one in the prefix. However, if we remove any one, we will generate duplicate results, for example: s = ()), we can remove s[1] or s[2] but the result is the same (). Thus, we restrict ourself to remove the first ) in a series of concecutive )s.
+
+After the removal, the prefix is then valid. We then call the function recursively to solve the rest of the string. However, we need to keep another information: the last removal position. If we do not have this position, we will generate duplicate by removing two ‘)’ in two steps only with a different order.
+For this, we keep tracking the last removal position and only remove ‘)’ after that.
+
+Now one may ask. What about ‘(‘? What if s = ‘(()(()’ in which we need remove ‘(‘?
+The answer is: do the same from right to left.
+However a cleverer idea is: reverse the string and reuse the code!
+
+Time: O(nk), every recursion path is to generate one result, if we have k valid output, 构造每个答案需要O(n)
+Space: O(1) - recursion stack : O(n) )))(((
+*/
+class Solution {
+    public List<String> removeInvalidParentheses(String s) {
+        List<String> res = new ArrayList<>();
+        remove(0, 0, s, new char[]{'(',')'}, res);
+        return res;
+    }
+    private void remove(int start, int lastRemoved, String s, char[] pair, List<String> res){
+        int count = 0;
+        for(int i = start; i < s.length(); i++){
+            char c = s.charAt(i);
+            if(c == pair[0]) count++;
+            else if(c == pair[1]) count--;
+            //can also be letter, just skip
+            
+            if(count < 0){//need to remove one
+                for(int j = lastRemoved; j <= i; j++){
+                    if(s.charAt(j) == pair[1] && (j == lastRemoved || s.charAt(j - 1) != s.charAt(j))){//remove j
+                        remove(i, j, s.substring(0, j) + s.substring(j + 1), pair, res);
+                    }
+                }
+                return;
+            }
+        }
+        
+        //if we arrive here, the s is valid
+        String reversed = new StringBuilder(s).reverse().toString();
+        // check if left-to-right and right-to-left all finished
+        // if yes, return result
+        // if no, do right-to-left
+        if(pair[0] == ')'){//finished
+            res.add(reversed);
+        }else{
+            remove(0, 0, reversed, new char[]{pair[1], pair[0]}, res);
+        }
+    }
+}
+
+
+
+
 //time complexity: O(nk) k valid output, 构造每个答案需要O(n)
 
 /*
