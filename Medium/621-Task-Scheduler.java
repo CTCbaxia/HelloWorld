@@ -7,6 +7,53 @@ RESULT:
 NOTE: 
 */
 /*
+PriorityQueue + Queue for CPU
+
+Time: O(klogk + nlogk),    k distinct task, k < 26
+    sort the frequencies | do tasks using queue 
+    
+Space: O(k),   k distinct task, k < 26
+*/
+class Solution {
+    public int leastInterval(char[] tasks, int n) {
+        //count for frequencies
+        int[] counter = new int[26];
+        for(char t : tasks){
+            counter[t - 'A']++;
+        }
+        
+        //sort the frequencies
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a,b) -> (b - a));
+        for(int i = 0; i < 26; i++){
+            if(counter[i] > 0) pq.offer(counter[i]);//frequencies into pq
+        }
+        
+        //do tasks using queue
+        int res = 0;
+        while(!pq.isEmpty()){
+            Queue<Integer> cpu = new LinkedList<>();
+            int time = 0;
+            while(!pq.isEmpty() && time < n + 1){
+                cpu.offer(pq.poll());
+                time++;//pq can be empty that means not enough task to do for a interval
+            }
+            while(!cpu.isEmpty()){
+                int remainFre = cpu.poll();
+                if(remainFre - 1 > 0) pq.offer(remainFre - 1);
+            }
+            //if pq is empty, there is no more task to do
+            //if pq is NOT empty, there are still tasks to do, then we should wait until n + 1
+            res += pq.isEmpty() ? time : n + 1;
+        }
+        return res;
+    }
+}
+
+
+
+
+
+/*
 找到每个 task 的数量，排序。
 找到多少个 task 数量均为最高值 -> sameMostFreq
 最终结果
@@ -81,6 +128,14 @@ class Solution {
         return result;
     }
 }
+
+
+
+
+
+
+
+
 
 
 // if task order should be kept and cool down time exists only between same task

@@ -7,6 +7,69 @@ RESULT:
 */
 /*
 Topological Sort
+
+**
+1. use Set to avoid duplicate
+2. if after char is new, update its after and degree
+3. in topo, check if the current char has after
+
+Time: O(mn + mn + k^2), k = distinc chars <= 26, m = #words, n = #avglen
+Space: O(k^2)
+*/
+class Solution {
+    public String alienOrder(String[] words) {
+        Map<Character, Set<Character>> after = new HashMap<>();
+        Map<Character, Integer> degree = new HashMap<>();
+        
+        //initialize all chars
+        for(String s : words){
+            for(char c : s.toCharArray()){
+                degree.put(c, 0);//input all chars
+            }
+        }
+        //build topo graph
+        for(int i = 0; i < words.length - 1; i++){
+            String pre = words[i];
+            String next = words[i + 1];
+            int j = 0;
+            while(j < pre.length() && j < next.length()){
+                if(pre.charAt(j) == next.charAt(j)) j++;
+                else break;
+            }
+            if(j >= pre.length() || j >= next.length()) continue;//skip, cannot compare
+            char p = pre.charAt(j);
+            char n = next.charAt(j);
+            if(!after.containsKey(p))
+                after.put(p, new HashSet<>());
+            if(after.get(p).add(n))//n is new for after p
+                degree.put(n, degree.get(n) + 1);
+        }
+        //topo
+        StringBuilder sb = new StringBuilder();
+        Queue<Character> q = new LinkedList<>();
+        for(Map.Entry<Character, Integer> entry: degree.entrySet()){
+            if(entry.getValue() == 0) q.offer(entry.getKey());
+        }
+        while(!q.isEmpty()){
+            char c = q.poll();
+            sb.append(c);
+            if(after.containsKey(c)){//check if has a after
+                for(char a : after.get(c)){
+                    degree.put(a, degree.get(a) - 1);
+                    if(degree.get(a) == 0) q.offer(a);
+                }     
+            }
+            
+        }
+        return sb.length() == degree.size() ? sb.toString() : "";
+    }
+}
+
+
+
+
+/*
+Topological Sort
 map: <char A, set of chars after charA>
 degree: has every char, and its degree 
 

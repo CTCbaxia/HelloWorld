@@ -8,6 +8,37 @@ NOTES:
 1. 题目没有说图是连通图，所以在主 numFriendRequests 里面要遍历所有的 node，而不是直接 return 以 0 为起点的递归
 */
 /*
+DFS + color array (visited and color)
+
+Time: O(V + E)
+Space: O(V)
+*/
+class Solution {
+    public boolean isBipartite(int[][] graph) {
+        int[] color = new int[graph.length];//can also mark visited, 1 = color one, -1 = color two
+        for(int i = 0; i < graph.length; i++){
+            if(color[i] == 0){
+                if(!dfs(graph, color, i, 1)) return false;
+            }
+        }
+        return true;
+    }
+    private boolean dfs(int[][] graph, int[] color, int index, int c){
+        color[index] = c;
+        for(int next : graph[index]){
+            if(color[next] == c) return false;
+            if(color[next] == -c) continue;
+            if(!dfs(graph, color, next, -c)) return false;
+        }
+        return true;
+    }
+}
+
+
+
+
+
+/*
 DFS + color 分类问题
 assign color and check the link(path in dfs)
 - 如果上过色：看颜色是否正确

@@ -10,6 +10,37 @@ NOTES:
 2. % 相加减的关系：模相等，则他们的差一定可以整除 k
 */
 /*
+preSum + mod
+
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public boolean checkSubarraySum(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, -1);//index -1
+        int preSum = 0;
+        for(int i = 0; i < nums.length; i++){
+            preSum += nums[i];
+            if(k != 0) preSum %= k;
+            if(map.containsKey(preSum)){
+                if(i - map.get(preSum) > 1) return true;
+            }else{
+                //prefer smaller index, if has a preSum, don't update index. 
+                //if no preSum, put a new
+                map.put(preSum, i);
+            }
+        }
+        return false;
+    }
+}
+
+
+
+
+
+
+/*
 PreSum % k + Map <presum, index>
 
 (sum - presum) % k = 0 ---> sum % k = presum % k

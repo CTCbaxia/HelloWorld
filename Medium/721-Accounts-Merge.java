@@ -11,6 +11,141 @@ NOTES:
 3. 所以要建立总联系 / 找到顺序，再来 merge
 */
 /*
+Build graph + DFS find all connected component
+
+Time: O(V + E)
+Space: O(E) E = number of edges
+*/
+class Solution {
+    public List<List<String>> accountsMerge(List<List<String>> accounts) {
+        Map<String, String> owner = new HashMap<>();
+        Map<String, Set<String>> graph = new HashMap<>();
+        
+        //initialize graph
+        for(List<String> a : accounts){
+            String name = a.get(0);
+            for(int i = 1; i < a.size(); i++){
+                String email = a.get(i);
+                owner.put(email,name);
+                if(!graph.containsKey(email)) graph.put(email, new HashSet<>());
+                if(i == 1) continue;
+                
+                //build edge
+                graph.get(a.get(i - 1)).add(a.get(i));
+                graph.get(a.get(i)).add(a.get(i - 1));
+            }
+        }
+        Set<String> visited = new HashSet<>();
+        List<List<String>> res = new ArrayList<>();
+        for(Map.Entry<String, Set<String>> entry : graph.entrySet()){
+            if(visited.add(entry.getKey())){//not visited
+                List<String> emails = new ArrayList<>();
+                dfs(entry.getKey(), graph, visited, emails);
+                Collections.sort(emails);
+                emails.add(0, owner.get(entry.getKey()));
+                res.add(emails);
+            }
+        }
+        return res;
+    }
+    
+    private void dfs(String e, Map<String, Set<String>> graph, Set<String> visited, List<String> emails){
+        emails.add(e);
+        for(String next : graph.get(e)){
+            if(visited.add(next))
+                dfs(next, graph, visited, emails);
+        }
+        return;
+    }
+
+}        
+
+
+
+/*
+Union Find
+a,b,c
+d,e,f
+a,d,g
+h,i
+1. initialize parent
+a,a -> a,a
+b,a
+c,a
+d,d -> d,a
+e,d
+f,d
+g,a
+h,h
+i,h
+2. update parent to union
+a,a -> a,a
+b,a
+c,a
+d,d -> d,a
+e,d => e,a
+f,d => f,a
+g,a
+h,h
+i,h
+3. union same account
+a,[a,b,c,d,e,f,g]
+h,[h,i]
+
+
+Time: O(n)
+Space: O(n) n = number of email accounts
+*/
+class Solution {
+    public List<List<String>> accountsMerge(List<List<String>> accounts) {
+        Map<String, String> parent = new HashMap<>();
+        Map<String, String> owner = new HashMap<>();
+        Map<String, List<String>> union = new HashMap<>();
+        
+        //initialize parent
+        for(List<String> a : accounts){
+            owner.put(a.get(1), a.get(0));
+            for(int i = 1; i < a.size(); i++){
+                parent.put(a.get(i), a.get(1));
+            }
+        }
+        
+        //update parent to union
+        for(List<String> a : accounts){
+            String p = find(parent, a.get(1));
+            for(int i = 2; i < a.size(); i++){
+                parent.put(find(parent, a.get(i)), p);//update parent to union
+            }
+        }
+        //union same account
+        for(Map.Entry<String, String> entry : parent.entrySet()){
+            String p = find(parent, entry.getKey());
+            if(!union.containsKey(p)) union.put(p, new ArrayList<>());
+            union.get(p).add(entry.getKey());
+        }
+        //result
+        List<List<String>> res = new ArrayList<>();
+        for(Map.Entry<String, List<String>> entry : union.entrySet()){
+            List<String> a = entry.getValue();
+            Collections.sort(a);
+            a.add(0, owner.get(entry.getKey()));
+            res.add(a);
+        }
+        return res;
+        
+    }
+    private String find(Map<String, String> parent, String s){
+        if(!parent.get(s).equals(s)){// s is not the final parent
+            parent.put(s, find(parent, parent.get(s)));
+        }
+        return parent.get(s);
+    }
+}
+
+
+
+
+/*
 Union Find:
 Map parent: <all emails, its parent> 只有每个记录里面第一个email才可能是最终 potential parent
 Map owner: <all parent emails, its owner name>
