@@ -7,6 +7,31 @@ NOTES:
 Backtracking
 当问题有很多回溯的时候，可以用 string 相连，这样减少了很多 delete 操作
 */
+/*
+String path, no need backtracking, only dfs
+Time: O(n)
+Space: O(logn) -- stack
+*/
+class Solution {
+    public List<String> binaryTreePaths(TreeNode root) {
+        List<String> res = new ArrayList<>();
+        dfs(root, "", res);
+        return res;
+    }
+    private void dfs(TreeNode node, String path, List<String> res){//backtracking
+        if(node == null) return;
+        path += node.val;
+        if(node.left == null && node.right == null){
+            res.add(path);
+        }else{
+            path += "->";
+            dfs(node.left, path, res);
+            dfs(node.right, path, res);
+        }
+    }
+}
+
+
 /* 
 DFS(backtracking) + String Prefix
 Time: O(n)
