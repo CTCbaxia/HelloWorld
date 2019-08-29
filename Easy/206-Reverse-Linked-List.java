@@ -1,8 +1,29 @@
 /*
 EASY
 206. Reverse Linked List
-https://leetcode.com/problems/reverse-linked-list/description/
+*/
+/*
+Reverse using newHead
+Time: O(n)
+Space: 0(1)
+*/
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        ListNode res = null;
+        while(head != null){
+            ListNode newHead = head.next;
+            head.next = res;
+            res = head;
+            head = newHead;
+        }
+        return res;
+    }
+}
 
+
+
+
+/*
 TIME: 0822 - 1.5h
 RESULT: 
 NOTES:
