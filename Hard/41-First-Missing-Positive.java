@@ -2,13 +2,40 @@
 HARD
 41. First Missing Positive
 
-
-TIME: 
-RESULT:
-NOTES:
 1. 返回值一定在 1 ~ nums.length + 1 里面
 2. swap 之后遍历的时候没有匹配的元素的 index+1就是需要的结果
 */
+/*
+swap to right place(n -> n-1 position)
+
+**
+if the swap nums are the same, skip the swap
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public int firstMissingPositive(int[] nums) {
+        for(int i = 0; i < nums.length; i++){
+            //if not in range, just skip
+            if(nums[i] > 0 && nums[i] <= nums.length && nums[i] != i + 1){//in range but not at right pos
+                int j = nums[i] - 1;//should be at j
+                if(nums[j] == nums[i]) continue;//if nums[i] is already at right pos
+                swap(nums, i, j);//put nums[i] to the right pos
+                i--;//recheck this index
+            }
+        }
+        for(int i = 0; i < nums.length; i++){
+            if(nums[i] != i + 1) return i + 1;
+        }
+        return nums.length + 1;
+    }
+    private void swap(int[] nums, int i, int j){
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
+}
 
 //SOLUTION REFERENCE:
 //in place
