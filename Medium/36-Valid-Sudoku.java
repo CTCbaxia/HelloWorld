@@ -1,12 +1,39 @@
 /*
 MEDIUM
 36. Valid Sudoku
-
-TIME: 
-RESULT: 
-NOTES:
-
 */
+/*
+Row, Col, Subboard check
+
+Time: O(9 * 9)
+Space: O(9)
+*/
+class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        int m = board.length, n = board[0].length;
+        boolean[][] rows = new boolean[m][9];
+        boolean[][] cols = new boolean[n][9];
+        boolean[][] subBoard = new boolean[9][9];
+        
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(board[i][j] == '.') continue;
+                int num = board[i][j] - '0' - 1;
+                int k = i/3 * 3 + j/3;//subBoard index
+                if(rows[i][num] || cols[j][num] || subBoard[k][num]) return false;
+                rows[i][num] = true;
+                cols[j][num] = true;
+                subBoard[k][num] = true;
+            }
+        }
+        return true;
+    }
+}
+
+
+
+
+
 /*
 One Pass: Find the right set to check
 
