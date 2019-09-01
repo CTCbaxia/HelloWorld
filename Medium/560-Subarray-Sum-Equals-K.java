@@ -25,8 +25,25 @@ class Solution {
 }
 
 
+/*
+Faceboook - If all nums are positive
+Sliding Window - Two Pointers
 
-
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        int curSum = 0, j = 0;
+        int res = 0;
+        for(int n : nums){
+            curSum += n;
+            while(curSum > k) curSum -= nums[j++];
+            if(curSum == k) res++;
+        }
+        return res;
+    }
+}
 
 
 
