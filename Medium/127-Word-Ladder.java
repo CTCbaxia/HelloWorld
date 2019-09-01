@@ -3,6 +3,91 @@ MEDIUM
 127. Word Ladder
 https://leetcode.com/problems/word-ladder/description/
 */
+/*
+Bidirectional BFS
+
+Time: O(k) answer = k
+Space: O(n)
+*/
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        int res = 1;
+        Set<String> words = new HashSet<>();
+        Set<String> visited = new HashSet<>();
+        Set<String> beginSet = new HashSet<>(), endSet = new HashSet<>();
+        
+        for(String s : wordList) words.add(s);
+        if(!words.contains(endWord)) return 0;
+        
+        beginSet.add(beginWord);
+        endSet.add(endWord);
+        while(!beginSet.isEmpty() && !endSet.isEmpty()){
+            res++;
+            if(beginSet.size() > endSet.size()){//always choose smaller set to try
+                Set<String> set = beginSet;
+                beginSet = endSet;
+                endSet = set;
+            }
+            Set<String> nextSet = new HashSet<>();
+            for(String s : beginSet){
+                for(int i = 0; i < s.length(); i++){
+                    char[] ch = s.toCharArray();
+                    for(char c = 'a'; c <= 'z'; c++){
+                        if(ch[i] == c) continue;
+                        ch[i] = c;
+                        String next = new String(ch);
+                        if(endSet.contains(next)) return res;//need to check if it is in words
+                        if(words.contains(next) && visited.add(next))//add to visited
+                            nextSet.add(next);
+                    }
+                }
+            }
+            beginSet = nextSet;
+        }
+        return 0;
+    }
+}
+
+
+/*
+Normal BFS
+
+Time: O(k) answer = k
+Space: O(n)
+*/
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        int res = 1;
+        Set<String> words = new HashSet<>();
+        Set<String> visited = new HashSet<>();
+        for(String s : wordList) words.add(s);
+        if(!words.contains(endWord)) return 0;
+        
+        Queue<String> q = new LinkedList<>();
+        q.offer(beginWord);
+        while(!q.isEmpty()){
+            int size = q.size();
+            res++;
+            for(int k = 0; k < size; k++){
+                String s = q.poll();
+                for(int i = 0; i < s.length(); i++){
+                    char[] ch = s.toCharArray();
+                    for(char c = 'a'; c <= 'z'; c++){
+                        if(ch[i] == c) continue;
+                        ch[i] = c;
+                        String next = new String(ch);
+                        if(next.equals(endWord)) return res;//need to check if it is in words
+                        if(words.contains(next) && visited.add(next))
+                            q.offer(next);
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+}
+
+
 
 /*
 BFS:
