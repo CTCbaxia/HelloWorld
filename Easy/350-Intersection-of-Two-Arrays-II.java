@@ -14,6 +14,10 @@ FOLLOW UP:
 - Time: O(m + n)
 - Space: O(m)
 
+- sort
+- use binary search for the longer one
+
+
 3. What if elements of nums2 are stored on disk, and the memory is limited such that you cannot load all elements into the memory at once?
 
 I think the goal of this question is to test whether the interview understands some of the data engineering techniques. From a data engineer's perspective, basically there are three ideas to solve the question:
@@ -21,6 +25,75 @@ I think the goal of this question is to test whether the interview understands s
 2. Processing the Strings by chunk, which fits the memory, then deal with each chunk of data at a time;
 3. Processing the Strings by streaming, then check.
 */
+/*
+Sort + Two Pointers
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public int[] intersect(int[] nums1, int[] nums2) {
+        List<Integer> res = new ArrayList<>();
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+        int i = 0, j = 0;
+        while(i < nums1.length && j < nums2.length){
+            if(nums1[i] < nums2[j]) i++;
+            else if(nums1[i] > nums2[j])j++;
+            else{
+                res.add(nums1[i]);
+                i++;
+                j++;
+            }
+        }
+        int[] result = new int[res.size()];
+        for(int k = 0; k < res.size(); k++){
+            result[k] = res.get(k);
+        }
+        return result;
+    }
+}
+
+
+
+
+/*
+Sort + Binary Search
+
+Time: O(nlogn)
+Space: O(1)
+*/
+class Solution {
+    public int[] intersect(int[] nums1, int[] nums2) {
+        List<Integer> res = new ArrayList<>();
+        Arrays.sort(nums1);//shorter
+        Arrays.sort(nums2);//longer
+        int i = 0, j = 0;
+        while(i < nums1.length && j < nums2.length){
+            int target = nums1[i++];
+            int l = j, r = nums2.length - 1;
+            while(l < r){//find largeOrEqual to get first num large or equal
+                int m = l + (r - l)/2;
+                if(nums2[m] < target){
+                    l = m + 1;
+                    j = m;//update lower bound
+                } 
+                else r = m;
+            }//l == r
+            if(nums2[l] == target){
+                res.add(nums2[l]);
+                j = l + 1;//should skip the current one as already used
+            } 
+        }
+        int[] result = new int[res.size()];
+        for(int k = 0; k < res.size(); k++){
+            result[k] = res.get(k);
+        }
+        return result;
+    }
+}
+
+
 /*
 two for loop
 1 loop to build the map for nums1
