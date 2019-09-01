@@ -31,6 +31,28 @@ class Solution {
 }
 
 
+/*
+Using Information String to check
+
+Time: O(9 * 9)
+Space: O(9)
+*/
+class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        int m = board.length, n = board[0].length;
+        Set<String> set = new HashSet<>();
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(board[i][j] == '.') continue;
+                if(!set.add(board[i][j] + " in row " + i) ||
+                   !set.add(board[i][j] + " in col " + j) ||
+                   !set.add(board[i][j] + " in board " + i/3 + "-" + j/3))
+                    return false;
+            }
+        }
+        return true;
+    }
+}
 
 
 
