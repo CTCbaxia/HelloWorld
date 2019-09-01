@@ -16,12 +16,13 @@ Space: O(n)
 */
 class Solution {
     public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
-        Map<String, List<String>> graph = new HashMap<>();
+        Map<String, List<String>> graph = new HashMap<>();//<valid word, next neighbors to end>
         List<List<String>> result = new ArrayList<>();
         
         //put wordlist to set
-        Map<String, Integer> degree = new HashMap<>();
+        Map<String, Integer> degree = new HashMap<>();//help to avoid reuse a string again later
         for(String s : wordList) degree.put(s, wordList.size() + 1);
+        if(!degree.containsKey(endWord)) return resilt;//impossible
         degree.put(beginWord, 0);
         
         bfs(graph, beginWord, endWord, degree);
