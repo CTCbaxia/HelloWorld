@@ -15,7 +15,7 @@ METHODS:
 
 */
 /*
-Boundary check
+Boundary check - preorder
 
 Time: O(n)
 Space: O(logn - n)
