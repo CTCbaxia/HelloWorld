@@ -46,15 +46,53 @@ class Solution {
 
 
 
+/*
+Facebook 变形 - PriorityQueue
 
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode(int x) { val = x; }
- * }
- */
+Time: O(nlogk) in total k lists, avg of list is n
+Space: O(k)
+*/
+class Solution {
+    PriorityQueue<ListNode> pq;
+    public ListNode mergeKLists(ListNode[] lists) {
+        pq = new PriorityQueue<>(new Comparator<ListNode>(){
+            public int compare(ListNode l1, ListNode l2){
+                return l1.val - l2.val;
+            }
+        });
+        for(ListNode l : lists){
+            if(l != null) pq.offer(l);
+        }
+        ListNode head = new ListNode(0);
+        ListNode node = head;
+        while(!pq.isEmpty()){
+            ListNode next = pq.poll();
+            if(next.next != null) pq.offer(next.next);
+            node.next = next;
+            node = node.next;
+        }
+        return head.next;
+    }
+    private boolean hasNext(){
+        return pq.isEmpty();
+    }
+    private int next(){
+        ListNode next = pq.poll();
+        if(next.next != null) pq.offer(next.next);
+        return next.val;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
         ListNode l_tmp = new ListNode(0);
