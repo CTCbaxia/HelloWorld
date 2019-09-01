@@ -36,7 +36,7 @@ public class Main {
             }
             if(i[1] > 0) size++;
             else size--;
-            sum += i[1];
+            sum += i[1];//负数的速度就被减去
             preIndex = i[0];
         }
         return result;
