@@ -7,24 +7,6 @@ TIME: 0907 - 30min
 RESULT: 90% - 3ms
 
 */
-class Solution {
-    public int[] intersection(int[] nums1, int[] nums2) {
-        Set<Integer> interset = new HashSet<>();
-        Set<Integer> set = new HashSet<>();
-        for(int n : nums1){
-            set.add(n);
-        }
-        for(int n : nums2){
-            if(set.contains(n)) interset.add(n);
-        }
-        int[] result = new int[interset.size()];
-        int i = 0;
-        for(int n : interset){
-            result[i++] = n;
-        }
-        return result;
-    }
-}
 /*
 sort + two pointers
 
@@ -57,6 +39,87 @@ class Solution {
         return result;
     }
 }
+/*
+Set
+
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public int[] intersection(int[] nums1, int[] nums2) {
+        Set<Integer> interset = new HashSet<>();
+        Set<Integer> set = new HashSet<>();
+        for(int n : nums1){
+            set.add(n);
+        }
+        for(int n : nums2){
+            if(set.contains(n)) interset.add(n);
+        }
+        int[] result = new int[interset.size()];
+        int i = 0;
+        for(int n : interset){
+            result[i++] = n;
+        }
+        return result;
+    }
+}
+
+
+/*
+Sort + Binary Search the longer one
+
+Time: O(nlogn)
+Space: O(1)
+
+1. Two Set
+2. Sort + Two Pinters
+3. Sort + Binary Search
+*/
+class Solution {
+    public int[] intersection(int[] nums1, int[] nums2) {
+        List<Integer> list = new ArrayList<>();
+        Arrays.sort(nums1);//short
+        Arrays.sort(nums2);//long
+        int i = 0, j = 0;
+        while(i < nums1.length){
+            if(i != 0 && nums1[i] == nums1[i - 1]){//skip duplicate
+                i++;
+                continue;
+            } 
+            int target = nums1[i];
+            //binary search to find in nums2
+            int l = j, r = nums2.length - 1;
+            while(l <= r){
+                int m = l + (r - l)/2;
+                if(nums2[m] > target) r = m - 1;
+                else if(nums2[m] < target){
+                    l = m + 1;//l holds smallest first possible 
+                    j = m + 1;
+                } 
+                else{
+                    list.add(nums2[m]);
+                    j = m + 1;//update lower bound
+                    break;
+                }
+            }
+            i++;
+        }
+        int[] res = new int[list.size()];
+        for(int k = 0; k < res.length; k++){
+            res[k] = list.get(k);
+        }
+        return res;
+    }
+}
+
+
+
+
+
+
+
+
+
 
 
 
