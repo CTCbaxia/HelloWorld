@@ -33,7 +33,7 @@ class Facebook_ConvertDDLToBST {
 		return convertHelper(n);
 	    
 	}
-	public static DoubelLinkedList convertHelper(int n){//how many node in this subBST
+	public static DoubelLinkedList convertHelper(int n){//how many node in this subBST, return root for this subBST
 		if(n <= 0) return null;
 		DoubelLinkedList left = convertHelper(n/2);
 		DoubelLinkedList root = node;
