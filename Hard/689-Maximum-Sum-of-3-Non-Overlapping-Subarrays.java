@@ -1,10 +1,65 @@
 /*
 HARD
 689. Maximum Sum of 3 Non-Overlapping Subarrays
-
-TIME: 
-RESULT: 
 */
+
+/*
+1. get kSum
+2. calculate left[i] and right[i] for max ksum
+
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public int[] maxSumOfThreeSubarrays(int[] nums, int k) {
+        //get ksum
+        int[] ksum = new int[nums.length - k + 1];
+        int ks = 0;
+        for(int i = 0; i < nums.length; i++){
+            ks += nums[i];
+            if(i - k + 1 >= 0){
+                ksum[i - k + 1] = ks;
+                ks -= nums[i - k + 1];
+            } 
+        }
+        
+        //compute left[i] and right[i] for index (inclusive) of the max ksum to the left and right
+        int[] left = new int[nums.length - k + 1];
+        int[] right = new int[nums.length - k + 1];
+        int maxIndex = 0;
+        for(int i = 0; i < ksum.length; i++){
+            if(ksum[i] > ksum[maxIndex]) maxIndex = i;
+            left[i] = maxIndex;
+        }
+        maxIndex = ksum.length - 1;
+        for(int i = ksum.length - 1; i >= 0; i--){
+            if(ksum[i] >= ksum[maxIndex]) maxIndex = i;
+            right[i] = maxIndex;
+        }
+        
+        //get result
+        int[] res = new int[3];
+        int maxSum = -1;
+        for(int m = k; m < ksum.length - k; m++){
+            int l = left[m - k];
+            int r = right[m + k];
+            if(ksum[l] + ksum[m] + ksum[r] > maxSum){
+                maxSum = ksum[l] + ksum[m] + ksum[r];
+                res[0] = l;
+                res[1] = m;
+                res[2] = r;
+            }
+        }
+        return res;
+        
+    }
+}
+
+
+
+
+
+
 /*
 calculate ksum first + Dynamic Programing
 先计算 ksum[i] 每k个元素一个和
