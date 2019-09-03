@@ -27,7 +27,7 @@ class Solution {
         int[] dp = new int[len + 1];//dp[i] string with size of i (如果取到 s 里面 i-1), how many result
         
         dp[0] = 1;
-        dp[1] = s.charAt(0) - '0' == 0 ? 0 : 1;
+        dp[1] = s.charAt(0) - '0' == 0 ? 0 : 1;//once we have a zero, all after will be zero
         for(int i = 2; i <= len; i++){
             //i 是 string size，对应到 s 里面 i - 1 的元素
             int n1 = Integer.parseInt(s.substring(i - 1, i));//size i 的 string 里面最后一个元素 (i - 1)
@@ -40,32 +40,65 @@ class Solution {
 
 }
 
-
 /*
-DFS
+recursion
+When we do helper(index + 1, s), we actually may get result for helper(index + 2, s)
 
-Time: O(n!)
-Space: O(1)
+226832
+helper(2, s) may need helper(4, s)
+helper(1, s) may also need helper(4, s)
+
+Time:  O(2^n)
+Space: O(1) - stack O(n)
+
+So we need  memory
 */
 class Solution {
     public int numDecodings(String s) {
-        return decode(s, 0);
+        return s.length() == 0 ? 0 : helper(0, s);
     }
-    private int decode(String s, int index){
+    private int helper(int index, String s){
         if(index == s.length()) return 1;
-        if(s.charAt(index) - '0' == 0) return 0;
-        
-        int res = 0;
-        if(s.charAt(index) - '0' > 0) res += decode(s, index + 1);
-        if(index + 2 <= s.length() && Integer.parseInt(s.substring(index, index + 2)) <= 26){
-            res += decode(s, index + 2);
-        }
+        if(s.charAt(index) == '0') return 0;//impossible
+        int res = helper(index + 1, s);
+        if(index + 2 <= s.length()){
+            int num = Integer.parseInt(s.substring(index, index + 2));
+            if(num >= 10 && num <= 26)
+                res += helper(index + 2, s);
+        } 
         return res;
     }
 }
 
+/*
+recursion + Memory (kind of like dp)
 
+Time:  O(n)
+Space: O(1) - stack O(n)
 
+So we need  memory
+*/
+class Solution {
+    public int numDecodings(String s) {
+        int[] mem = new int[s.length()];
+        Arrays.fill(mem, -1);
+        return s.length() == 0 ? 0 : helper(0, s, mem);
+    }
+    private int helper(int index, String s, int[] mem){
+        if(index == s.length()) return 1;
+        if(mem[index] > -1) return mem[index];
+        
+        if(s.charAt(index) == '0') return 0;//impossible
+        int res = helper(index + 1, s, mem);
+        if(index + 2 <= s.length()){
+            int num = Integer.parseInt(s.substring(index, index + 2));
+            if(num >= 10 && num <= 26)
+                res += helper(index + 2, s, mem);
+        } 
+        mem[index] = res;
+        return res;
+    }
+}
 
 
 
