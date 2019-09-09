@@ -6,6 +6,30 @@ RESULT: 14%, 47ms
 Notes: 
 */
 /*
+count frequency
+
+Time: O(n)
+Space: O(26) = O(1)
+*/
+class Solution {
+    public boolean isAnagram(String s, String t) {
+        if(s.length() != t.length()) return false;
+        
+        int[] count = new int[26];
+        for(int i = 0; i < s.length(); i++){
+            count[s.charAt(i) - 'a']++;
+        }
+        for(int i = 0; i < t.length(); i++){
+            count[t.charAt(i) - 'a']--;
+            if(count[t.charAt(i) - 'a'] < 0) return false;//因为长度一样，所以最终如果每个都0，一定ok
+        }
+        return true;
+    }
+}
+
+
+
+/*
 计算频度（int[26] count），一加一减
 只有所有字母count == 0 的时候才return true
 
