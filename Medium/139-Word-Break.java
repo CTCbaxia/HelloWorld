@@ -3,6 +3,42 @@
 https://leetcode.com/problems/word-break/description/
 
 */
+
+/*
+DFS + Dynamic Programming + memo:
+dp[i] : from i to the end of dp, it is valid or not
+    dp[i] = 0 : haven't visit, need to check
+    dp[i] = 1 : valid
+    dp[i] = -1 : invalid
+
+Time: O(mn) n = s.length(), m = wordDict.size()
+Space: O(n)
+*/
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        int[] dp = new int[s.length() + 1];
+        dp[s.length()] = 1;//"" should be true
+        return dfs(0, dp, s, wordDict);
+    }
+    private boolean dfs(int start, int[] dp, String s, List<String> wordDict){
+        if(dp[start] != 0) return dp[start] == 1;//use memory
+        
+        boolean res = false;
+        for(String w : wordDict){
+            int i = s.indexOf(w);//if there is a w in s
+            if(i == 0) res |= dfs(start + w.length(), dp, s.substring(w.length()), wordDict);
+            if(res) break;//when we find yes, break (pruning)
+        }
+        dp[start] = res == true ? 1 : -1;
+        return res;
+    }
+
+}
+
+
+
+
+
 /*
 Dynamic Programming:
 dp[i] : If we choose first i letters(index i-1 ), is there a match(true)
@@ -24,6 +60,10 @@ class Solution {
     }
 
 }
+
+
+
+
 
 //dfs
 class Solution {
