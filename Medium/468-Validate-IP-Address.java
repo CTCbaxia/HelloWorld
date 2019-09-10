@@ -8,6 +8,68 @@ NOTES:
 
 */
 /*
+Different Cases to consider
+***be careful:
+1. split will not separate ending char ("." or ":")
+2. escape split "." using "\\."
+
+Time: O(n)
+Space: O(n) - worst case: "..........."
+*/
+class Solution {
+    public String validIPAddress(String IP) {
+        if(isIPV4(IP)) return "IPv4";
+        else if(isIPV6(IP)) return "IPv6";
+        else return "Neither";
+    }
+    private boolean isIPV4(String IP){
+        String[] nums = IP.split("\\.");
+        if(nums.length != 4) return false;
+        if(IP.charAt(IP.length() - 1) == '.') return false;//split will not separate ending .
+        for(String num : nums){
+            if(!isValid4(num)) return false;
+        }
+        return true;
+    }
+    private boolean isValid4(String num){
+        if(num.length() > 3 || num.length() == 0) return false;//invalid len
+        if(num.length() > 1 && num.charAt(0) == '0') return false;//leading 0
+        int n = 0;
+        for(char c : num.toCharArray()){
+            if(!Character.isDigit(c)) return false;
+            n = n * 10 + (c - '0');
+        }
+        return n <= 255 && n >= 0;
+    }
+    private boolean isIPV6(String IP){
+        String[] nums = IP.split(":");
+        if(nums.length != 8) return false;
+        //put here to make sure IP.length() - 1 > 0
+        if(IP.charAt(IP.length() - 1) == ':') return false;//split will not separate ending :
+        for(String num : nums){
+            if(!isValid6(num)) return false;
+        }
+        return true;
+    }
+    private boolean isValid6(String num){
+        if(num.length() > 4 || num.length() == 0) return false;//invalid len
+        for(char c : num.toCharArray()){
+            boolean isDigit = c - '0' >= 0 && c - '0'<= 9;
+            boolean isUppercaseAF = c >='A' && c<= 'F';
+            boolean isLowerCaseAF = c>= 'a' && c<= 'f';
+            if(!(isDigit || isUppercaseAF || isLowerCaseAF))
+                return false;
+        }
+        return true;
+    }
+}
+
+
+
+
+
+
+/*
 Check
 分别 check 是不是 IPV4 或者 IPV6
 check 长度和leading zero
