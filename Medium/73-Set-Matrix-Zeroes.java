@@ -7,6 +7,59 @@ TIME: 0705
 RESULT: 93%
 */
 /*
+Mark row and col using the first element in that row and col
+***be careful, use firstRow and firstCol to mark matrix[0][0]
+***be careful, assign 0 for first row and col in the end after all other points. Otherwise, you change the value for the first line and will mislead you later
+
+thinking process:
+1. use hashset to store all 0s
+2. use row array and col array to mark 0
+3. use matrix[i][0] and matrix[0][j] to mark row and col
+
+Time: O(mn)
+Space: O(1)
+*/
+class Solution {
+    public void setZeroes(int[][] matrix) {
+        if(matrix.length == 0 || matrix[0].length == 0) return;
+        
+        boolean firstRow = false, firstCol = false;
+        int m = matrix.length, n = matrix[0].length;
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(matrix[i][j] == 0){
+                    if(i == 0) firstRow = true;
+                    else matrix[i][0] = 0;
+                    
+                    if(j == 0) firstCol = true;
+                    else matrix[0][j] = 0;
+                }
+            }
+        }
+        //set zeroes
+        for(int i = 1; i < m; i++){
+            for(int j = 1; j < n; j++){
+                if(matrix[i][0] == 0 || matrix[0][j] == 0){//check row and col at the same time
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+
+        //first row and col
+        if(firstRow){
+            for(int j = 0; j < n; j++) matrix[0][j] = 0;
+        }
+        if(firstCol){
+            for(int i = 0; i < m; i++) matrix[i][0] = 0;
+        }
+        return;
+    }
+}
+
+
+
+
+/*
 Marker for row and col: for each row and col, mark if it should be all 0
 1) standard: use extra boolean[] for each row and col
 2) better: use first line of row and col as a mark: ex matrix[i][0] = 0; matrix[0][j] = 0;
