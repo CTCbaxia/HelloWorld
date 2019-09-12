@@ -15,13 +15,41 @@ class Solution {
         for(int i = 0; i < nums.length; i++){
             if(map.containsKey(target - nums[i])){
                 return new int[]{map.get(target - nums[i]), i};
-            }else{
-                map.put(nums[i], i);
             }
+            map.put(nums[i], i);
         }
         return new int[2];
     }
 }
+
+/*
+变种 ： fb tag - pair sum
+For a list of pairs {[x0, y0], [x1, y1], [x2, y2], ... , [xn, yn]} and an integer K, the goal is to find a pair of pairs {[xi, yi], [xj, yj] where xi+xj=K and yi+yj=K
+
+HashMap<String, Integer> : <"n1 n2", index>
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public int[] twoSum(List<int[]> pairs, int target) {
+        Map<String, Integer> map = new HashMap<>();
+        for(int i = 0; i < pairs.size(); i++){
+            int n0 = target - pairs.get(i)[0];
+            int n1 = target - pairs.get(i)[1];
+            String p = n0 + " " + n1;
+            if(map.containsKey(p)){
+                return new int[]{map.get(p), i};
+            }
+            map.put(pairs.get(i)[0] + " " + pairs.get(i)[1], i);
+        }
+        return null;
+    }
+}
+
+
+
+
 
 
 
