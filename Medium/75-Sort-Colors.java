@@ -9,6 +9,32 @@ NOTES:
 1. 好好体会 one pass + swap
 */
 /*
+Count
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public void sortColors(int[] nums) {
+        int[] count = new int[3];
+        for(int num : nums){
+            count[num]++;
+        }
+        int i = 0;
+        for(int k = 0; k < count.length; k++){//for every color, assign c times
+            int c = count[k];
+            while(c-- > 0){
+                nums[i++] = k;
+            }
+        }
+    }
+}
+
+
+
+
+
+
+/*
 bucket sort
 
 Time: O(n)
