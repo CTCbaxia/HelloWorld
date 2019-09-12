@@ -25,43 +25,117 @@ class Solution {
         
         boolean res = false;
         for(String w : wordDict){
-            int i = s.indexOf(w);//if there is a w in s, O(n)
-            if(i == 0) res |= dfs(start + w.length(), dp, s.substring(w.length()), wordDict);
-            if(res) break;//when we find yes, break (pruning)
+            int i = s.indexOf(w, start);//if there is a w in s after start
+            if(i == start){
+                res |= dfs(start + w.length(), dp, s, wordDict);
+            } 
         }
-        dp[start] = res == true ? 1 : -1;
+        dp[start] = res ? 1 : -1;
         return res;
     }
 
 }
 
 
+//变种 for fb：变种题，求最小合理分割次数
+/*
+DFS + Dynamic Programming + memo:
+dp[i] : from i to the end of dp, the min num of words needed for valid(positive val) or not(-1)
+    dp[i] = 0 : haven't visit, need to check
+    dp[i] = positive : valid, and min num of words needed
+    dp[i] = -1 : invalid
+
+Time: O(mn^2) n = s.length(), m = wordDict.size()
+Space: O(n)
+*/
+class Solution {
+    public int wordBreak(String s, List<String> wordDict) {
+        int[] dp = new int[s.length() + 1];
+        dp[s.length()] = 0;//"" needs 0 word
+        return dfs(0, dp, s, wordDict);
+    }
+    private int dfs(int start, int[] dp, String s, List<String> wordDict){//from start in s, the min words to make up s
+        if(start == s.length()) return dp[s.length()];//reach end, can return 0
+        if(dp[start] != 0) return dp[start];//use memory
+        
+        int res = Integer.MAX_VALUE;
+        for(String w : wordDict){
+            int i = s.indexOf(w, start);//if there is a w in s after start
+            if(i == start){
+                int num = 1 + dfs(start + w.length(), dp, s, wordDict);//include the w itself, if return -1, num should be 0
+                if(num > 0) res = Math.min(res, num);//get smallest
+            } 
+        }
+        dp[start] = res == Integer.MAX_VALUE ? -1 : res;
+        return dp[start];
+    }
+
+}
+/*
+test case: 
+"leetcode"
+["leet","co","de","code","lee","tc","ode"]
+return: 2
+*/
+
+
+//变种 for fb：变种题，求最小合理分割次数
+/*
+DP: 
+boolean dp[i] = from 0 to i, if we can make it 
+then try from 0 to each letter to see if 0 - that letter can be make up
+dp[i] = dp[j] + 1
+dp[i] = -1 : cannot make up
+dp[i] >= 0 : min num of words to make up
+
+Time: O(mn^2) n = s.length(), m = wordDict.size()
+Space: O(n)
+*/
+class Solution {
+    public int wordBreak(String s, List<String> wordDict) {
+        int[] dp = new int[s.length() + 1];//dp[i] if choose first i letter, is there a match
+        dp[0] = 0;//""
+        for(int i = 1; i < dp.length; i++){
+            int min = Integer.MAX_VALUE;
+            for(int j = 0; j < i; j++){//when j == 0, it is the whole word
+                if(dp[j] != -1 && wordDict.contains(s.substring(j, i))){
+                    min = Math.min(min, dp[j] + 1);
+                }
+            }
+            dp[i] = min == Integer.MAX_VALUE ? -1 : min;
+        }
+        return dp[s.length()];
+    }
+}
+
+
+
 
 
 
 /*
-Dynamic Programming:
-dp[i] : If we choose first i letters(index i-1 ), is there a match(true)
+DP: 
+boolean dp[i] = from 0 to i, if we can make it (dp[i] if choose first i letter, is there a match)
+then try from 0 to each letter to see if 0 - that letter can be make up
+
 构造 dp size = s.length() + 1 是为了方便 substring，以及初始化。总得有一个初始化的值为 true
 
-Time: O(n^2 * m) n = s.length(), m = wordDict.size()
+
+Time: O(mn^2) n = s.length(), m = wordDict.size()
 Space: O(n)
 */
 class Solution {
     public boolean wordBreak(String s, List<String> wordDict) {
         boolean[] dp = new boolean[s.length() + 1];//dp[i] if choose first i letter, is there a match
-        dp[0] = true;
+        dp[0] = true;//""
         for(int i = 1; i < dp.length; i++){
-            for(int j = 0; j < i; j++){//将string分成两段：0 - (j - 1), j - i
-                dp[i] = dp[i] || dp[j] && wordDict.contains(s.substring(j, i));//每条path内部&&，path之间||
+            for(int j = 0; j < i; j++){//when j == 0, it is the whole word
+                dp[i] |= dp[j] && wordDict.contains(s.substring(j, i));
             }
-        }        
+        }
         return dp[s.length()];
     }
-
 }
-
-
 
 
 
@@ -81,6 +155,13 @@ class Solution {
         return false;
     }
 }
+
+
+
+
+
+
+
 
 
 
