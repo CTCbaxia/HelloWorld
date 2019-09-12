@@ -11,7 +11,7 @@ dp[i] : from i to the end of dp, it is valid or not
     dp[i] = 1 : valid
     dp[i] = -1 : invalid
 
-Time: O(mn) n = s.length(), m = wordDict.size()
+Time: O(mn^2) n = s.length(), m = wordDict.size()
 Space: O(n)
 */
 class Solution {
@@ -25,7 +25,7 @@ class Solution {
         
         boolean res = false;
         for(String w : wordDict){
-            int i = s.indexOf(w);//if there is a w in s
+            int i = s.indexOf(w);//if there is a w in s, O(n)
             if(i == 0) res |= dfs(start + w.length(), dp, s.substring(w.length()), wordDict);
             if(res) break;//when we find yes, break (pruning)
         }
@@ -44,7 +44,7 @@ Dynamic Programming:
 dp[i] : If we choose first i letters(index i-1 ), is there a match(true)
 构造 dp size = s.length() + 1 是为了方便 substring，以及初始化。总得有一个初始化的值为 true
 
-Time: O(n^2)
+Time: O(n^2 * m) n = s.length(), m = wordDict.size()
 Space: O(n)
 */
 class Solution {
