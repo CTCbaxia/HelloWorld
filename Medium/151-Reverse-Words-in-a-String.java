@@ -8,6 +8,36 @@ RESULT: 62% - 6ms
 
 */
 /*
+Two Pointers
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public String reverseWords(String s) {
+        List<String> strs = new ArrayList<>();
+        for(int i = 0; i < s.length(); i++){
+            if(s.charAt(i) != ' '){
+                int j = i;
+                while(j < s.length() && s.charAt(j) != ' '){
+                    j++;
+                }
+                strs.add(s.substring(i, j));
+                i = j;//will increase in for loop
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        for(int i = strs.size() - 1; i >= 0; i--){
+            sb.append(strs.get(i)).append(" ");
+        }
+        if(sb.length() > 0) sb.deleteCharAt(sb.length() - 1);//check for ""
+        return sb.toString();
+    }
+}
+
+
+
+
+/*
 Move empty to the end + Reverse Whole String + Reverse every letter
 
 Time: O(n)
@@ -95,7 +125,7 @@ Space: O(1)
 */
 public class Solution {
     public String reverseWords(String s){
-        String[] str = s.trim().split(" +");
+        String[] str = s.trim().split(" +");//regrx
         StringBuilder sb = new StringBuilder();
         for(int i = str.length - 1; i >= 0; i--){
             sb.append(str[i]).append(" ");
