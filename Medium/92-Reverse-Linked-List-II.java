@@ -8,6 +8,45 @@ RESULT: 96% - 2ms
 
 */
 /*
+Reverse one by one
+
+用 node hold 住 m，每次都把 m 后面的 node 移到 dummyhead 的后面，然后衔接
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        int k = n - m;//need to swap k times
+        
+        ListNode res = new ListNode(0);//hold return value
+        res.next = head;
+        ListNode dummyHead = res;//hold node before m
+        
+        //find right dummyHead and node
+        while(m-- > 1){
+            dummyHead = dummyHead.next;
+        }
+        ListNode node = dummyHead.next;//hold m
+        while(k-- > 0){
+            ListNode nextNode = dummyHead.next;
+            dummyHead.next = node.next;
+            node.next = node.next.next;
+            dummyHead.next.next = nextNode;
+        }
+        return res.next;
+    }
+}
+
+
+
+
+
+
+
+
+
+/*
 preHead + newHead 逐步交换法
 
 Time: O(n)
