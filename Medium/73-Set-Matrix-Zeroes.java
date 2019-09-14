@@ -56,7 +56,87 @@ class Solution {
     }
 }
 
+/*
+Marker - intuitive 一些
 
+Time: O(mn)
+Space: O(1)
+*/
+class Solution {
+    public void setZeroes(int[][] matrix) {
+        if(matrix.length == 0 || matrix[0].length == 0) return;
+        
+        boolean firstRow = false, firstCol = false;
+        int m = matrix.length, n = matrix[0].length;
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(matrix[i][j] == 0){
+                    if(i == 0) firstRow = true;
+                    else matrix[i][0] = 0;
+                    
+                    if(j == 0) firstCol = true;
+                    else matrix[0][j] = 0;
+                }
+            }
+        }
+        //这块可以直接合并
+        //set zeroes
+        for(int i = 1; i < m; i++){
+            if(matrix[i][0] == 0)
+                for(int j = 1; j < n; j++){
+                    matrix[i][j] = 0;
+                }
+        }
+        //set zeroes
+        for(int j = 1; j < n; j++){
+            if(matrix[0][j] == 0)
+                for(int i = 1; i < m; i++){
+                    matrix[i][j] = 0;
+                }
+        }
+
+        //first row and col
+        if(firstRow){
+            for(int j = 0; j < n; j++) matrix[0][j] = 0;
+        }
+        if(firstCol){
+            for(int i = 0; i < m; i++) matrix[i][0] = 0;
+        }
+        return;
+    }
+}
+
+
+/*
+Two HashSet - 差一些的解法
+
+Time: O(n^2)
+Space: O(n + m)
+*/
+class Solution {
+    public void setZeroes(int[][] matrix) {
+        if(matrix.length == 0 || matrix[0].length == 0) return;
+        Set<Integer> rows = new HashSet<>();
+        Set<Integer> cols = new HashSet<>();
+        int m = matrix.length, n = matrix[0].length;
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(matrix[i][j] == 0){
+                    rows.add(i);
+                    cols.add(j);
+                }
+            }
+        }
+        for(int i : rows){
+            for(int j = 0; j < n; j++) matrix[i][j] = 0;
+        }
+        for(int j : cols){
+            for(int i = 0; i < m; i++) matrix[i][j] = 0;
+        }
+        
+        return;
+    }
+}
 
 
 /*
@@ -101,6 +181,12 @@ class Solution {
     }
 
 }
+
+
+
+
+
+
 
 /*
 Marker for row and col: for each row and col, mark if it should be all 0
