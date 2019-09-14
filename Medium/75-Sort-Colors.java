@@ -9,27 +9,27 @@ NOTES:
 1. 好好体会 one pass + swap
 */
 /*
-Count
+Swap + Three Pointer move number
 Time: O(n)
 Space: O(1)
 */
 class Solution {
     public void sortColors(int[] nums) {
-        int[] count = new int[3];
-        for(int num : nums){
-            count[num]++;
-        }
-        int i = 0;
-        for(int k = 0; k < count.length; k++){//for every color, assign c times
-            int c = count[k];
-            while(c-- > 0){
-                nums[i++] = k;
+        int zero = 0, two = nums.length - 1;
+        for(int i = 0; i <= two; i++){
+            if(nums[i] == 0){
+                swap(i, zero++, nums);//zero always hold 0 or 1, cannot be 2. from zero + 1 ~ i, they are 1s
+            }else if(nums[i] == 2){
+                swap(i--, two--, nums);//two can hold anything, so when swap, it can be 0/1/2
             }
         }
     }
+    private void swap(int i1, int i2, int[] nums){
+        int tmp = nums[i1];
+        nums[i1] = nums[i2];
+        nums[i2] = tmp;
+    }
 }
-
-
 
 
 
