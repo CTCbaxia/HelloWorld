@@ -8,6 +8,97 @@ NOTES:
 
 */
 /*
+Backtracking + visited
+Sort to avoid duplicate: only add same num when previous is added
+
+Time: O(n!)
+Space: O(n)
+*/
+class Solution {
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> res = new ArrayList<>();
+        backtracking(nums, new boolean[nums.length], new ArrayList<Integer>(), res);
+        return res;
+    }
+    private void backtracking(int[] nums, boolean[] visited, List<Integer> path, List<List<Integer>> res){
+        if(path.size() == nums.length){
+            res.add(new ArrayList<>(path));
+            return;
+        }
+        for(int i = 0; i < nums.length; i++){
+            if(visited[i]) continue;
+            if(i > 0 && nums[i - 1] == nums[i] && !visited[i - 1]){
+                //same previous number and the previous number has not been added
+                continue;
+            }
+            visited[i] = true;
+            path.add(nums[i]);
+            backtracking(nums, visited, path, res);
+            visited[i] = false;
+            path.remove(path.size() - 1);
+        }
+    }
+}
+
+
+
+/*
+Backtracking + Swap
+no need to sort: for every swap pivot, check if the swapped number exist already
+
+因为所有元素都会用到
+permutation {1,2,3,4,1} = 
+1, {2,3,4,1}
+2, {1,3,4,1}
+3, {2,1,4,1}
+4, {2,3,1,1}
+1, {2,3,4,1} => duplicate, skip(use showed set to avoid duplicate at head)
+
+Time: O(n!)
+Space: O(n) - exist set
+*/
+class Solution {
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        backtracking(nums, 0, res);
+        return res;
+    }
+    private void backtracking(int[] nums, int start, List<List<Integer>> res){
+        if(start == nums.length - 1){
+            List<Integer> list = new ArrayList<>();
+            for(int n : nums) list.add(n);
+            res.add(list);
+            return;
+        }
+        Set<Integer> exist = new HashSet<>();
+        for(int i = start; i < nums.length; i++){//自己也要swap
+            if(exist.contains(nums[i])) continue;
+            exist.add(nums[i]);
+            
+            swap(nums, start, i);
+            backtracking(nums, start + 1, res);
+            swap(nums, start, i);//backtracking
+        }
+    }
+    private void swap(int[] nums, int i, int j){
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+/*
 Sort + skip the duplicate (only add duplicate if the previous one is already added)
 List<Value>: result
 Set<Index>: avoid duplicate
