@@ -17,6 +17,48 @@ NOTE:
 6. 注意数字计算的技巧和规律 
 */
 /*
+Find the right place for res, compute each cell
+Then add string with the help of carry
+
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public String multiply(String num1, String num2) {
+        int l1 = num1.length();
+        int l2 = num2.length();
+        int[] res = new int[l1 + l2];
+        //position: i1 * i2 -> i1 + i2 + 1
+        for(int i1 = l1 - 1; i1 >= 0; i1--){
+            for(int i2 = l2 - 1; i2 >= 0; i2--){
+                res[i1 + i2 + 1] += (num1.charAt(i1) - '0') * (num2.charAt(i2) - '0');
+            }
+        }
+        
+        //add string
+        int carry = 0;
+        for(int i = res.length - 1; i >= 0; i--){
+            int num = carry;
+            num += res[i];
+            res[i] = num % 10;
+            carry = num / 10;
+        }
+        //if(carry > 0) we don't need to check here, already covered
+        
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < res.length; i++){
+            if(res[i] == 0 && sb.length() == 0) continue;//be careful for leading 0s
+            sb.append(res[i]);
+        }
+        return sb.length() == 0 ? "0" : sb.toString();//zero itself
+    }
+}
+
+
+
+
+
+/*
 找到乘积和因子的对应位置
 product len = len 1 + len 2
 i * j -> i + j + 1
