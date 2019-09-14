@@ -9,7 +9,7 @@ NOTES:
 */
 /*
 Map + Bucket Sort
-bucket sort because the sorting range is small/known
+bucket sort because the sorting range is known and smaller than n
 
 Time: O(nlogk) m is unique words, k is the input
 Space: O(n) unique number, worst case is n
