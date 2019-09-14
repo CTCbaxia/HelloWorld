@@ -8,6 +8,43 @@ NOTES:
 1. 题目没有说图是连通图，所以在主 numFriendRequests 里面要遍历所有的 node，而不是直接 return 以 0 为起点的递归
 */
 /*
+Array / Set
+Array:
+    0 : not visited
+    1 : color red
+    -1: color clue
+Time: O(N + E) 
+We explore each node once when we transform it from uncolored to colored, traversing all its edges in the process
+Space: O(N)
+*/
+class Solution {
+    public boolean isBipartite(int[][] graph) {
+        if(graph.length == 0) return true;
+        
+        int n = graph.length;
+        int[] colors = new int[n];
+        for(int i = 0; i < n; i++){
+            if(colors[i] != 0) continue;//has assigned color
+            if(!dfs(i, graph, colors, 1)) return false;
+        }
+        return true;
+    }
+    private boolean dfs(int index, int[][] graph, int[] colors, int c){
+        if(colors[index] != 0) return colors[index] == c;//return if the color matches c
+        colors[index] = c;//assign color
+        int[] neighbors = graph[index];
+        for(int n : neighbors){
+            if(!dfs(n, graph, colors, -c)) return false;
+        }
+        return true;
+    }
+}
+
+
+
+
+
+/*
 DFS + color array (visited and color)
 
 Time: O(V + E)
