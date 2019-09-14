@@ -8,6 +8,73 @@ NOTES:
 只要是 frequency 这种数额少的，都考了 bucket
 */
 /*
+Map + Bucket Sort
+bucket sort because the sorting range is small/known
+
+Time: O(nlogk) m is unique words, k is the input
+Space: O(n) unique number, worst case is n
+*/
+class Solution {
+    public List<Integer> topKFrequent(int[] nums, int k) {
+        List<Integer>[] bucket = new ArrayList[nums.length + 1];
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int n : nums){
+            map.put(n, map.getOrDefault(n, 0) + 1);
+        }
+        //bucket sort
+        for(Map.Entry<Integer, Integer> entry : map.entrySet()){
+            int freq = entry.getValue();
+            if(bucket[freq] == null) bucket[freq] = new ArrayList<>();
+            bucket[freq].add(entry.getKey());
+        }
+        //对于每个 bucket 都过一遍，添加结果直到 k == 0
+        List<Integer> res = new ArrayList<>();
+        for(int freq = nums.length; freq >= 0; freq--){
+            if(bucket[freq] == null) continue;
+            List<Integer> numsInBucket = bucket[freq];
+            for(int i = 0; i < numsInBucket.size() && k > 0; i++, k--){
+                res.add(numsInBucket.get(i));
+            }
+        }
+        return res;
+    }
+}
+
+
+
+/*
+Map + PriorityQueue
+
+Time: O(nlogk) m is unique words, k is the input
+Space: O(n) unique number, worst case is n
+*/
+class Solution {
+    public List<Integer> topKFrequent(int[] nums, int k) {
+        PriorityQueue<int[]> pq = new PriorityQueue<>(new Comparator<int[]>(){
+            public int compare(int[] i1, int[] i2){
+                return i1[1] - i2[1];
+            }
+        });
+        Map<Integer, Integer> count = new HashMap<>();
+        for(int n : nums){
+            count.put(n, count.getOrDefault(n, 0) + 1);
+        }
+        for(Map.Entry<Integer, Integer> entry : count.entrySet()){
+            pq.offer(new int[]{entry.getKey(), entry.getValue()});
+            if(pq.size() > k) pq.poll();
+        }
+        List<Integer> res = new ArrayList<>();
+        while(!pq.isEmpty()){
+            res.add(pq.poll()[0]);
+        }
+        return res;
+    }
+}
+
+
+
+
+/*
 if top k with most frequency
 Clarify: what if two element have same frequency?
 
