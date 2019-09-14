@@ -20,6 +20,37 @@ class Solution {
     }
 }
 
+/*
+Recursion : 头部留着，对于剩下的翻转，再把头部接到尾部
+
+Time: O(n)
+Space: O(n)
+ */
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        if(head == null || head.next == null) return head;//because you use next.next
+        ListNode next = head.next;
+        ListNode newHead = reverseList(head.next);
+        next.next = head;
+        head.next = null;
+        return newHead;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
