@@ -8,6 +8,56 @@ NOTES:
 这种对比题肯定是横扫
 */
 /*
+Two Pointers + check the result part
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public boolean isOneEditDistance(String s, String t) {
+        if(Math.abs(s.length() - t.length()) > 1) return false;
+        
+        int i = 0, j = 0;
+        while(i < s.length() && j < t.length()){
+            if(s.charAt(i) != t.charAt(j)){
+                return s.substring(i + 1).equals(t.substring(i + 1))
+                    || s.substring(i).equals(t.substring(i + 1))
+                    || s.substring(i + 1).equals(t.substring(i));
+            }
+            i++;//need to check loop condition
+            j++;
+        }
+        //all same so far, also need to check here
+        return s.length() != t.length();//abs should be 1
+    }
+}
+/*
+Two Pointers + check the result part
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public boolean isOneEditDistance(String s, String t) {
+        int i = 0, j = 0;
+        while(i < s.length() && j < t.length()){
+            if(s.charAt(i) != t.charAt(j)){
+                return s.substring(i + 1).equals(t.substring(i + 1))
+                    || s.substring(i).equals(t.substring(i + 1))
+                    || s.substring(i + 1).equals(t.substring(i));
+            }
+            i++;//need to check loop condition
+            j++;
+        }
+        //all same so far, also need to check here
+        if(Math.abs(s.length() - t.length()) == 1) return true;
+        else return false;
+    }
+}
+
+
+
+/*
 先pointer比较，后面完全相等的情况直接string比较
 
 Time: O(n)
