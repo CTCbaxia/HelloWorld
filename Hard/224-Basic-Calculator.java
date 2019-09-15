@@ -15,6 +15,44 @@ METHOD:
 2. 数字直接等它出现完全
 3. 若出现左括号，则等待括号内 result 都计算完全（右括号出现），再将之前左括号左边的数和括号内的计算结果加和
 */
+/*
+Using Stack
+
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public int calculate(String s) {
+        Stack<Integer> stack = new Stack<>();
+        int sign = 1;
+        int curRes = 0;
+        for(int i = 0; i < s.length(); i++){
+            char c = s.charAt(i);
+            if(Character.isDigit(c)){//get the whole number
+                int num = 0;
+                while(i < s.length() && Character.isDigit(s.charAt(i))){
+                    num = num * 10 + (s.charAt(i++) - '0');//damn! forget to increment
+                }
+                i--;//damn! forget to go one step back
+                curRes += sign * num;
+            }else if(c == '('){
+                stack.push(curRes);
+                stack.push(sign);//为什么要单独存一个 sign，因为这个sign对应的数字还不知道是多少
+                curRes = 0;//reset
+                sign = 1;//reset
+            }else if(c == ')'){
+                int curSign = stack.pop();
+                int oparand = stack.pop();
+                curRes = oparand + curSign * curRes;
+            }else if(c == '-'){
+                sign = -1;
+            }else if(c == '+'){
+                sign = 1;
+            }
+        }
+        return curRes;
+    }
+}
 
 "3+66-2-(2-3-1)-(3+(3-5)+(88-(21-(65+6))))"
 class Solution {
