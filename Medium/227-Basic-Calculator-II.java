@@ -9,6 +9,95 @@ NOTES:
 保留 + - 之间的内容，及时合并 "括号内" 或 " * / " 这类优先级较高的部分 (利用 push，pop)
 */
 /*
+Mark lastNum (withour using Stack):
+lastNum: 记录上一个数字
+sign: 记录上一个符号
+res: 记录当前结果
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public int calculate(String s) {
+        int res = 0;//记录当前结果
+        int lastNum = 0;//记录上一个数字 (带符号)
+        char sign = '+';//记录上一个符号，因为有 */ 所以用 char
+        for(int i = 0; i < s.length(); i++){
+            char c = s.charAt(i);
+            if(Character.isDigit(c)){
+                int curNum = 0;
+                while(i < s.length() && Character.isDigit(s.charAt(i))){
+                    curNum = curNum * 10 + (s.charAt(i++) - '0');
+                }
+                if(sign == '+'){
+                    res += curNum;
+                    lastNum = curNum;
+                } 
+                else if(sign == '-'){
+                    res -= curNum;
+                    lastNum = -curNum;
+                } 
+                else if(sign == '*'){
+                    res = res - lastNum + lastNum * curNum;
+                    lastNum = lastNum * curNum;
+                } 
+                else if(sign == '/'){
+                    res = res - lastNum + lastNum / curNum;
+                    lastNum = lastNum / curNum;
+                } 
+                
+                i--;//one step back
+            }else if(c != ' '){
+                sign = c;
+            }
+        }
+
+        return res;
+    }
+}
+
+
+/*
+Stack：因为乘除有更高的优先级，所以永远直接计算乘除。在stack里面只留加减级别的正负数，不做加减运算
+sign: 记录上一个符号
+
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public int calculate(String s) {
+        Stack<Integer> stack = new Stack<>();
+        char sign = '+';//记录上一个符号，因为有 */ 所以用 char
+        // int curNum = 0;
+        for(int i = 0; i < s.length(); i++){
+            char c = s.charAt(i);
+            if(Character.isDigit(c)){
+                int curNum = 0;
+                while(i < s.length() && Character.isDigit(s.charAt(i))){
+                    curNum = curNum * 10 + (s.charAt(i++) - '0');
+                }
+                if(sign == '+') stack.push(curNum);
+                else if(sign == '-') stack.push(-curNum);
+                else if(sign == '*') stack.push(stack.pop() * curNum);
+                else if(sign == '/') stack.push(stack.pop() / curNum);
+                
+                i--;//one step back
+            }else if(c != ' '){
+                sign = c;
+            }
+        }
+        //now stack contains a series of numbers that can be simply added
+        int res = 0;
+        while(!stack.isEmpty()){
+            res += stack.pop();
+        }
+        return res;
+    }
+}
+
+
+
+/*
 Stack: 因为上一个结果有用
 sign ： 保存上一个符号
 num ： 收集整个数字
