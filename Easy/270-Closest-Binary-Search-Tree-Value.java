@@ -6,6 +6,29 @@ RESULT:
 NOTES: 
 */
 /*
+BST check value to decide left/right
+Time: O(logn) - 如果树极度不平衡会退化成O(n)
+Space: O(1)
+*/
+class Solution {
+    public int closestValue(TreeNode root, double target) {
+        double smallestDiff = Double.MAX_VALUE;
+        int res = 0;
+        while(root != null){
+            double diff = Math.abs(root.val - target);
+            if(diff < smallestDiff){
+                smallestDiff = diff;
+                res = root.val;
+            }
+            if(root.val > target) root = root.left;
+            else root = root.right;
+        }
+        return res;
+    }
+}
+
+
+/*
 BST
 For every node we pass, store the min difference and the corresponding node
 
