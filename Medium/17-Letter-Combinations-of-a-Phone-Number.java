@@ -8,6 +8,38 @@ NOTES:
 
 */
 /*
+DFS (backtracking) for Path
+
+Time: O(n) only 3-4 letters for each n
+Space: O(n) - path
+*/
+class Solution {
+    public List<String> letterCombinations(String digits) {
+        List<String> res = new ArrayList<>();
+        if(digits.length() == 0) return res;
+        
+        String[] numbers = new String[]{"", "", "abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+        dfs(digits, 0, "", res, numbers);
+        return res;
+    }
+    private void dfs(String digits, int start, String path, List<String> res, String[] numbers){
+        if(start == digits.length()){
+            res.add(path);
+            return;
+        }
+        int d = digits.charAt(start) - '0';
+        for(char c : numbers[d].toCharArray()){
+            dfs(digits, start + 1, path + c, res, numbers);
+        }
+    }
+}
+
+
+
+
+
+
+/*
 DFS
 
 Time: O(n)
