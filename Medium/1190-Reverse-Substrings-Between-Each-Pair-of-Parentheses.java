@@ -3,8 +3,35 @@ M
 1190. Reverse Substrings Between Each Pair of Parentheses
 */
 /*
+Iteration, using Stack and Queue
+
+Time: O(n^2)
+Space: O(n)
+*/
+class Solution {
+    public String reverseParentheses(String s) {
+        Stack<Character> stack = new Stack<>();
+        for(char c : s.toCharArray()){
+            if(c == ')'){
+                Queue<Character> q = new LinkedList<>();
+                while(!stack.isEmpty() && stack.peek() != '(') q.offer(stack.pop());
+                if(!stack.isEmpty()) stack.pop();//pop '('
+                while(!q.isEmpty()) stack.push(q.poll());
+            }else{
+                stack.push(c);
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        while(!stack.isEmpty()) sb.append(stack.pop());
+        return sb.reverse().toString();
+    }
+    
+}
+
+/*
 Recursion, set bracket level and treat bracket as a whole
-Time: O(n)
+Half of the brackets do not need to be reverse
+Time: O(n^2)
 Space: O(n)
 */
 class Solution {
