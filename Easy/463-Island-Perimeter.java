@@ -10,6 +10,72 @@ METHOD:
 
 */
 /*
+for lake, check for 4 sides of the lake, if finds a neighbor is island, res++;
+for island, check whether it is the bound, one bound got res++
+
+Time: O(mn)
+Space: O(1)
+*/
+class Solution {
+    public int islandPerimeter(int[][] grid) {
+        int[][] directions = {{0,1},{0,-1},{1,0},{-1,0}};
+        int res = 0;
+        for(int i = 0; i < grid.length; i++){
+            for(int j = 0; j < grid[0].length; j++){
+                if(grid[i][j] == 1){//只要岛岛挨到边，就 + 1
+                    if(i == 0) res++;
+                    if(i == grid.length - 1) res++;
+                    if(j == 0) res++;
+                    if(j == grid[0].length - 1) res++;
+                }else{//meet a lake
+                    for(int[] dir : directions){
+                        int x = i + dir[0];
+                        int y = j + dir[1];
+                        if(x >= 0 && y >= 0 && x < grid.length && y < grid[0].length && grid[x][y] == 1){
+                            res++;
+                        }
+                    }
+                }
+            }
+        }
+        return res;
+    }
+}
+/*
+高票答案
+顺序规律：4 * island - 2 * neighbors edge
+from top to down, left to right, 
+we only need to check the right and down side
+left and above has been covered
+
+Find a island part, add 4 line
+Find a neighbor, remove 2 line
+
+Time: O(mn)
+Space: O(1)
+*/
+class Solution {
+    public int islandPerimeter(int[][] grid) {
+        int res = 0;
+        for(int i = 0; i < grid.length; i++){
+            for(int j = 0; j < grid[0].length; j++){
+                if(grid[i][j] == 1){//只要找到一个岛岛，就 + 4，然后看他的右/下邻居
+                    res += 4;
+                    if(i + 1 < grid.length && grid[i + 1][j] == 1) res -= 2;//只要看一个邻居
+                    if(j + 1 < grid[0].length && grid[i][j + 1] == 1) res -= 2;
+                    
+                }
+            }
+        }
+        return res;
+    }
+}
+
+
+
+
+
+/*
 顺序规律：4 * island - 2 * neighbors edge
 from top to down, left to right, 
 we only need to check the right and down side
