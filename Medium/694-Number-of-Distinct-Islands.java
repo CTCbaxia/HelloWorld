@@ -8,6 +8,46 @@ NOTES:
 
 */
 /*
+Use relative position
+
+Time: O(mn)
+Space: O(mn)
+*/
+class Solution {
+    public int numDistinctIslands(int[][] grid) {
+        Set<String> set = new HashSet<>();
+        if(grid.length == 0 || grid[0].length == 0) return 0;
+        for(int i = 0; i < grid.length; i++){
+            for(int j = 0; j < grid[0].length; j++){
+                if(grid[i][j] == 1){
+                    StringBuilder sb = new StringBuilder();
+                    dfs(grid, i, j, i, j, sb);
+                    set.add(sb.toString());
+                }
+            }
+        }
+        return set.size();
+    }
+    private void dfs(int[][] grid, int i, int j, int oi, int oj, StringBuilder sb){
+        int[][] directions = {{0,1},{0,-1},{1,0},{-1,0}};
+        sb.append((i - oi) + "" +(j - oj));//build island
+        grid[i][j] = 0;//marker
+        for(int[] dir : directions){
+            int x = i + dir[0];
+            int y = j + dir[1];
+            if(x >= 0 && y >= 0 && x < grid.length && y < grid[0].length && grid[x][y] == 1){
+                dfs(grid, x, y, oi, oj, sb);
+            }
+        }
+    }
+}
+
+
+
+
+
+
+/*
 DFS
 We just need the relative position to the original point for an island
 So we use StringBuilder to build the island parts
