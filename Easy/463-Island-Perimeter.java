@@ -70,6 +70,53 @@ class Solution {
         return res;
     }
 }
+/*
+Facebook 变种
+1. number of lake (surronded by land) 
+Only count the points facing the sea(lake), do not count the land inside. 
+For example,   land A is surrounded by land B, C, D, E (up, down, left, right). land A will not be counted in the final result.
+The question is how many lake-facing lands the island have.
+
+Time: O(mn)
+Space: O(1)
+*/
+class Solution {
+    public int islandPerimeter(int[][] grid) {
+        int[][] directions = {{0,1},{0,-1},{1,0},{-1,0}};
+        int res = 0;
+        for(int i = 0; i < grid.length; i++){
+            for(int j = 0; j < grid[0].length; j++){
+                if(grid[i][j] == 1){
+                    if(i == 0 || i == grid.length - 1 || j == 0 || j == grid[0].length - 1){
+                        res++;
+                        grid[i][j] = -1;
+                    } 
+                }else if(grid[i][j] == 0){//meet a lake, which is 0 (there are 1, -1, 0 for all)
+                    for(int[] dir : directions){
+                        int x = i + dir[0];
+                        int y = j + dir[1];
+                        if(x >= 0 && y >= 0 && x < grid.length && y < grid[0].length && grid[x][y] == 1){
+                            res++;
+                            grid[x][y] = -1;
+                        }
+                    }
+                }
+            }
+        }
+        return res;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
