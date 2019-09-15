@@ -11,7 +11,34 @@ NOTES:
 	- Stack inorder traversal: 一直左走走到头
 */
 /*
-DFS
+Iteration using Stack
+
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        if(root == null) return res;
+            
+        Stack<TreeNode> stack = new Stack<>();
+        while(!stack.isEmpty() || root != null){
+            if(root != null){
+                stack.push(root);
+                root = root.left;
+            }else{
+                TreeNode node = stack.pop();
+                res.add(node.val);
+                root = node.right;
+            }
+        }
+        return res;
+    }
+}
+
+
+/*
+DFS - Recursion
 
 Time: O(n)
 Space: O(logn)
@@ -31,6 +58,8 @@ class Solution {
         return;
     }
 }
+
+
 /*
 Iterative: Stack
 
