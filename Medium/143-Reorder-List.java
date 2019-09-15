@@ -1,4 +1,4 @@
-/*
+./*
 MEDIUM
 143. Reorder List
 
@@ -7,6 +7,57 @@ RESULT:
 NOTES:
 1. 要注意不要成环，成环你永远不会走到 null。应该画出示意图
 */
+/*
+1. Reverse the second half
+2. attach second to first
+
+**be careful to cutoff the list
+**be careful to run to the next
+
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public void reorderList(ListNode head) {
+        if(head == null || head.next == null) return;
+        
+        ListNode fast = head, slow = head;
+        while(fast.next != null && fast.next.next != null){//确保 fast 永远踩在点上
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        //reverse second
+        ListNode second = slow.next;
+        slow.next = null;
+        
+        ListNode reverse = null;
+        while(second != null){
+            ListNode newSecond = second.next;
+            second.next = reverse;
+            reverse = second;
+            second = newSecond;
+        }
+        second = reverse;//be careful to assign second here
+        
+        //merge first and second
+        ListNode first = head;
+        while(second != null){//second is shorter/equal than first
+            ListNode newSecond = second.next;//这块就跟swap螺旋一样，永远保证现有的值被用过再改变
+            second.next = first.next;
+            first.next = second;
+            second = newSecond;
+            first = first.next.next;//because first.next = second (not null)
+        }
+        return;
+    }
+}
+
+
+
+
+
+
+
 /*
 separate + reverse + merge
 Time: O(n)
