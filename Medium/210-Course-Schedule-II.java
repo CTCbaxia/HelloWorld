@@ -10,6 +10,107 @@ METHOD:
 2. DFS
 */
 /*
+BFS
+Topological sort:
+Map + degree, count taken
+
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        List<List<Integer>> nextCourses = new ArrayList<>();
+        int[] degree = new int[numCourses];
+        
+        //build graph
+        for(int i = 0; i < numCourses; i++){
+            //build whole graph as some might not have nextCourses, but we want to put them into the map
+            nextCourses.add(new ArrayList<>());
+        }
+        for(int i = 0; i < prerequisites.length; i++){
+            int[] course = prerequisites[i];
+            nextCourses.get(course[1]).add(course[0]);
+            degree[course[0]]++;
+        }
+        
+        //BFS to take course one by one
+        int[] res = new int[numCourses];
+        int countTaken = 0;
+        Queue<Integer> q = new LinkedList<>();
+        for(int i = 0; i < numCourses; i++){
+            if(degree[i] == 0) q.offer(i);
+        }
+        while(!q.isEmpty()){
+            int course = q.poll();
+            res[countTaken++] = course;//finish one course
+            List<Integer> next = nextCourses.get(course);
+            for(int n : next){
+                degree[n]--;
+                if(degree[n] == 0) q.offer(n);
+            }
+        }
+        return countTaken == numCourses ? res : new int[0];
+    }
+}
+
+/*
+SOLUTION 1: DFS
+TIME: 0831 - 30min
+RESULT: 8% - 75ms
+THOUGHTS:
+重点是有两个缓存 preList 和 finished（finished 相当于 memo）
+preList：某一门课的所有先修课列表，如果后面要求的先修课的先修课已经在 preList 里面了，则成为环状，不可能完成任务
+finished：记录所有已完成的课程。注意因为最终输出的顺序也是根据 finished 生成，所有在主函数里面检查是否已经完成，不然顺序会打乱
+*/
+
+class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        List<List<Integer>> graph = new ArrayList<List<Integer>>();
+        int[] result = new int[numCourses];
+        
+        for(int i = 0; i < numCourses; i++) graph.add(new ArrayList<Integer>());
+        for(int i = 0; i < prerequisites.length; i++){
+            graph.get(prerequisites[i][0]).add(prerequisites[i][1]);//for each course, add its pre to its list
+        }
+
+        Set<Integer> preList = new HashSet<Integer>();// check 这一条线有没有环
+        List<Integer> finished = new ArrayList<Integer>();// 对于已经安全的 point，省略后续 check 步骤
+        
+        for(int i = 0; i < numCourses; i++){
+            if(!finished.contains(i)){// 对于已经安全的 point，省略后续 check 步骤
+                if(!finish(i, graph, preList, finished)) 
+                    return new int[0];
+            }
+        }
+        for(int i = 0; i < numCourses; i++) result[i] = finished.get(i);
+        return result;
+    }
+    private boolean finish(int course, List<List<Integer>> graph, Set<Integer> preList, List<Integer> finished){
+        preList.add(course);
+        for(int pre : graph.get(course)){
+            if(finished.contains(pre)) continue;
+            if(preList.contains(pre)) return false;
+            if(!finish(pre, graph, preList, finished)) return false;
+        }
+        preList.remove(course);
+        finished.add(course);
+        return true;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 Topological sort:
 map and degree --> it is number - list and array
 map(list): 课程A，需要先上课程A才能上的课程list
@@ -133,50 +234,7 @@ class Solution {
 
 
 
-/*
-SOLUTION 1: DFS
-TIME: 0831 - 30min
-RESULT: 8% - 75ms
-THOUGHTS:
-重点是有两个缓存 preList 和 finished
-preList：某一门课的所有先修课列表，如果后面要求的先修课的先修课已经在 preList 里面了，则成为环状，不可能完成任务
-finished：记录所有已完成的课程。注意因为最终输出的顺序也是根据 finished 生成，所有在主函数里面检查是否已经完成，不然顺序会打乱
-*/
 
-class Solution {
-    public int[] findOrder(int numCourses, int[][] prerequisites) {
-        List<List<Integer>> graph = new ArrayList<List<Integer>>();
-        int[] result = new int[numCourses];
-        
-        for(int i = 0; i < numCourses; i++) graph.add(new ArrayList<Integer>());
-        for(int i = 0; i < prerequisites.length; i++){
-            graph.get(prerequisites[i][0]).add(prerequisites[i][1]);//for each course, add its pre to its list
-        }
-
-        Set<Integer> preList = new HashSet<Integer>();
-        List<Integer> finished = new ArrayList<Integer>();
-        
-        for(int i = 0; i < numCourses; i++){
-            if(!finished.contains(i)){
-                if(!finish(i, graph, preList, finished)) 
-                    return new int[0];
-            }
-        }
-        for(int i = 0; i < numCourses; i++) result[i] = finished.get(i);
-        return result;
-    }
-    private boolean finish(int course, List<List<Integer>> graph, Set<Integer> preList, List<Integer> finished){
-        preList.add(course);
-        for(int pre : graph.get(course)){
-            if(finished.contains(pre)) continue;
-            if(preList.contains(pre)) return false;
-            if(!finish(pre, graph, preList, finished)) return false;
-        }
-        preList.remove(course);
-        finished.add(course);
-        return true;
-    }
-}
 
 
 
