@@ -9,6 +9,42 @@ NOTES:
 对于重构一个 string，没有要求 inplace 的话，可以想想 stringbuilder 重新构造一个 string
 */
 /*
+Bucket Sort using int[] count
+
+Time: O(n)
+Space: O(26)
+*/
+class Solution {
+    public String customSortString(String S, String T) {
+        int[] count = new int[26];
+        for(char c : T.toCharArray()){
+            count[c - 'a']++;
+        }
+        //build string
+        StringBuilder sb = new StringBuilder();
+        for(char c : S.toCharArray()){
+            while(count[c - 'a']-- > 0){
+                sb.append(c);
+            }
+        }
+        for(char c = 'a'; c <= 'z'; c++){
+            while(count[c - 'a']-- > 0){
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+}
+
+
+
+
+
+
+
+
+
+/*
 Bucket sort
 
 Time: O(n)
@@ -36,7 +72,7 @@ class Solution {
 }
 
 
-
+//use comparator to sort, build map for char in S
 
 
 
