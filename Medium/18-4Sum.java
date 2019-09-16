@@ -8,9 +8,60 @@ NOTES:
 if there are less than 4 elements -> none
 if the last num in nums has 4 * num < target -> none
 if the first num in nums has 4 * num > target -> none
-
-
 */
+/*
+Solving N-sum
+1. Sort
+2. Then reduce N
+3. until N == 2, do two pointers from l and r
+
+Time: O(nlogn + n^2 * n)
+Space: O(1)
+
+followup:有没有办法更少时间
+先 preprocessing 生出 lookup table 就能达到 O(n^2):
+排序之后，构建一个 map<Integer, List<int[]>>[] dic，
+两层 for loop 顺序
+for(int i = 0..)
+    for(int j = 0...){
+        sum = nums[i] + nums[j];
+        dic[j + 1].get(sum).add(new int[]{nums[i], nums[j]});
+    }
+然后需要再一遍 两层 for loop，剩下的就在 dic 里面看就好了
+*/
+class Solution {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        int n = nums.length;
+        Arrays.sort(nums);
+        List<List<Integer>> res = new ArrayList<>();
+        for(int i = 0; i < n; i++){
+            for(int j = i + 1; j < n; j++){
+                int t = target - nums[i] - nums[j];
+                int l = j + 1, r = n - 1;
+                while(l < r){
+                    if(nums[l] + nums[r] == t){
+                        res.add(Arrays.asList(nums[i], nums[j], nums[l], nums[r]));
+                        while(l + 1 < r && nums[l + 1] == nums[l]) l++;
+                        while(r - 1 > l && nums[r - 1] == nums[r]) r--;
+                        l++;
+                        r--;
+                    }
+                    else if(nums[l] + nums[r] < t) l++;
+                    else r--;
+                }
+                while(j + 1 < n && nums[j + 1] == nums[j]) j++;//be at the last same element
+            }
+            while(i + 1 < n && nums[i + 1] == nums[i]) i++;//be at the last same element
+        }
+        return res;
+    }
+}
+
+
+
+
+
+
 /*
 Sort + 固定两个数，然后 two sum
 排序可以binary search
