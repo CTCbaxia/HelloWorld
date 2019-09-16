@@ -8,12 +8,15 @@ RESULT: 100% - 7ms
 NOTES:
 */
 /*
-左下 -> 右上 遍历法
+左下 -> 右上 遍历法/也可以右上 -> 左下
 matrix[i][j] > target: 这一整行右边的元素都不会是答案
 matrix[i][j] < target: 这一整列上面的元素都不会是答案
 
 Time: O(m + n)
 Space: O(1)
+
+1. 还可以对每一行用 binary search，找到小于等于的元素，然后下一行 l = index, r = n - 1
+    Time: O(mlogn)
 */
 class Solution {
     public boolean searchMatrix(int[][] matrix, int target){
