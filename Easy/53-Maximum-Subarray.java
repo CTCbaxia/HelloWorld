@@ -10,12 +10,58 @@ DP 的关键就是找到子问题，使子问题能和后续问题产生联系�
 
 */
 /*
+Dynamic Programming -> 空间进化
+其实只需要一个 int 来表示截止上一个数的最大值
+
+            if(dp[i - 1] > 0) dp[i] = dp[i - 1] + nums[i];
+            else dp[i] = nums[i];
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public int maxSubArray(int[] nums) {
+        int res = Integer.MIN_VALUE;//官方 [] return -2147483648
+        int curMax = Integer.MIN_VALUE;
+        for(int i = 0; i < nums.length; i++){
+            curMax = curMax <= 0 ? nums[i] : nums[i] + curMax;
+            res = Math.max(res, curMax);
+        }
+        return res;
+    }
+}
+/*
+Dynamic Programming
+
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public int maxSubArray(int[] nums) {
+        if(nums.length == 0) return Integer.MIN_VALUE;;
+        
+        
+        int[] dp = new int[nums.length];
+        dp[0] = nums[0];
+        int res = dp[0];
+        for(int i = 1; i < nums.length; i++){
+            dp[i] = dp[i - 1] <= 0 ? nums[i] : nums[i] + dp[i - 1];
+            res = Math.max(res, dp[i]);
+        }
+        return res;
+    }
+}
+
+
+
+
+
+/*
 Dynamic Programming
 dp[i]: 以 i-th index 结尾的，最大presum
 如果前面的dp[i - 1] < 0， dp[i] 就是 num[i]自己
 
 Time: O(n)
-Space: O(1)
+Space: O(n)
 */
 class Solution {
     public int maxSubArray(int[] nums) {
