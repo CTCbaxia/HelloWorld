@@ -10,6 +10,28 @@ THOUGHTS:
 2. 这题的简单设置决定了 Sequential Search 也很适用
 */
 /*
+Climbing Slope
+compare with nums[m + 1]
+
+Time: O(logn)
+Space: O(1)
+*/
+class Solution {
+    public int findPeakElement(int[] nums) {
+        int l = 0, r = nums.length - 1;
+        while(l < r){
+            int m = l + (r - l)/2;
+            if(nums[m] < nums[m + 1]) l = m + 1;//因为 m + 1 永远是 valid 的
+            else r = m;//hold the possible peak
+        }
+        return r;
+    }
+}
+
+
+
+
+/*
 Climbing rising slope
 
 Time: O(logn)
