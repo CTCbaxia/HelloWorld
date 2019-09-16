@@ -15,6 +15,51 @@ METHODS:
 2. DFS
 */
 /*
+BFS
+Topological sort:
+Map + degree, count taken
+
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        List<List<Integer>> nextCourses = new ArrayList<>();
+        int[] degree = new int[numCourses];
+        
+        //build graph
+        for(int i = 0; i < numCourses; i++){
+            //build whole graph as some might not have nextCourses, but we want to put them into the map
+            nextCourses.add(new ArrayList<>());
+        }
+        for(int i = 0; i < prerequisites.length; i++){
+            int[] course = prerequisites[i];
+            nextCourses.get(course[1]).add(course[0]);
+            degree[course[0]]++;
+        }
+        
+        //BFS to take course one by one
+        int countTaken = 0;
+        Queue<Integer> q = new LinkedList<>();
+        for(int i = 0; i < numCourses; i++){
+            if(degree[i] == 0) q.offer(i);
+        }
+        while(!q.isEmpty()){
+            int course = q.poll();
+            countTaken++;//finish one course
+            List<Integer> next = nextCourses.get(course);
+            for(int n : next){
+                degree[n]--;
+                if(degree[n] == 0) q.offer(n);
+            }
+        }
+        return countTaken == numCourses;
+    }
+}
+
+
+
+/*
 Topological sort:
 map and degree --> it is number - list and array
 map(list): 课程A，需要先上课程A才能上的课程list
