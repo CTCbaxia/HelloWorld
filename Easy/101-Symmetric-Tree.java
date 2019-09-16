@@ -9,6 +9,25 @@ NOTES:
 
 */
 /*
+Recursion
+Time: O(n)
+Space: O(1)
+ */
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        if(root == null) return true;
+        return compare(root.left, root.right);
+    }
+    private boolean compare(TreeNode n1, TreeNode n2){
+        if(n1 == null && n2 == null) return true;
+        else if(n1 == null || n2 == null) return false;
+        else return n1.val == n2.val && compare(n1.left, n2.right) && compare(n1.right, n2.left);
+    }
+}
+
+
+
+/*
 Recursive
 Time: O(n)
 Space: O(1)
