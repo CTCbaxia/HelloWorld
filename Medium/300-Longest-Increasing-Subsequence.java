@@ -8,6 +8,71 @@ NOTES:
 binary search 的总结
 */
 /*
+Binary Search: find the large or equal num | can also use treemap's ceiling, O(nlogn)
+i: length
+end[i]: min end num for that len, update upper bound to give more flexibility for latter elements
+
+do binary search to find the right position to put the current number, 
+update dp[i] to make it smallest so far, but still larger than left ,smaller than right
+
+end[i] should be increasing
+
+Time: O(nlogn)
+Space: O(n)
+*/
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int len = 0;
+        int[] end = new int[nums.length + 1];
+        for(int i = 0; i < nums.length; i++){
+            int l = 0, r = len;
+            while(l < r){//find the large or equal num, update that larger value to nums[i]
+                int m = l + (r - l)/2;
+                if(end[m] < nums[i]) l = m + 1;
+                else r = m;
+            }//m can never be the original r(len)
+            end[r] = nums[i];
+            if(r == len) len++;
+        }
+        return len;
+    }
+}
+/*
+DP
+dp[i]: longest increasing subsequence till i-th index(inclusive)
+update result after every dp[i] calculated
+
+Time: O(n^2)
+Space: O(n)
+*/
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int res = 0;
+        int[] dp = new int[nums.length];
+        Arrays.fill(dp, 1);
+        for(int i = 0; i < nums.length; i++){
+            for(int j = 0; j < i; j++){
+                if(nums[j] < nums[i]){
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+            res = Math.max(res, dp[i]);
+        }
+        return res;
+    }
+}
+
+
+
+
+
+
+
+
+
+//Internship ================================================================================
+
+/*
 Binary Search: LargerOrEqual
 for upper bound, update upper bound to give more flexibility for latter elements
 
