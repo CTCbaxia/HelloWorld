@@ -19,6 +19,53 @@ class Solution {
         for(int i = 0; i < board.length; i++){
             for(int j = 0; j < board[0].length; j++){
                 if(board[i][j] == word.charAt(0)){
+                    if(search(board, word, 1, i, j)) return true;
+                }
+            }
+        }
+        return false;
+    }
+    private boolean search(char[][] board, String word, int index, int i, int j){
+        if(index == word.length()) return true;
+        
+        board[i][j] = '*';
+        
+        int[][] direction = new int[][]{{1, 0}, {-1, 0},{0, 1}, {0, -1}};
+        for(int[] dir : direction){
+            int row = i + dir[0];
+            int col = j + dir[1];
+            if(row >= 0 && row < board.length && col >= 0 && col < board[0].length){
+                if(board[row][col] == word.charAt(index)){
+                    if(search(board, word, index + 1, row, col)) return true;
+                }
+            }
+        }
+        board[i][j] = word.charAt(index - 1);
+        return false;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+/*
+DFS + backtracking (Set for visited)
+
+Time: O(mn * 4^len)
+Space: O(mn) + O(k) //recursive //can also modify the board to save space c -> '\0'
+*/
+class Solution {
+    public boolean exist(char[][] board, String word){
+        if(board.length == 0 || board[0].length == 0) return word.length() == 0;
+        for(int i = 0; i < board.length; i++){
+            for(int j = 0; j < board[0].length; j++){
+                if(board[i][j] == word.charAt(0)){
                     if(search(board, word, 1, i, j, new HashSet<Integer>())) return true;
                 }
             }
