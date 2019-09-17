@@ -23,7 +23,7 @@ class Solution {
         for(int i = index; i < candidates.length; i++){
             if(i > index && candidates[i] == candidates[i - 1]) continue;//skip duplicate
             cur.add(candidates[i]);
-            dfs(candidates, i + 1, target - candidates[i], cur, res);
+            dfs(candidates, i + 1, target - candidates[i], cur, res);//only add same number when its previous same is added
             cur.remove(cur.size() - 1);
         }
     }
