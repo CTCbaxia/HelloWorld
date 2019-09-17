@@ -40,6 +40,12 @@ Space: O(1)
  *     public List<NestedInteger> getList();
  * }
  */
+/*
+Recursion - 一个一个撸平 ni
+
+Time: O(n)
+Space: O(n) - stack
+*/
 class Solution {
     public int depthSum(List<NestedInteger> nestedList) {
         return levelSum(nestedList, 1);
@@ -53,5 +59,32 @@ class Solution {
             }
         }
         return res;
+    }
+}
+
+
+/*
+Recursion - 一个一个撸平 ni
+
+Time: O(n)
+Space: O(n) - stack
+*/
+class Solution {
+    public int depthSum(List<NestedInteger> nestedList) {
+        int sum = 0;
+        for(NestedInteger ni : nestedList){
+            sum += computerSum(ni, 1);
+        }
+        return sum;
+    }
+    private int computerSum(NestedInteger ni, int level){
+        if(ni.isInteger()) return ni.getInteger() * level;
+        int sum = 0;
+        List<NestedInteger> l = ni.getList();
+        for(NestedInteger n : l){
+            sum += computerSum(n, level + 1);
+        }
+        return sum;
+        
     }
 }
