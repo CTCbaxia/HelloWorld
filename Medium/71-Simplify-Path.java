@@ -43,6 +43,39 @@ class Solution {
 }
 }
 
+/*
+Stack
+
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public String simplifyPath(String path) {
+        Stack<String> stack = new Stack<>();
+        String[] dir = path.split("/");
+        for(int i = 0; i < dir.length; i++){
+            if(dir[i].equals(".") || dir[i].equals("")){
+                continue;
+            }else if(dir[i].equals("..")){
+                if(!stack.isEmpty()) stack.pop();
+            }else{
+                stack.push(dir[i]);
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        for(String s : stack){//stack iteration is inherited from other, so do FIFO
+            sb.append("/").append(s);
+        }
+        return sb.length() == 0 ? "/" : sb.toString();
+    }
+}
+
+
+
+
+
+
+
 
 /*
 SOLUTION 0:
