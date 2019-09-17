@@ -2,9 +2,37 @@
 HARD
 57. Insert Interval
 
-TIME: 
-RESULT: 
 */
+/*
+Just check overlap one by one and update newInterval
+
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        List<int[]> result = new ArrayList<>();
+        int i = 0;
+        for(; i < intervals.length; i++){
+            int[] cur = intervals[i];
+            if(cur[0] > newInterval[1]) break;
+            else if(cur[1] < newInterval[0]) result.add(cur);
+            else{//overlap
+                newInterval[0] = Math.min(newInterval[0], cur[0]);
+                newInterval[1] = Math.max(newInterval[1], cur[1]);
+            }
+        }
+        result.add(newInterval);
+        for(int j = i; j < intervals.length; j++){
+            result.add(intervals[j]);
+        }
+        int[][] res = new int[result.size()][2];
+        for(int j = 0; j < res.length; j++){
+            res[j] = result.get(j);
+        }
+        return res;
+    }
+}
 /*
 Update interval when overlap, 
 update insert index when add smaller interval into result(when adding bigger, stop updating insert index)
