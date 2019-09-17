@@ -10,6 +10,7 @@ NOTES:
 /*
 BFS + DP(用queue太慢了)
 用dp数组每次存储到达一点的所有路径
+用 double 因为 dp 的一个值可能会非常非常 大
 
 Time: O(K*N^2)
 Space: O(N^2)
@@ -47,6 +48,7 @@ class Solution {
         return num / total;
     }
 }
+
 
 
 
