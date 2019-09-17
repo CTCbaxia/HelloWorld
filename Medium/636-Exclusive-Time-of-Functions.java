@@ -9,6 +9,39 @@ RESULT: 41% - 26ms
 类似于 valid parenthesis 的做法。用 stack 来存所有的 start 状态。每次有新的 start 或者 end 就会改变相应的值
 */
 /*
+Stack
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public int[] exclusiveTime(int n, List<String> logs) {
+        int[] res = new int[n];
+        Stack<Integer> stack = new Stack<>();
+        int preTime = -1;
+        for(int i = 0; i < logs.size(); i++){
+            String[] p = logs.get(i).split(":");
+            int task = Integer.parseInt(p[0]);
+            int time = Integer.parseInt(p[2]);
+            if(p[1].equals("start")){
+                if(!stack.isEmpty()){
+                    res[stack.peek()] += (time - 1) - preTime + 1;
+                }
+                stack.push(task);
+                preTime = time;
+            }else{
+                res[stack.pop()] += time - preTime + 1;
+                preTime = time + 1;//preTime should always point to the start working time for peek
+            }
+        }
+        return res;
+    }
+}
+
+
+
+
+
+/*
 类似 parenthesis 
 每次用 stack 缓存还没匹配上的部分
 
