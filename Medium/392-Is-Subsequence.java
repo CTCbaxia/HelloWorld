@@ -23,6 +23,19 @@ for every char in s(short),check whether it is in t(using an index)
 
 Time: O(n)
 Space: O(1)
+
+followup:
+If there are lots of incoming S, say S1, S2, ... , Sk where k >= 1B, 
+and you want to check one by one to see if T has its subsequence. 
+In this scenario, how would you change your code?
+
+Answer:
+The we can use a Map<Character, List<Integer>> to dict every char with its list of indice
+We keep a index for T, for every char c in S, we do map.get(c) and find the index larger than current index
+    1. here we can use binary search for index in the list
+    2. or we can use treemap instead of list, then we also use O(logn) time to find ceiling
+update current index
+
 */
 class Solution {
     public boolean isSubsequence(String s, String t) {
