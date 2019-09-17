@@ -8,6 +8,52 @@ NOTES:
 ***** 如果要你从 O(n) 再降，如果题目涉及查找 ---- 二分法 logn
 */
 /*
+Reservoir Sampling solution + Binary Search
+
+Time: O(n) + O(logn)
+Space: O(n)
+*/
+class Solution {
+    Random r;
+    int[] sum;
+    public Solution(int[] w) {
+        r = new Random();
+        sum = new int[w.length];
+        int s = 0;
+        for(int i = 0; i < w.length; i++){
+            s += w[i];
+            sum[i] = s;
+        }
+    }
+    
+    public int pickIndex() {
+        int target = r.nextInt(sum[sum.length - 1]) + 1;//重要，随机数是 0~sum-1,但是sum里面的数是 1~sum
+        //binary search to find largeOrEqual
+        int l = 0, r = sum.length - 1;
+        while(l < r){
+            int m = l + (r - l)/2;
+            if(sum[m] < target) l = m + 1;
+            else r = m;//hold
+        }
+        return r;
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(w);
+ * int param_1 = obj.pickIndex();
+ */
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(w);
+ * int param_1 = obj.pickIndex();
+ */
+
+
+ 
+/*
 直接看 range 落在哪里了，weight 越大，range也越大，随机数落在这个范围的可能性也越大
 
 Time: 
