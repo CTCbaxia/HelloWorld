@@ -6,6 +6,50 @@ TIME:
 RESULT: 
 */
 /*
+DFS + Memo
+*/
+class Solution {
+    public int longestIncreasingPath(int[][] matrix) {
+        if(matrix.length == 0 || matrix[0].length == 0) return 0;
+        int result = 0;
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int[][] maxlen = new int[m][n];
+        
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                result = Math.max(result, dfs(matrix, maxlen, i, j));
+            }
+        }
+        return result;
+    }
+    private int dfs(int[][] matrix, int[][] maxlen, int i, int j){
+        if(maxlen[i][j] != 0) return maxlen[i][j];
+        int len = 1;//itself
+        
+        int[][] directions = {{1, 0},{-1, 0},{0, 1},{0,-1}};
+        for(int[] d : directions){
+            int x = i + d[0];
+            int y = j + d[1];
+            if(x >= 0 && y >= 0 && x < matrix.length && y < matrix[0].length){
+                if(matrix[x][y] > matrix[i][j]){
+                    len = Math.max(len, 1 + dfs(matrix, maxlen, x, y));
+                }
+            }
+        }
+        maxlen[i][j] = len;
+        return len;
+    }
+}
+
+
+
+
+
+
+
+
+/*
 DFS for every point + Cache for the calculated point
 
 Time: O(mn * mn) for every dfs point, every element in the matrix can only be visited once
