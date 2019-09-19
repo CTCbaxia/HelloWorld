@@ -87,16 +87,13 @@ class Solution {
         String[] tens = {"", "", "Twenty ", "Thirty ", "Forty ", "Fifty ", "Sixty ", "Seventy ", "Eighty ", "Ninety "};
         String res = "";
         while(num > 0){
-            if(num < 1000){
-                int n1 = num / 100;
-                int n2 = num % 100;
-                if(n1 > 0) res += lessThanTwenty[n1] + "Hundred ";//百位
-                if(n2 < 20){//十位 + 个位
-                    res += lessThanTwenty[n2];
-                }else{
-                    res += tens[n2 / 10] + lessThanTwenty[n2 % 10];
-                } 
-                return res.substring(0, res.length() - 1);
+            if(num < 100){
+                if(num < 20) res += lessThanTwenty[num];
+                else res += tens[num / 10] + lessThanTwenty[num % 10];
+                break;
+            }else if(num < 1000){
+                res += lessThanTwenty[num / 100] + "Hundred ";//百位
+                num %= 100;
             }else if(num < 1000000){
                 res += numberToWords(num / 1000) + " Thousand ";
                 num %= 1000;
