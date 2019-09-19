@@ -123,14 +123,47 @@ So roughly O(nk). Accurately O(nm) where m is the total "number of recursive cal
 */
 
 
-//简化版本 只返回一个结果
+/*
+Facebook - Interview
+简化版本 只返回一个结果
+*/
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello World!");
+        System.out.println(removeInvalid("(()))((())"));
+    }
+    private static String removeInvalid(String s){
+        String res1 = helper(s, '(', ')');     
+        String reverse = new StringBuilder(res1).reverse().toString();
+        String res2 = helper(reverse, ')', '(');
+        return new StringBuilder(res2).reverse().toString();
+    }
+    private static String helper(String s, char l, char r){
+        int count = 0;
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < s.length(); i++){
+            char c = s.charAt(i);
+            if(c == l) count++;
+            else if(c == r) count--;
+            
+            if(count < 0){
+                count = 0;//remove this )
+                continue;
+            } 
+            else sb.append(c);
+        }
+        return sb.toString();
+    }
+}
+
+
 class Solution {
     public List<String> removeInvalidParentheses(String s){
         String res1 = validParenthese(s, 0, '(', ')');
         String reverse = new StringBuilder(res1).reverse().toString();
         String res2 = validParenthese(reverse, 0, ')', '(');
         String result = new StringBuilder(res2).reverse().toString();
-        return new ArrayList<>();
+        return result;
     }   
     private String validParenthese(String s, int start, char lc, char rc){
         int left = 0;
