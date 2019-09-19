@@ -18,6 +18,8 @@ if(num at (i-1, i) <= 26 && >= 10) + dp[i - 2]
 
 Time: O(n)
 Space: O(n)
+
+DP is better than dfs with memo because it saves recursion stack space
 */
   
 class Solution {
@@ -28,6 +30,7 @@ class Solution {
         
         dp[0] = 1;
         dp[1] = s.charAt(0) - '0' == 0 ? 0 : 1;//once we have a zero, all after will be zero
+
         for(int i = 2; i <= len; i++){
             //i 是 string size，对应到 s 里面 i - 1 的元素
             int n1 = Integer.parseInt(s.substring(i - 1, i));//size i 的 string 里面最后一个元素 (i - 1)
@@ -51,7 +54,7 @@ helper(1, s) may also need helper(4, s)
 Time:  O(2^n)
 Space: O(1) - stack O(n)
 
-So we need  memory
+So we need  memory, see below
 */
 class Solution {
     public int numDecodings(String s) {
@@ -73,6 +76,8 @@ class Solution {
 /*
 recursion + Memory (kind of like dp)
 
+mem[i] from i to end, how many
+
 Time:  O(n)
 Space: O(1) - stack O(n)
 
@@ -89,7 +94,8 @@ class Solution {
         if(mem[index] > -1) return mem[index];
         
         if(s.charAt(index) == '0') return 0;//impossible
-        int res = helper(index + 1, s, mem);
+        int res = helper(index + 1, s, mem);//jus use one number
+
         if(index + 2 <= s.length()){
             int num = Integer.parseInt(s.substring(index, index + 2));
             if(num >= 10 && num <= 26)
