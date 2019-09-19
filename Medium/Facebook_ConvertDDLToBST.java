@@ -28,7 +28,7 @@ class Facebook_ConvertDDLToBST {
 	DoubelLinkedList node = null;
 	public static DoubelLinkedList convertToBST(DoubelLinkedList head){
 		int n = countNode(head);//先算一共有多少个node，方便调用根据 n 大小决定走多少步的helper
-		node = head;
+		node = head;//开始loop
 		//find the middle point
 		return convertHelper(n);
 	    
