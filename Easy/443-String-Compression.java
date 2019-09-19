@@ -1,7 +1,41 @@
 /*
 443. String Compression
 
-*//*
+*/
+/*
+Two Pointers
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public int compress(char[] chars) {
+        int index = 0;
+        for(int i = 0; i < chars.length; i++, index++){
+            chars[index] = chars[i];
+            
+            //count
+            int count = 1;
+            while(i + 1 < chars.length && chars[i + 1] == chars[i]){
+                count++;
+                i++;
+            }
+            if(count > 1){
+                char[] num = String.valueOf(count).toCharArray();
+                for(int k = 0; k < num.length; k++){
+                    chars[++index] = num[k];
+                }
+            }
+        }
+        return index;
+    }
+}
+
+
+
+
+
+
+/*
 Loop and Count
 
 Time: O(n)
