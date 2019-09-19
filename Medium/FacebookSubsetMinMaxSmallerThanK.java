@@ -1,7 +1,14 @@
 /*
-Facebook - sparse dot
+Facebook - subset
 给一系列 array，一个 target k
 求所有的 subset，使得 subset 的 min + max <= k
+
+For a given vector of integers and integer K, find the number of non-empty subse‍‍‍‍‌‍‌‍‍‍‌‍‍‍‌‍‍ts S such that min(S) + max(S) <= K
+For example, for K = 10 and vector [2, 4, 5, 7], 
+the solution is 5 and these are all the subsets that satisfy the requirements: 
+[2], [4], [2, 4], [2, 4, 5], [2, 5].
+
+
 
 Time: O(nlogn)
 Space: O(1)
