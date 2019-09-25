@@ -6,6 +6,96 @@ TIME:
 RESULT: 
 */
 /*
+DoublelyLinkedList
+
+Time: O(1)
+Space: O(capacity)
+*/
+class LRUCache {
+    
+    class DLinkedNode{
+        DLinkedNode pre;
+        DLinkedNode next;
+        int key;
+        int val;
+        public DLinkedNode(int _key, int _val){
+            val = _val;
+            key = _key;
+        }
+    }
+    private void addToHead(DLinkedNode node){
+        head.next.pre = node;
+        node.next = head.next;
+        
+        head.next = node;
+        node.pre = head;
+    }
+    private void removeNode(DLinkedNode node){
+        node.pre.next = node.next;
+        node.next.pre = node.pre;
+        
+        node.pre = null;
+        node.next = null;
+    }
+    
+    
+    DLinkedNode head, tail;
+    Map<Integer, DLinkedNode> map;
+    int cap;
+    public LRUCache(int capacity) {
+        head = new DLinkedNode(0,0);
+        tail = new DLinkedNode(0,0);
+        head.next = tail;
+        tail.pre = head;
+        
+        map = new HashMap<>();
+        cap = capacity;
+    }
+    
+    public int get(int key) {
+        if(map.containsKey(key)){
+            //get val
+            DLinkedNode node = map.get(key);
+            //update node
+            removeNode(node);
+            addToHead(node);
+            return node.val;
+        } 
+        else return -1;
+    }
+    
+    public void put(int key, int value) {
+        if(map.containsKey(key)){
+            //update val
+            DLinkedNode node = map.get(key);
+            node.val = value;
+            //update node
+            removeNode(node);
+            addToHead(node); 
+        }else{
+            DLinkedNode node = new DLinkedNode(key, value);
+            map.put(key, node);//remember to add to map
+            addToHead(node);
+            
+            //check capacity
+            if(map.size() > cap){
+                DLinkedNode last = tail.pre;
+                map.remove(last.key);
+                removeNode(last);
+            }
+        }
+    }
+}
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
+
+ 
+/*
 Double Linked Node + HashMap
 重点是每次能够很快将一个中间的点，移到最前。
 就用 map 帮我们 get 那个点，然后用 Double Linked Node 的操作快速添加和删除
