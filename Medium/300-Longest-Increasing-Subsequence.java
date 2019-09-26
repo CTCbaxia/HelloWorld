@@ -23,7 +23,7 @@ Space: O(n)
 class Solution {
     public int lengthOfLIS(int[] nums) {
         int len = 0;
-        int[] end = new int[nums.length + 1];
+        int[] end = new int[nums.length + 1];//int[] end = new int[nums.length];//不会到达 length
         for(int i = 0; i < nums.length; i++){
             int l = 0, r = len;
             while(l < r){//find the large or equal num, update that larger value to nums[i]
