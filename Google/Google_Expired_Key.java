@@ -9,15 +9,14 @@ Example
 12:00:00 - put(10, 25, 5000)
 12:00:04 - get(10) -> 25
 12:00:06 - get(10) -> null
-思路:两个hash map，一个记录key，value pair，一个记录key的过期时间，get的时候检查key 是否过期，如果过期了，删除key返回null
-Put方法有三个参数，除了key，value还有个duration
+*/
 
-Keep a concurrent hashmap where every key has a timestamp attached.
-
-Now expiry can be done in two ways:
-
+/*
+思路:
+1. 一个hash map，一个记录key，value-expTime，一个记录key的过期时间，get的时候检查key 是否过期，如果过期了，删除key返回null
+2. Map + PriorityQueu
+3. Keep a concurrent hashmap where every key has a timestamp attached.
 Run a thread that will take a lock on map and remove expired elements from the map at regular intervals.
-Remove the key while calling get: If the key is expired, remove it from the map otherwise return it's value.
 */
 /*
 被动删除过期 key
