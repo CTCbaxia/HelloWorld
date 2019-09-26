@@ -6,7 +6,15 @@ Google_Robot_TopLeft_to_BotomRight
 每个 point 可以走右上，右，右下
 求路径数
 
+这题超多超多follow up，总思路就是
+用dp
+省空间可以看能不能转换成一维dp
+需要返回路径的话就需要标记到达改点最有路径的方向
+继续省空间看可不可以直接更改原始的数组，如果需要标记路径，直接用正负数标记来的方向
 */
+
+
+
 /*
 Dynamic Programming: 2D Array
 
@@ -250,7 +258,7 @@ class Google_Robot_TopLeft_to_TopRight{
         pre[0] = 1;
 
         for(int j = 1; j < n; j++){
-            int[] cur = new int[m];
+            int[] cur = new int[m];//注意这里都需要新建一个缓存
             for(int i = 0; i < m; i++){
                 if(i > 0) cur[i] += pre[i - 1];
                 cur[i] += pre[i];
