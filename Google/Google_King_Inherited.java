@@ -4,9 +4,11 @@ Google_King_Inherited
 给一个国王家的family tree （n-ary tree），王位继承是先传国王最年长的儿子，
 假如最年长儿子死了，就传给死儿子最年长的儿子。。。如果这些人都不存在，再考虑国王次年长的儿子，以此类推。
 要求设计这样一棵树，死掉的人不要求删除，实现birth（）和输出王位继承顺序的method（死掉的人不在继承顺序结果里）
-
-
-DFS
+*/
+/*
+Build Family Tree + DFS get Order
+Map<name, node>
+node king
 
 Time: 
 	birth: O(1)
