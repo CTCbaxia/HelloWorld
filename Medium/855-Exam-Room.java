@@ -7,6 +7,68 @@ RESULT:
 NOTES:
 
 */
+class ExamRoom {
+
+    public class Interval{
+        int l;
+        int r;
+        int inter;
+        public Interval(int _l, int _r){
+            l = _l;
+            r = _r;
+            //这里针对N = 8
+            if(l == -1) inter = r;
+            else if(r == N) inter = N - 1 - l;
+            else inter = (r - l)/2;
+        }
+    }
+    int N;
+    PriorityQueue<Interval> pq;
+    public ExamRoom(int N) {
+        this.N = N;
+        pq = new PriorityQueue<>(new Comparator<Interval>(){
+            public int compare(Interval i1, Interval i2){
+                if(i1.inter == i2.inter) return i1.l - i2.l;//asc index
+                else return i2.inter - i1.inter;//desc inter
+            }
+        });
+        pq.offer(new Interval(-1, N));
+    }
+    
+    public int seat() {
+        int seat = 0;
+        Interval interval = pq.poll();
+        if(interval.l == -1) seat = 0;
+        else if(interval.r == N) seat = N - 1;
+        else seat = (interval.l + interval.r)/2;
+        
+        pq.offer(new Interval(interval.l, seat));
+        pq.offer(new Interval(seat, interval.r));
+        return seat;
+    }
+    
+    public void leave(int p) {
+        Queue<Interval> q = new LinkedList<>();
+        Interval left = null, right = null;
+        while(!pq.isEmpty()){
+            Interval interval = pq.poll();
+            if(interval.l == p) right = interval;
+            else if(interval.r == p) left = interval;
+            else q.offer(interval);
+            
+            if(left != null && right != null) break;
+        }
+        pq.offer(new Interval(left.l, right.r));
+        while(!q.isEmpty()) pq.offer(q.poll());
+    }
+}
+
+/**
+ * Your ExamRoom object will be instantiated and called as such:
+ * ExamRoom obj = new ExamRoom(N);
+ * int param_1 = obj.seat();
+ * obj.leave(p);
+ */
 /*
 PriorityQueue + Interval Data Structure
 Use Interval Data Structure for the PriorityQueue
