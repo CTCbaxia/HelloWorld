@@ -4,6 +4,42 @@ MEDIUM
 
 */
 /*
+String Mask
+Normalize the words to number of showsup
+abb = "1-2-2"
+abc = "1-2-3"
+abcb = "1-2-3-2"
+normalize every word and compare the array
+
+Time: O(mn)
+Space: O(1)
+*/
+class Solution {
+    public List<String> findAndReplacePattern(String[] words, String pattern) {
+        String p = normalize(pattern);
+        List<String> res = new ArrayList<>();
+        for(String w : words){
+            if(normalize(w).equals(p)) res.add(w);
+        }
+        return res;
+    }
+    private String normalize(String w){
+        StringBuilder sb = new StringBuilder();
+        Map<Character, Integer> map = new HashMap<>();
+        for(int i = 0; i < w.length(); i++){
+            char c = w.charAt(i);
+            if(!map.containsKey(c)) map.put(c, map.size());
+            sb.append(map.get(c)).append("-");
+        }
+        return sb.toString();
+    }
+}
+
+
+
+
+
+/*
 Two Map:
 注意：双向映射才是一一对应的。
 否则 abc -> amm，对于单一 “左 -> 右” 映射也成立
