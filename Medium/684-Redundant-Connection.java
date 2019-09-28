@@ -10,6 +10,91 @@ METHOD:
 	2. Union-Find
 */
 /*
+Union Find + detect cycle
+
+Time: O(n)//because we do compression, so we won't always go through the parent list
+Space: O(n)
+*/
+class Solution {
+    public int[] findRedundantConnection(int[][] edges) {
+        int n = edges.length;
+        int[] parent = new int[n + 1];
+        //initial parent 
+        for(int i = 1; i <= n; i++) parent[i] = i;
+        for(int[] e : edges){
+            int p1 = find(e[0], parent);
+            int p2 = find(e[1], parent);
+            if(p1 == p2) return e;
+            else parent[p2] = p1;
+        }
+        return null;
+
+    }
+    private int find(int n, int[] parent){
+        if(parent[n] == n) return n;
+        parent[n] = find(parent[n], parent);//compress the parent relationship
+        return parent[n];
+    }
+}
+
+/*
+DFS + detect cycle
+
+Time: O(n) //we don't go to a pre node again
+Space: O(n)
+*/
+class Solution {
+    public int[] findRedundantConnection(int[][] edges) {
+        int n = edges.length;
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        //build graph
+        for(int i = 0; i < edges.length; i++) map.put(i + 1, new ArrayList<>());
+        for(int[] e : edges){
+            map.get(e[0]).add(e[1]);
+            map.get(e[1]).add(e[0]);
+        }
+        List<Integer> path = new ArrayList<>();
+        backtracking(map, 0, 1, new boolean[n + 1], path);//get circle
+        
+        int duplicatePoint = path.get(path.size() - 1);
+        int startIndex = path.indexOf(duplicatePoint);
+        Set<Integer> circlePoints = new HashSet<>();
+        for(int i = startIndex; i < path.size(); i++){
+            circlePoints.add(path.get(i));
+        }
+        //find which edge
+        for(int i = edges.length - 1; i >= 0; i--){
+            if(circlePoints.contains(edges[i][0]) && circlePoints.contains(edges[i][1]))
+                return edges[i];
+        }
+        return null;
+    }
+    private boolean backtracking(Map<Integer, List<Integer>> map, int pre, int cur, boolean[] visited, List<Integer> path){
+        path.add(cur);
+        if(visited[cur]) return true;//find circle in this path
+        
+        visited[cur] = true;//mark
+        List<Integer> nei = map.get(cur);
+        for(int n : nei){
+            if(n == pre) continue;//don't go back to its parent
+            if(backtracking(map, cur, n, visited, path)) return true;
+        }
+        path.remove(path.size() - 1);
+        visited[cur] = false;
+        return false;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+/*
 Union Find: 对每条边，更新连通图的情况
 
 初始化：所有点对应的parent都为自己
@@ -81,7 +166,7 @@ Time 分析：
 Result: 
 Time: 11ms
 */
-
+//这个写的很奇怪
 class Solution {
     public int[] findRedundantConnection(int[][] edges) {
         Map<Integer, List<Integer>> map = new HashMap<>();
@@ -103,7 +188,7 @@ class Solution {
             List<Integer> circle = path.subList(first, path.size() - 1);
             
             for(int i = edges.length - 1; i >= 0; i--){
-                if(circle.contains(edges[i][0]) && circle.contains(edges[i][1])){
+                if(circle.contains(r) && circle.contains(edges[i][1])){
                     return edges[i];
                 }
             }
