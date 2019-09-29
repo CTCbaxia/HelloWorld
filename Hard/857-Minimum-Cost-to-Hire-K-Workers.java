@@ -1,8 +1,68 @@
 /*
 HARD
 857. Minimum Cost to Hire K Workers
+*/
+/*
+Baseline Comparison
+sum = largest ratio * (q1 + q2 + ... + qk)
+1. calculate the baseline
+2. increase one part, then the next part should be smaller so it is possible to make sum smaller
+
+Time: O(nlogn)
+Space: O(n)
+*/
+class Solution {
+   public class Worker{
+        double ratio;
+        int quality;
+        public Worker(double r, int q){
+            ratio = r;
+            quality = q;
+        }
+    }
+    public double mincostToHireWorkers(int[] quality, int[] wage, int K) {
+        int n = quality.length;
+        Worker[] worker = new Worker[n];
+        for(int i = 0; i < n; i++){
+            double ratio = (double) wage[i]/quality[i];
+            worker[i] = new Worker(ratio, quality[i]);
+        }
+        Arrays.sort(worker, new Comparator<Worker>(){
+            public int compare(Worker w1, Worker w2){
+                return Double.compare(w1.ratio, w2.ratio);
+            }
+        });
+        double res = Double.MAX_VALUE;
+        int sumWage = 0;
+        PriorityQueue<Integer> pq = new PriorityQueue<>();//min heap but we put minus value
+        for(Worker w : worker){
+            pq.offer(-w.quality);
+            sumWage += w.quality;
+            if(pq.size() > K) sumWage += pq.poll();//remove this person from sum
+            if(pq.size() == K) res = Math.min(res, w.ratio * sumWage);
+        }
+        return res;
+    }
+}
+/*
+形式转换
+
+(double) (a/b)
+4 3 r:1.0
+8 1 r:8.0
+2 10 r:0.0
+2 10 r:0.0
+7 1 r:7.0
+
+(double) a/b
+4 3 r:1.3333333333333333
+8 1 r:8.0
+2 10 r:0.2
+2 10 r:0.2
+7 1 r:7.0
 
 */
+
 /*
 两层排序：
 这种复杂组合问题，要用排序的思路简化，而因为有两个变量 ratio * quality sum，则需要两层排序，递增 ratio, 同时找到每个 ratio 对应的最小 quality sum
