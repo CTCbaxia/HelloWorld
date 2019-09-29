@@ -5,8 +5,11 @@ MEDIUM
 */
 
 /*
-BFS:
-visited 和 BFS 对象应该是bus stop 而不是 bus
+BFS
+we only try every bus once
+visit 只需要存 bus
+Time: O(mn)
+Space: O(mn)
 */
 class Solution {
     public int numBusesToDestination(int[][] routes, int S, int T) {
@@ -34,7 +37,7 @@ class Solution {
 				int busStop = q.poll();
 				List<Integer> buses = map.get(busStop);
 				for(int bus : buses){
-					if(visited.contains(bus)) continue;//越早越过 loop 最好
+					if(visited.contains(bus)) continue;
 					visited.add(bus);
 					for(int i = 0; i < routes[bus].length; i++){
 						int nextStop = routes[bus][i];
@@ -50,10 +53,6 @@ class Solution {
 		return -1;
     }
 }
-
-
-
-
 
 
 
