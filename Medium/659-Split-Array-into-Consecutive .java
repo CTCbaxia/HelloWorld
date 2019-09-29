@@ -4,6 +4,91 @@ MEDIUM
 
 */
 /*
+BFS: Deque to manage mono
+Time: O(n)
+Space: O(n)
+*/
+class Solution {
+    public boolean isPossible(int[] nums) {
+        Deque<Integer> q = new LinkedList<>();
+        int pre = nums[0] - 1;
+        for(int i = 0; i < nums.length; i++){
+            int n = nums[i];
+            Deque<Integer> newQ = new LinkedList<>();
+            if(pre + 1 == n){
+                while(i < nums.length && nums[i] == n){
+                    if(!q.isEmpty()) newQ.offerLast(q.poll() + 1);
+                    else newQ.offerFirst(1);
+                    i++;
+                } 
+                i--;//back one
+            }
+            while(!q.isEmpty()){
+                if(q.pollFirst() < 3) return false;
+            }
+            q = newQ;
+            pre = n;
+            
+        }
+        //DONT FORGET TO CHECK END
+        while(!q.isEmpty()){
+            if(q.pollFirst() < 3) return false;
+        }
+        return true;
+    }
+}
+
+/*
+Three Markers: for typical limited problems
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+    public boolean isPossible(int[] nums) {
+        int count1 = 0, count2 = 0, count3 = 0;
+        int pre = nums[0] - 1;
+        for(int i = 0; i < nums.length; i++){
+            int cur = nums[i];
+            int count = 0;
+            while(i < nums.length && nums[i] == cur){
+                count++;
+                i++;
+            }
+            i--;
+            if(pre + 1 < cur){
+                if(count1 != 0 || count2 != 0) return false;
+                count1 = count;
+                count2 = 0;
+                count3 = 0;
+            }else{
+                if(count1 + count2 > count) return false;
+                int t1 = count1, t2 = count2, t3 = count3;
+                t1 = Math.max(0, count - (count1 + count2 + count3));
+                t2 = count1;
+                t3 = count2 + Math.min(count3, count - (count1 + count2));
+                
+                count1 = t1;
+                count2 = t2;
+                count3 = t3;
+            }
+            pre = cur;
+        }
+        return count1 == 0 && count2 == 0;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 BFS: 
 Hint:
 example:
