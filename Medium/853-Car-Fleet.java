@@ -4,6 +4,33 @@ MEDIUM
 
 */
 /*
+TreeMap, mono
+Time: O(nlogn)
+Space: O(n)
+*/
+class Solution {
+    public int carFleet(int target, int[] position, int[] speed) {
+        Map<Integer, Double> map = new TreeMap<>();
+        for(int i = 0; i < position.length; i++){
+            int dis = target - position[i];
+            double time = (double) dis/speed[i];
+            map.put(dis, time);
+        }
+        int num = 0;
+        double curTime = 0;
+        for(Map.Entry<Integer, Double> entry : map.entrySet()){//in ascending order
+            if(entry.getValue() > curTime){
+                num++;
+                curTime = entry.getValue();
+            }
+        }
+        return num;
+    }
+}
+
+
+
+/*
 Keep track of the slowest time: 数组增减关系对比：
 Calculate time needed to arrive the target, sort by the start position.
 Loop on each car from the end to the beginning. arriveTime = current biggest time (the slowest).
